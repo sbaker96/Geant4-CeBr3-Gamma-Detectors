@@ -30,8 +30,9 @@ target_link_libraries(CeBr3Detector ${Geant4_LIBRARIES})
 #(6)
 set(EX_SCRIPTS
 	vis.mac
-	Co60.mac
-	Cs137.mac
+	60Co.mac
+	137Cs.mac
+	152Eu.mac
 	plot.C
 	foldGaus.C
 	foldGaus-NoZero.C

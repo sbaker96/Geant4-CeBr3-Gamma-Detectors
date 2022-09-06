@@ -1,0 +1,4 @@
+#Sets source to 60Co
+
+/gun/particle ion
+/gun/ion 27 60

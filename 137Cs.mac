@@ -1,0 +1,4 @@
+#Sets source to 137Cs 
+
+/gun/particle ion
+/gun/ion 55 137
