@@ -1,0 +1,244 @@
+//====================================
+//Detector Construction Implementation
+//====================================
+
+#include "DetectorConstruction.hh"
+
+#include "G4RunManager.hh"
+#include "G4NistManager.hh"
+#include "G4Box.hh"
+#include "G4Tubs.hh"
+#include "G4LogicalVolume.hh"
+#include "G4PVPlacement.hh"
+#include "G4SystemOfUnits.hh"
+#include "G4UnionSolid.hh"
+#include "G4SubtractionSolid.hh"
+#include "TrackerSD.hh"
+#include "G4SDManager.hh"
+
+namespace CeBr3
+{
+///////////////////////
+
+DetectorConstruction::DetectorConstruction()
+{}
+
+///////////////////////
+
+DetectorConstruction::~DetectorConstruction()
+{}
+
+////////////////////////
+G4VPhysicalVolume* DetectorConstruction::Construct()
+{
+        //Get nist Material Manager
+        G4NistManager* man  = G4NistManager::Instance();
+
+	//Define nist Materials
+        G4Material* Air = man->FindOrBuildMaterial("G4_AIR");
+        G4Material* Al = man->FindOrBuildMaterial("G4_Al");
+
+//==================
+//Define CeBr3
+//==================
+
+	G4bool elBuildOption = 1;	//0 = nist Defined
+					//1 = Manually Defined
+
+	G4Element* Ce = nullptr;
+	G4Element* Br = nullptr;
+
+	if(elBuildOption == 0)
+	{
+	 Ce = man->FindOrBuildElement("Ce");
+	 Br = man->FindOrBuildElement("Br");
+	}
+	
+	if(elBuildOption == 1)
+	{
+	 Ce = new G4Element( "Cerium", "Ce", 58., 140.116*g/mole);
+	 Br = new G4Element( "Bromine", "Br", 35., 79.904*g/mole);
+	}
+
+	G4Material* CeBr3 = new G4Material("CeBr3", 	//name
+					   5.1*g/cm3,	//density
+					   2);		//ncomponents
+
+	G4bool matBuildOption = 1;	//0 = proportions of atoms
+					//1 = mass fraction
+
+	if(matBuildOption == 0)
+	{
+	CeBr3->AddElement(Ce, 1);
+	CeBr3->AddElement(Br, 3);
+	}
+
+	if(matBuildOption == 1)
+	{
+	CeBr3->AddElement(Ce, 36.889*perCent);
+       	CeBr3->AddElement(Br, 63.111*perCent);	
+		
+	}
+//===============
+
+	//Define World Parameters
+        G4double world_hx = 5.0*m;
+        G4double world_hy = 5.0*m;
+        G4double world_hz = 5.0*m;
+
+        //Create Solid World
+        G4Box* worldSolid  = new G4Box("World", world_hx, world_hy, world_hz);
+
+        //Create Logical World
+        G4LogicalVolume* worldLog = new G4LogicalVolume(worldSolid, Air, "World");
+
+        //Define Physical World Parameters
+        G4double pos_x = 0.0*m;
+        G4double pos_y = 0.0*m;
+        G4double pos_z = 0.0*m;
+
+        //Create Physical World
+        G4VPhysicalVolume* worldPhys =
+        new G4PVPlacement(0,            //no rotation
+                        G4ThreeVector(pos_x, pos_y, pos_z),
+                                        //translation position
+                        worldLog,       //logical volume
+                        "World",        //name
+                        0,              //Mother volume
+                        false,          //no bool
+                        0);             //copy number
+
+//============================================
+
+//Create CeBr3 Crystal
+
+        //Parameters
+        G4double c_inRad = 0.0*cm;
+        G4double c_outRad = 25.5*mm;
+        G4double c_hz = 25.5*mm;
+        G4double c_startAngle = 0.0*deg;
+        G4double c_spanAngle = 360.0*deg;
+
+        //Solid
+        G4Tubs* cSolid = new G4Tubs("CeBr3", c_inRad, c_outRad,
+                        c_hz, c_startAngle, c_spanAngle);
+        //Logical Volume
+        G4LogicalVolume* cLog = new G4LogicalVolume(cSolid, CeBr3, "CeBr3");
+
+        //Physical Volume Parameters
+        G4double c_x = 0.0*cm;
+        G4double c_y = 0.0*cm;
+        G4double c_z = 7.5*cm;
+
+        //Physical Volume
+        G4VPhysicalVolume* cPhys =
+                new G4PVPlacement(0,
+                                G4ThreeVector(c_x, c_y, c_z),
+                                cLog,
+                                "CeBr3",
+                                worldLog,
+                                false,
+                                0);
+
+
+
+//==============================================
+	//Create Al Shell
+
+	
+        //Base Shell Parameters
+        
+	G4double shellThickness = 0.5*mm;
+        
+	G4double base_outRad = c_outRad+shellThickness;
+        G4double base_inRad = c_inRad;
+        G4double base_hz = c_hz+shellThickness/2;
+        G4double base_startAngle = 0.0*deg;
+        G4double base_spanAngle = 360*deg;
+
+        //Base Shell Solid
+        G4Tubs* base = new G4Tubs("Base Shell", base_inRad, base_outRad,
+                        base_hz, base_startAngle, base_spanAngle);
+
+        //Hole Parameters
+        G4double hole_outRad = c_outRad;
+        G4double hole_inRad = c_inRad;
+        G4double hole_hz = base_hz;
+        G4double hole_startAngle = base_startAngle;
+        G4double hole_spanAngle = base_spanAngle;
+
+        //Hole Solid
+        G4Tubs* hole = new G4Tubs("Hole", hole_inRad, hole_outRad,
+                        hole_hz, hole_startAngle, hole_spanAngle);
+
+        //Hole Positioning
+        G4RotationMatrix* nullRot = new G4RotationMatrix;       //Should not rotate
+        G4ThreeVector holeTrans(0, 0, 1* shellThickness);
+
+        //Build Shell Solid
+        G4SubtractionSolid* shellSolid =
+                new G4SubtractionSolid("Shell", base, hole, nullRot, holeTrans);
+
+//==============================================
+        //Shell Logical Volume
+        G4LogicalVolume* shellLog  = new G4LogicalVolume(shellSolid, Al, "Shell");
+
+        //Physical Volume Parameters
+        G4double shell_x = 0.0*m;
+        G4double shell_y = 0.0*m;
+        G4double shell_z = c_z-(shellThickness/2); 
+
+        //Create Physical Shell
+        G4VPhysicalVolume* shellPhys =
+                new G4PVPlacement(0,    //no rotation
+                        G4ThreeVector(shell_x, shell_y, shell_z),
+                                        //translation position
+                        shellLog,       //logical volume
+                        "Shell",        //name
+                        worldLog,       //Mother volume
+                        false,          //no bool
+                        0);             //copy number
+
+                                                                         
+
+//===========================================
+	//Return
+	G4cout << *(G4Material::GetMaterialTable()) << G4endl;
+	return worldPhys;	
+}
+
+
+void DetectorConstruction::ConstructSDandField()
+{
+
+        //Sensitive Detectors
+
+
+        G4String trackerSDname = "/TrackerSD";
+        TrackerSD* aTrackerSD = new TrackerSD(trackerSDname, "TrackerHitsCollection");
+
+        G4SDManager::GetSDMpointer()->AddNewDetector(aTrackerSD);
+
+        //Set Sensitive Detector
+	SetSensitiveDetector("CeBr3", aTrackerSD, true);
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}

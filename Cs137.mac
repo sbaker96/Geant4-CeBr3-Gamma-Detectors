@@ -1,0 +1,8 @@
+#Sets source to Cs136
+
+/gun/particle ion
+/gun/ion 55 137
+
+# Runs
+
+/run/beamOn 1
