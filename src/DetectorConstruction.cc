@@ -99,7 +99,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         //Physical Volume Parameters
         G4double c_x = 0.0*cm;
         G4double c_y = 0.0*cm;
-        G4double c_z = 7.5*cm;
+        G4double c_z = 5*cm;
 
         //Physical Volume
         G4VPhysicalVolume* cPhys =
@@ -178,7 +178,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
         //Base Shell Parameters
 
-        G4double sThickness = 0.5*mm; //!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        G4double sThickness = 0.5*mm;
 	G4double gapThickness = 1.0*mm;
 
 	G4double totThickness = sThickness + gapThickness;
