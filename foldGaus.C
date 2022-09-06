@@ -39,7 +39,7 @@
         
 	double factor = 1.0;
 
-        h1->Scale(factor/h1->Integral());
+        h1->Scale(factor/h1->GetMaximum());
 	
 	h1->Draw("HIST");
 
