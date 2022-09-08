@@ -33,9 +33,8 @@ set(EX_SCRIPTS
 	60Co.mac
 	137Cs.mac
 	152Eu.mac
-	plot.C
-	foldGaus.C
-	foldGaus-NoZero.C
+	
+	GeneratePlots.C
 	)
 
 foreach(_script ${EX_SCRIPTS})
