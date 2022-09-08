@@ -15,6 +15,8 @@
 #include "G4SubtractionSolid.hh"
 #include "TrackerSD.hh"
 #include "G4SDManager.hh"
+#include "G4AssemblyVolume.hh"
+#include "G4Transform3D.hh"
 
 namespace CeBr3
 {
@@ -50,7 +52,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	CeBr3->AddElement(Ce, 36.889*perCent);
        	CeBr3->AddElement(Br, 63.111*perCent);
 
-//===============
+//======================================
 
 	//Define World Parameters
         G4double world_hx = 5.0*m;
@@ -101,18 +103,6 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         G4double c_y = 0.0*cm;
         G4double c_z = 5*cm;
 
-        //Physical Volume
-        G4VPhysicalVolume* cPhys =
-                new G4PVPlacement(0,
-                                G4ThreeVector(c_x, c_y, c_z),
-                                cLog,
-                                "CeBr3",
-                                worldLog,
-                                false,
-                                0);
-
-
-
 //==============================================
 	//Create Reflector
 
@@ -150,7 +140,6 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         G4SubtractionSolid* rSolid =
                 new G4SubtractionSolid("Reflector Shell", rBase, rHole, nullRot, rHoleTrans);
 
-//==============================================
         //Reflector Logical Volume
         G4LogicalVolume* rLog  = new G4LogicalVolume(rSolid, Al, "Reflector");
 
@@ -158,18 +147,6 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         G4double r_x = 0.0*m;
         G4double r_y = 0.0*m;
         G4double r_z = c_z-(rThickness/2); 
-
-        //Create Physical Shell
-        G4VPhysicalVolume* rPhys =
-                new G4PVPlacement(0,    //no rotation
-                        G4ThreeVector(r_x, r_y, r_z),
-                                        //translation position
-                        rLog,       //logical volume
-                        "Reflector",        //name
-                        worldLog,       //Mother volume
-                        false,          //no bool
-                        0);             //copy number
-
                                                                          
 
 //==============================================
@@ -211,7 +188,6 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         G4SubtractionSolid* sSolid =
                 new G4SubtractionSolid("Shell", sBase, sHole, nullRot, sHoleTrans);
 
-//==============================================
         //Shell Logical Volume
         G4LogicalVolume* sLog  = new G4LogicalVolume(sSolid, Al, "Shell");
 
@@ -220,18 +196,50 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         G4double s_y = 0.0*m;
         G4double s_z = c_z-(totThickness/2);
 
-        //Create Physical Shell
-        G4VPhysicalVolume* sPhys =
-                new G4PVPlacement(0,    //no rotation
-                        G4ThreeVector(s_x, s_y, s_z),
-                                        //translation position
-                        sLog,       //logical volume
-                        "Shell",        //name
-                        worldLog,       //Mother volume
-                        false,          //no bool
-                        0);             //copy number
+//===========================================
+
+	//Detector Assembly
+	G4AssemblyVolume* detectorAssembly = new G4AssemblyVolume;
+
+	//Rotation and Translation Matrices
+	G4RotationMatrix Ra;
+	G4ThreeVector Ta;
+
+	G4Transform3D Ma;
+
+
+	//Add Crystal
+	Ta.setX(c_x); Ta.setY(c_y); Ta.setZ(c_z);
+	Ma = G4Transform3D(Ra, Ta);
+	detectorAssembly->AddPlacedVolume(cLog, Ma);
+
+	//Add Reflector
+        Ta.setX(r_x); Ta.setY(r_y); Ta.setZ(r_z);
+	Ma = G4Transform3D(Ra, Ta);
+        detectorAssembly->AddPlacedVolume(rLog, Ma);
+	
+	//Add Shell
+        Ta.setX(s_x); Ta.setY(s_y); Ta.setZ(s_z);
+	Ma = G4Transform3D(Ra, Ta);
+        detectorAssembly->AddPlacedVolume(sLog, Ma);
+	
+	//Place Detectors
+	G4RotationMatrix Rp;
+	G4ThreeVector Tp;
+
+	G4Transform3D Mp;
+
+	Tp.setZ(5.0*cm);
+	Mp = G4Transform3D(Rp, Tp);
+
+	detectorAssembly->MakeImprint(worldLog, Mp);
+
+
+
 
 //===========================================
+
+
 	//Return
 	G4cout << *(G4Material::GetMaterialTable()) << G4endl;
 	return worldPhys;	
