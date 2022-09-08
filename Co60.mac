@@ -1,8 +1,0 @@
-#Sets source to Co60
-
-/gun/particle ion
-/gun/ion 27 60
-
-# Runs
-
-/run/beamOn 1
