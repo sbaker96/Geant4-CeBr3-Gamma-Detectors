@@ -234,6 +234,11 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 	detectorAssembly->MakeImprint(worldLog, Mp);
 
+	Tp.setZ(-5.0*cm);
+	Rp.rotateY(180*deg);
+	Mp = G4Transform3D(Rp, Tp);
+
+	detectorAssembly->MakeImprint(worldLog, Mp);
 
 
 
