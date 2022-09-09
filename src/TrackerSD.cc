@@ -61,15 +61,8 @@ G4bool TrackerSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
 	if ( srcID  == -1) return false;
 
 	TrackerHit* newHit = new TrackerHit();
-
-//	newHit->SetTrackID(aStep->GetTrack()->GetTrackID());
-//	newHit->SetParentID(aStep->GetTrack()->GetParentID());
 	
 	newHit->SetDecayGammaSourceID(srcID);
-
-//	newHit->SetType(aStep->GetTrack()->GetParticleDefinition()->GetParticleName());
-
-//	newHit->SetCreationProcess(aStep->GetTrack()->GetCreatorProcess()->GetProcessName());
 
 	newHit->SetEdep(edep);
 
