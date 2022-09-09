@@ -34,11 +34,23 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
 
 	size_t nofSecTracks = (*secTracks).size();
 	
+	G4Track* aTrack = aStep->GetTrack();
+
+	G4int copyNumber = aTrack->GetTouchable()->GetCopyNumber();
+
+	G4String name = aTrack->GetTouchable()->GetVolume()->GetName();
+
+	std::cout << "Copy Number: " << copyNumber << " | Volume Name: " << name  << std::endl;
 
        	if(nofSecTracks > 0)
        	{
+/*
 		G4Track* aTrack = aStep->GetTrack();
 
+		G4int copyNumber = aTrack->GetTouchable()->GetCopyNumber();
+
+		std::cout << "Copy Number: " << copyNumber << std::endl;
+*/
         	TrackInformation* trackInfo = (TrackInformation*)aTrack->GetUserInformation();
 
       		G4int srcID = trackInfo->GetDecayGammaSourceID();
