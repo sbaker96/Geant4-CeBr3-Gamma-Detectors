@@ -268,9 +268,18 @@ void DetectorConstruction::ConstructSDandField()
 
         sdman->AddNewDetector(detector1);
 
+	//Detector_2//
+	
+	trackerSDname = "/Detector2";
+
+	TrackerSD* detector2 = new TrackerSD(trackerSDname, "TrackerHitsCollection2");
+
+	sdman->AddNewDetector(detector2);
+
         //Set Sensitive Detector
 	SetSensitiveDetector("CeBr3", detector1, true);
-
+	
+	SetSensitiveDetector("CeBr3", detector2, true);
 
 }
 
