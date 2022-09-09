@@ -41,10 +41,6 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
 
         	TrackInformation* trackInfo = (TrackInformation*)aTrack->GetUserInformation();
 
-//		G4cout << "Number of Secondaries: " << nofSecTracks 
-//			<< " | TrackID: "<< aTrack->GetTrackID() << G4endl;
-
-
       		G4int srcID = trackInfo->GetDecayGammaSourceID();
                	for(size_t i = 0; i < nofSecTracks; i++)
                	{

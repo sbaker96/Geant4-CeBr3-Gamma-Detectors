@@ -43,10 +43,8 @@ void TrackingAction::PreUserTrackingAction(const G4Track* aTrack)
         if(aTrack->GetDefinition() == G4Gamma::Definition() && aTrack->GetCreatorProcess()->GetProcessName() == "RadioactiveDecay")
         {
                 G4int trackID = aTrack->GetTrackID();
-//              G4cout << " Gamma! | Track ID: " << trackID << G4endl;
                 trackInfo->SetDecayGammaSourceID(trackID);
         }       
-       
 }
 
 void TrackingAction::PostUserTrackingAction(const G4Track* aTrack)
