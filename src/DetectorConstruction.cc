@@ -256,14 +256,20 @@ void DetectorConstruction::ConstructSDandField()
 
         //Sensitive Detectors
 
+	auto sdman = G4SDManager::GetSDMpointer();
+	
+	G4String trackerSDname;
 
-        G4String trackerSDname = "/TrackerSD";
-        TrackerSD* aTrackerSD = new TrackerSD(trackerSDname, "TrackerHitsCollection");
+	//Detector_1//
 
-        G4SDManager::GetSDMpointer()->AddNewDetector(aTrackerSD);
+        trackerSDname = "/Detector1";
+
+        TrackerSD* detector1 = new TrackerSD(trackerSDname, "TrackerHitsCollection");
+
+        sdman->AddNewDetector(detector1);
 
         //Set Sensitive Detector
-	SetSensitiveDetector("CeBr3", aTrackerSD, true);
+	SetSensitiveDetector("CeBr3", detector1, true);
 
 
 }
