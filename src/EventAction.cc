@@ -70,32 +70,30 @@ void EventAction::EndOfEventAction(const G4Event* event)
 		
 	}
 	//-----
-	
-	
-	for(auto itr = decayGammaIDs.begin(); itr != decayGammaIDs.end(); itr++)
+	G4int nofDetectors = 2;	
+	for(G4int n = 0; n < nofDetectors; n++)
 	{
-	
-		G4int currentGammaID = *itr;
-		
-		G4double totalEdep = 0.0;
-		
-		for(G4int i = 0; i < nofHits; i++)
+		for(auto itr = decayGammaIDs.begin(); itr != decayGammaIDs.end(); itr++)
 		{
 		
-			if((*trackerHC)[i]->GetDecayGammaSourceID() == currentGammaID)
-			{ totalEdep += (*trackerHC)[i]->GetEdep(); }
-		
-		}
-
-	        auto analysisManager = G4AnalysisManager::Instance();
-//		G4cout << " Total Edep: " << totalEdep << G4endl;
-        	analysisManager->FillH1(0, totalEdep);
-
-
-
-
-
+			G4int currentGammaID = *itr;
+			
+			G4double totalEdep = 0.0;
+			
+			for(G4int i = 0; i < nofHits; i++)
+			{
+			
+				if((*trackerHC)[i]->GetDecayGammaSourceID() == currentGammaID
+						&& (*trackerHC)[i]->GetDetectorNumber() == n)
+				{ totalEdep += (*trackerHC)[i]->GetEdep(); }
+			
+			}
 	
+	        	auto analysisManager = G4AnalysisManager::Instance();
+//			G4cout << " Total Edep: " << totalEdep << G4endl;
+			analysisManager->FillH1(n, totalEdep);
+
+		}
 	}
 }
 

@@ -260,27 +260,13 @@ void DetectorConstruction::ConstructSDandField()
 	
 	G4String trackerSDname;
 
-	//Detector_1//
+        trackerSDname = "/Detector";
 
-        trackerSDname = "/Detector1";
-
-        TrackerSD* detector1 = new TrackerSD(trackerSDname, "TrackerHitsCollection");
-
-        sdman->AddNewDetector(detector1);
-
-	//Detector_2//
-	
-	trackerSDname = "/Detector2";
-
-	TrackerSD* detector2 = new TrackerSD(trackerSDname, "TrackerHitsCollection2");
-
-	sdman->AddNewDetector(detector2);
+        TrackerSD* detector = new TrackerSD(trackerSDname, "TrackerHitsCollection");
 
         //Set Sensitive Detector
-	SetSensitiveDetector("CeBr3", detector1, true);
+	SetSensitiveDetector("CeBr3", detector, true);
 	
-	SetSensitiveDetector("CeBr3", detector2, true);
-
 }
 
 }

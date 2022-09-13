@@ -53,6 +53,10 @@ G4bool TrackerSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
 
 	//energy deposit
 	G4double edep = aStep->GetTotalEnergyDeposit();
+	
+	G4int copyNumber = aStep->GetTrack()->GetTouchable()->GetCopyNumber();
+	
+	G4int dNum = (copyNumber - 1)/3;
 
         TrackInformation* trackInfo = (TrackInformation*)aStep->GetTrack()->GetUserInformation();
 
@@ -65,6 +69,8 @@ G4bool TrackerSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
 	newHit->SetDecayGammaSourceID(srcID);
 
 	newHit->SetEdep(edep);
+	
+	newHit->SetDetectorNumber(dNum);
 
 	fHitsCollection->insert(newHit);
 

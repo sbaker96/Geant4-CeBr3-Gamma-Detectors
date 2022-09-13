@@ -34,27 +34,18 @@ class TrackerHit : public G4VHit
 		void Print() override;
 
 		//Set Methods
-//		void SetTrackID(G4int track)		{fTrackID = track; };
-//		void SetParentID(G4int parent)		{fParentID = parent; };
+		void SetDetectorNumber(G4int dNum)	{fDetectorNumber = dNum; };
 		void SetDecayGammaSourceID(G4int src)	{fDecayGammaSourceID = src; };
-//		void SetType(G4String type)		{fType = type; };
-//		void SetCreationProcess(G4String proc)	{fCreationProcess = proc; };
 		void SetEdep(G4double de)		{fEdep = de; };
 
 		//Get Methods
-//		G4int GetTrackID() const		{return fTrackID; };
-//		G4int GetParentID() const		{return fParentID; };
+		G4int GetDetectorNumber() const		{return fDetectorNumber; };
 		G4int GetDecayGammaSourceID() const	{return fDecayGammaSourceID; };
-//		G4String GetCreationProcess() const	{return fCreationProcess; };
-//		G4String GetType() const		{return fType; };
 		G4double GetEdep() const		{return fEdep; };
 
 	private:
-//		G4int fTrackID;
-//		G4int fParentID;
+		G4int fDetectorNumber = -1;
 		G4int fDecayGammaSourceID;
-//		G4String fCreationProcess;
-//		G4String fType;
 		G4double fEdep = 0.;
 
 };

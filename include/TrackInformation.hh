@@ -31,11 +31,10 @@ class TrackInformation : public G4VUserTrackInformation
 		void SetDecayGammaSourceID(G4int srcID)	{ fDecayGammaSourceID = srcID; };
 
 		G4int GetDecayGammaSourceID()		{ return fDecayGammaSourceID; };
-		
+
 	private:
 		G4int fDecayGammaSourceID = -1; //TrackID of the Gamma Ray resulting from radioactive
 						//decay that is the ancestor of this track.
-
 };
 
 extern G4ThreadLocal

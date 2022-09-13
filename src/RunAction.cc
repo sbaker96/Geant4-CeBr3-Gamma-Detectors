@@ -25,7 +25,9 @@ RunAction::RunAction()
 
 	//Create Histograms
 	
-	analysisManager->CreateH1("Edep", "Edep", 10000, 0., 10000*keV);
+	analysisManager->CreateH1("Edep_0", "Edep_0", 10000, 0., 10000*keV);
+	
+	analysisManager->CreateH1("Edep_1", "Edep_1", 10000, 0., 10000*keV);
 
 }
 
@@ -37,7 +39,7 @@ void RunAction::BeginOfRunAction(const G4Run*)
 
 	auto analysisManager = G4AnalysisManager::Instance();
 
-	G4String fileName = "test.root";
+	G4String fileName = "output.root";
 
 	analysisManager->OpenFile(fileName);
 
