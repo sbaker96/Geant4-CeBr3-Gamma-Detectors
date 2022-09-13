@@ -46,10 +46,6 @@ void TrackingAction::PreUserTrackingAction(const G4Track* aTrack)
                 trackInfo->SetDecayGammaSourceID(trackID);
         }
 
-	G4int copyNumber = aTrack->GetTouchable()->GetCopyNumber();
-//	std::cout << "Copy Number: " << copyNumber << std::endl;
-	G4int dNum = (copyNumber - 1)/3;
-	trackInfo->SetDetectorNumber(dNum);	
 }
 
 void TrackingAction::PostUserTrackingAction(const G4Track* aTrack)
