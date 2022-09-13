@@ -1,34 +1,53 @@
-
 #include <iostream>
 #include <ostream>
+#include <string>
+#include <sstream>
 
 //Function Prototypes//
-void plotRaw();
-void plotFolded();
-void plotFoldedNoZero();
-void plotFoldedNormal();
-void plotFoldedNormalNoZero();
+void plotRaw(const char* edep);
+void plotFolded(const char* edep);
+void plotFoldedNoZero(const char* edep);
+void plotFoldedNormal(const char* edep);
+void plotFoldedNormalNoZero(const char* edep);
 //////////////////////
 
+//Constants//
+
+const char* srcName = "output.root";
+const char* outName = "Plots.root";
+const char* histName = "Edep_";
+
+int nofDetectors = 2;
+
+/////////////////////
 
 int GeneratePlots()
 {
 
-	plotRaw();
-	plotFolded();
-	plotFoldedNoZero();
-	plotFoldedNormal();
-	plotFoldedNormalNoZero();
-
+//	for(int num = 0; num < nofDetectors; num++);
+	{
+		int num = 0;
+		stringstream ss;
+	
+		ss << histName << num;
+	
+		const char* edep = ss.str().c_str();
+	
+		plotRaw(edep);
+		plotFolded(edep);
+		plotFoldedNoZero(edep);
+		plotFoldedNormal(edep);
+		plotFoldedNormalNoZero(edep);
+//	}
 	return 0;
 
 }
 
-void plotRaw()
+void plotRaw(const char* edep)
 {
-        TFile f("test.root");
-
-        TH1D* raw = (TH1D*)f.Get("Edep");
+        TFile f(srcName);
+        
+	TH1D* raw = (TH1D*)f.Get(edep);
 
         int lastFilledBin = raw->FindLastBinAbove();
 
@@ -38,17 +57,17 @@ void plotRaw()
 
         raw->SetLineColor(1);
 
-        std::unique_ptr<TFile> out( TFile::Open("Plots.root", "RECREATE") );
+        std::unique_ptr<TFile> out( TFile::Open(outName, "RECREATE") );
 
         out->WriteObject(raw, "Raw");
 
 }
 
-void plotFolded()
+void plotFolded(const char* edep)
 {
-        TFile f("test.root");
+        TFile f(srcName);
 
-        TH1D* src = (TH1D*)f.Get("Edep");
+        TH1D* src = (TH1D*)f.Get(edep);
 
         int lastFilledBin = src->FindLastBinAbove();
 
@@ -79,17 +98,17 @@ void plotFolded()
 
         folded->SetLineColor(1);
 
-        std::unique_ptr<TFile> out( TFile::Open("Plots.root", "UPDATE") );
+        std::unique_ptr<TFile> out( TFile::Open(outName, "UPDATE") );
 
         out->WriteObject(folded, "Folded");
 
 }
 
-void plotFoldedNoZero()
+void plotFoldedNoZero(const char* edep)
 {
-       TFile f("test.root");
+       TFile f(srcName);
 
-        TH1D* src = (TH1D*)f.Get("Edep");
+        TH1D* src = (TH1D*)f.Get(edep);
 
         int lastFilledBin = src->FindLastBinAbove();
 
@@ -125,7 +144,7 @@ void plotFoldedNoZero()
 
         folded->SetLineColor(1);
 
-        std::unique_ptr<TFile> out( TFile::Open("Plots.root", "UPDATE") );
+        std::unique_ptr<TFile> out( TFile::Open(outName, "UPDATE") );
 
         out->WriteObject(folded, "Folded-NoZero");
 
@@ -133,12 +152,12 @@ void plotFoldedNoZero()
 
 }
 
-void plotFoldedNormal()
+void plotFoldedNormal(const char* edep)
 {
 
-        TFile f("test.root");
+        TFile f(srcName);
 
-        TH1D* src = (TH1D*)f.Get("Edep");
+        TH1D* src = (TH1D*)f.Get(edep);
 
         int lastFilledBin = src->FindLastBinAbove();
 
@@ -172,18 +191,18 @@ void plotFoldedNormal()
 
         folded->SetLineColor(1);
 
-        std::unique_ptr<TFile> out( TFile::Open("Plots.root", "UPDATE") );
+        std::unique_ptr<TFile> out( TFile::Open(outName, "UPDATE") );
 
         out->WriteObject(folded, "Folded-Normal");
 
 
 }
 
-void plotFoldedNormalNoZero()
+void plotFoldedNormalNoZero(const char* edep)
 {
-       TFile f("test.root");
+       TFile f(srcName);
 
-        TH1D* src = (TH1D*)f.Get("Edep");
+        TH1D* src = (TH1D*)f.Get(edep);
 
         int lastFilledBin = src->FindLastBinAbove();
 
@@ -223,7 +242,7 @@ void plotFoldedNormalNoZero()
 
         folded->SetLineColor(1);
 
-        std::unique_ptr<TFile> out( TFile::Open("Plots.root", "UPDATE") );
+        std::unique_ptr<TFile> out( TFile::Open(outName, "UPDATE") );
 
         out->WriteObject(folded, "FoldedNormal-NoZero");
 
