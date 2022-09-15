@@ -30,7 +30,10 @@ int nofDetectors = 2;
 
 int GeneratePlots()
 {
+	TFile* outFile = new TFile(outName, "RECREATE");
 
+	outFile->Close();
+	
 	for(int i = 0; i < nofDetectors; i++)
 	{
 		plotRaw(i);
@@ -48,32 +51,26 @@ void plotRaw(int num)
         TFile f(srcName);
 
 	auto edep = numAppend(histName, num);
-
-//	std::cout << num << "Before: " << edep << std::endl;
-
-	TH1D* raw = (TH1D*)f.Get(edep);
 	
-//	std::cout << num << "After: " << edep << std::endl;
+	TH1D* src = (TH1D*)f.Get(edep);
 
-        int lastFilledBin = raw->FindLastBinAbove();
+        int lastFilledBin = src->FindLastBinAbove();
 
-        raw->GetXaxis()->SetRange(0, 1.5*lastFilledBin);
+        int nofBins = 1.5*lastFilledBin;
 
-        raw->SetOption("HIST");
+        const char* writeName = numAppend("Raw_", num);
 
-        raw->SetLineColor(1);
+        TH1F* folded = new TH1F(writeName, writeName, nofBins, 0, nofBins);
 
-        std::unique_ptr<TFile> out( TFile::Open(outName, "RECREATE") );
+        folded->SetOption("HIST");
+
+        folded->SetLineColor(1);
 	
-	const char* baseName = "Raw";
+        TFile* outFile = new TFile(outName, "UPDATE");
 
-	const char* writeName = numAppend(baseName, num);
+        folded->Write();
 
-//	std::cout << "Before: " << writeName << std::endl;
-
-        out->WriteObject(raw, writeName);
-
-//	std::cout << "After: " << writeName << std::endl;
+        outFile->Close();
 
 }
 
@@ -89,7 +86,7 @@ void plotFolded(int num)
 
         int nofBins = 1.5*lastFilledBin;
 
-	const char* writeName = numAppend("Fold", num);
+	const char* writeName = numAppend("Fold_", num);
 
         TH1F* folded = new TH1F(writeName, writeName, nofBins, 0, nofBins);
 
@@ -115,13 +112,6 @@ void plotFolded(int num)
         folded->SetOption("HIST");
 
         folded->SetLineColor(1);
-/*
-        std::unique_ptr<TFile> out( TFile::Open(outName, "UPDATE") );
-
-	const char* writeName = numAppend("Fold", num);
-
-        out->WriteObject(folded, writeName);
-*/
 
 	TFile* outFile = new TFile(outName, "UPDATE");
 	
@@ -142,7 +132,9 @@ void plotFoldedNoZero(int num)
 
         int nofBins = 1.5*lastFilledBin;
 
-        TH1F* folded = new TH1F("Folded", "Folded", nofBins, 0, nofBins);
+	const char* writeName = numAppend("FoldNZ_", num);
+
+        TH1F* folded = new TH1F(writeName, writeName, nofBins, 0, nofBins);
 
         TF1* stDev = new TF1("Standard Deviation", "(x/235.5)*(100/sqrt(x))", 0 , 1000*nofBins);
 
@@ -172,14 +164,11 @@ void plotFoldedNoZero(int num)
 
         folded->SetLineColor(1);
 
-        std::unique_ptr<TFile> out( TFile::Open(outName, "UPDATE") );
-	
-	const char* writeName = numAppend("Fold-NZ", num);
+        TFile* outFile = new TFile(outName, "UPDATE");
 
-        out->WriteObject(folded, writeName);
+        folded->Write();
 
-
-
+        outFile->Close();
 }
 
 void plotFoldedNormal(int num)
@@ -194,8 +183,10 @@ void plotFoldedNormal(int num)
         int lastFilledBin = src->FindLastBinAbove();
 
         int nofBins = 1.5*lastFilledBin;
+	
+	const char* writeName = numAppend("FoldNorm_", num);
 
-        TH1F* folded = new TH1F("Folded", "Folded", nofBins, 0, nofBins);
+        TH1F* folded = new TH1F(writeName, writeName, nofBins, 0, nofBins);
 
         TF1* stDev = new TF1("Standard Deviation", "(x/235.5)*(100/sqrt(x))", 0 , 1000*nofBins);
 
@@ -223,13 +214,11 @@ void plotFoldedNormal(int num)
 
         folded->SetLineColor(1);
 
-        std::unique_ptr<TFile> out( TFile::Open(outName, "UPDATE") );
+        TFile* outFile = new TFile(outName, "UPDATE");
 
-	const char* writeName = numAppend("FoldNorm", num);
-        
-	out->WriteObject(folded, writeName);
+        folded->Write();
 
-
+        outFile->Close();
 }
 
 void plotFoldedNormalNoZero(int num)
@@ -243,8 +232,10 @@ void plotFoldedNormalNoZero(int num)
        	int lastFilledBin = src->FindLastBinAbove();
 
        	int nofBins = 1.5*lastFilledBin;
+	
+	const char* writeName = numAppend("FoldNormNZ_", num);
 
-       	TH1F* folded = new TH1F("Folded", "Folded", nofBins, 0, nofBins);
+       	TH1F* folded = new TH1F(writeName, writeName, nofBins, 0, nofBins);
 
        	TF1* stDev = new TF1("Standard Deviation", "(x/235.5)*(100/sqrt(x))", 0 , 1000*nofBins);
 
@@ -278,13 +269,11 @@ void plotFoldedNormalNoZero(int num)
 
         folded->SetLineColor(1);
 
-        std::unique_ptr<TFile> out( TFile::Open(outName, "UPDATE") );
+        TFile* outFile = new TFile(outName, "UPDATE");
 
-	const char* writeName = numAppend("FoldNorm-NZ", num);
-        
-	out->WriteObject(folded, writeName);
+        folded->Write();
 
-
+        outFile->Close();
 }
 
 
@@ -297,7 +286,7 @@ const char* numAppend(const char* txt, int num)
 	
 	const char* output = ss.str().c_str();
 
-	std::cout << output << std::endl;
+//	std::cout << output << std::endl;
 
 	return output;
 
