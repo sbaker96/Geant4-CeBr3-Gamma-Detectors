@@ -28,14 +28,10 @@ int main(int argc, char** argv)
         runManager->SetUserInitialization(new DetectorConstruction);
 
         //Physics List
-//	G4PhysListFactory factory;
-//      G4VModularPhysicsList* physicsList = factory.GetReferencePhysList("QGSP_BERT_EMZ");
-//	physicsList->RegisterPhysics(new G4RadioactiveDecayPhysics());
-//      physicsList->SetVerboseLevel(1);
-//      runManager->SetUserInitialization(physicsList);
 
 	runManager->SetUserInitialization(new PhysicsList);
-        //ActionInit
+        
+	//ActionInit
         runManager->SetUserInitialization(new ActionInitialization);
 
         //Initializae G4 Kernel
