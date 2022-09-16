@@ -33,6 +33,8 @@ set(EX_SCRIPTS
 	60Co.mac
 	137Cs.mac
 	152Eu.mac
+
+	exampleRun.mac
 	
 	GeneratePlots.C
 	)

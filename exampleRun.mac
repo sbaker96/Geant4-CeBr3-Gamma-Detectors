@@ -1,0 +1,10 @@
+# Example Run Macro
+
+/gun/particle ion 	# Set main particles to ion
+
+/gun/ion 27 60		# Syntax of command is /gun/ion Z A
+			# This example uses 60Co
+
+
+/run/beamOn 2000000	# Runs simulation with 2mil nuclei
+
