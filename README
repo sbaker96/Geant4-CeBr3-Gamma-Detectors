@@ -16,13 +16,49 @@ Build Instructions:
 	
        	% cmake -DGeant4_DIR=path_to_Geant4_installation/build/ ../CeBr3Detector
 
-	# The specific path passed to -DGeant4_DIR= will depend on how Geant4
-	# is installed. It should be the path to the directory containing Geant4Config.cmake 
+	Note: The specific path passed to -DGeant4_DIR= will depend on how Geant4
+		is installed. It should be the path to the directory containing 
+		Geant4Config.cmake 
 
-	4. Make executable
+	4. Make Executable
 	
-	% make 					# make executable script
+	% make 					# make executable
 
 Run Instructions:
 
-////
+	1. Run Executable
+	
+	% ./CeBr3Detector
+
+	Note: An example of steps 2 and 3 is given in exampleRun.mac.
+		exampleRun.mac can be run with "/control/execute exampleRun.mac"
+
+
+	2. Set Source
+	
+	/gun/particle ion
+	/gun/ion Z A				# Z = Proton Number
+						# A = Atomic Number
+
+	3. Run Simulation
+
+	/run/beamOn N				# N is the number of nuclei that are simulated
+
+	4. Exit Executable
+	
+	exit
+
+	5. Generate Plots
+
+	Open ROOT and run the macro GeneratePlots.C
+	
+	.x GeneratePlots.C			# Generates Root file Plots.root
+						# Should return 0
+	
+
+	These plots can viewed with TBrowser.
+
+
+
+
+	
