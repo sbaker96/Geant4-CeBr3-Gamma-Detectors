@@ -34,6 +34,8 @@ int GeneratePlots()
 
 	outFile->Close();
 	
+	const char* writeName = numAppend("Flush", 0);
+	
 	for(int i = 0; i < nofDetectors; i++)
 	{
 		plotRaw(i);
