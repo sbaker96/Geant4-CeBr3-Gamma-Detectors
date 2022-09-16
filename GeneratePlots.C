@@ -60,15 +60,26 @@ void plotRaw(int num)
 
         const char* writeName = numAppend("Raw_", num);
 
-        TH1F* folded = new TH1F(writeName, writeName, nofBins, 0, nofBins);
+        TH1F* outHist = new TH1F(writeName, writeName, nofBins, 0, nofBins);
 
-        folded->SetOption("HIST");
+	for(int i = 0; i < nofBins; i++)
+	{
+		
+		int currentBinContent = src->GetBinContent(i);
 
-        folded->SetLineColor(1);
+			for(int k = 0; k < currentBinContent; k++)
+			{
+				outHist->Fill(i);
+			}
+	}
+
+        outHist->SetOption("HIST");
+
+        outHist->SetLineColor(1);
 	
         TFile* outFile = new TFile(outName, "UPDATE");
 
-        folded->Write();
+        outHist->Write();
 
         outFile->Close();
 
@@ -88,7 +99,7 @@ void plotFolded(int num)
 
 	const char* writeName = numAppend("Fold_", num);
 
-        TH1F* folded = new TH1F(writeName, writeName, nofBins, 0, nofBins);
+        TH1F* outHist = new TH1F(writeName, writeName, nofBins, 0, nofBins);
 
         TF1* stDev = new TF1("Standard Deviation", "(x/235.5)*(100/sqrt(x))", 0 , 1000*nofBins);
 
@@ -103,19 +114,19 @@ void plotFolded(int num)
 
                 if(currentBinContent > 0)
                 {
-                folded->FillRandom("g", currentBinContent);
+                outHist->FillRandom("g", currentBinContent);
                 }
 
         }
 
 
-        folded->SetOption("HIST");
+        outHist->SetOption("HIST");
 
-        folded->SetLineColor(1);
+        outHist->SetLineColor(1);
 
 	TFile* outFile = new TFile(outName, "UPDATE");
 	
-	folded->Write();
+	outHist->Write();
 
 	outFile->Close();
 }
@@ -134,7 +145,7 @@ void plotFoldedNoZero(int num)
 
 	const char* writeName = numAppend("FoldNZ_", num);
 
-        TH1F* folded = new TH1F(writeName, writeName, nofBins, 0, nofBins);
+        TH1F* outHist = new TH1F(writeName, writeName, nofBins, 0, nofBins);
 
         TF1* stDev = new TF1("Standard Deviation", "(x/235.5)*(100/sqrt(x))", 0 , 1000*nofBins);
 
@@ -149,24 +160,24 @@ void plotFoldedNoZero(int num)
 
                 if(currentBinContent > 0)
                 {
-                folded->FillRandom("g", currentBinContent);
+                outHist->FillRandom("g", currentBinContent);
                 }
 
         }
 
         for(int i = 0; i < 20; i++)
         {
-        folded->SetBinContent(i, 0);
+        outHist->SetBinContent(i, 0);
         }
 
 
-        folded->SetOption("HIST");
+        outHist->SetOption("HIST");
 
-        folded->SetLineColor(1);
+        outHist->SetLineColor(1);
 
         TFile* outFile = new TFile(outName, "UPDATE");
 
-        folded->Write();
+        outHist->Write();
 
         outFile->Close();
 }
@@ -186,7 +197,7 @@ void plotFoldedNormal(int num)
 	
 	const char* writeName = numAppend("FoldNorm_", num);
 
-        TH1F* folded = new TH1F(writeName, writeName, nofBins, 0, nofBins);
+        TH1F* outHist = new TH1F(writeName, writeName, nofBins, 0, nofBins);
 
         TF1* stDev = new TF1("Standard Deviation", "(x/235.5)*(100/sqrt(x))", 0 , 1000*nofBins);
 
@@ -201,22 +212,22 @@ void plotFoldedNormal(int num)
 
                 if(currentBinContent > 0)
                 {
-                folded->FillRandom("g", currentBinContent);
+                outHist->FillRandom("g", currentBinContent);
                 }
 
         }
 
         double factor = 1.0;
 
-        folded->Scale(factor/folded->GetMaximum());
+        outHist->Scale(factor/outHist->GetMaximum());
 
-        folded->SetOption("HIST");
+        outHist->SetOption("HIST");
 
-        folded->SetLineColor(1);
+        outHist->SetLineColor(1);
 
         TFile* outFile = new TFile(outName, "UPDATE");
 
-        folded->Write();
+        outHist->Write();
 
         outFile->Close();
 }
@@ -235,7 +246,7 @@ void plotFoldedNormalNoZero(int num)
 	
 	const char* writeName = numAppend("FoldNormNZ_", num);
 
-       	TH1F* folded = new TH1F(writeName, writeName, nofBins, 0, nofBins);
+       	TH1F* outHist = new TH1F(writeName, writeName, nofBins, 0, nofBins);
 
        	TF1* stDev = new TF1("Standard Deviation", "(x/235.5)*(100/sqrt(x))", 0 , 1000*nofBins);
 
@@ -250,28 +261,28 @@ void plotFoldedNormalNoZero(int num)
 
                 if(currentBinContent > 0)
                 {
-                folded->FillRandom("g", currentBinContent);
+                outHist->FillRandom("g", currentBinContent);
                 }
 
         }
 
         for(int i = 0; i < 20; i++)
         {
-        folded->SetBinContent(i, 0);
+        outHist->SetBinContent(i, 0);
         }
 
 
         double factor = 1.0;
 
-        folded->Scale(factor/folded->GetMaximum());
+        outHist->Scale(factor/outHist->GetMaximum());
 
-        folded->SetOption("HIST");
+        outHist->SetOption("HIST");
 
-        folded->SetLineColor(1);
+        outHist->SetLineColor(1);
 
         TFile* outFile = new TFile(outName, "UPDATE");
 
-        folded->Write();
+        outHist->Write();
 
         outFile->Close();
 }
