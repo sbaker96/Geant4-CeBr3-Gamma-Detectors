@@ -34,7 +34,13 @@ RunAction::RunAction()
 
 	//Create N-Tuple
 	
-	analysisManager->CreateNTuple("Edep by Detectors", "Edep by Detectors");
+	analysisManager->CreateNtuple("Edep by Detectors", "Edep by Detectors");
+	
+	analysisManager->CreateNtupleDColumn("Edep_0");
+
+	analysisManager->CreateNtupleDColumn("Edep_1");
+
+	analysisManager->FinishNtuple();
 }
 
 RunAction::~RunAction()
