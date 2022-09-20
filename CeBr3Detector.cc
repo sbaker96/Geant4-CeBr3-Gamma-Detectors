@@ -49,7 +49,6 @@ int main(int argc, char** argv)
         UImanager->ApplyCommand("/event/verbose 0");
         UImanager->ApplyCommand("/tracking/verbose 0");
 
-	UImanager->ApplyCommand("/cuts/setLowEdge 10 eV");
         //Start Run
         int numOfEvent = 0;
 
