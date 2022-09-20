@@ -60,6 +60,8 @@ G4bool TrackerSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
 
         TrackInformation* trackInfo = (TrackInformation*)aStep->GetTrack()->GetUserInformation();
 
+	G4String type = aStep->GetTrack()->GetDefinition()->GetParticleType();
+
         G4int srcID = trackInfo->GetDecayGammaSourceID();
 
 	if ( srcID  == -1) return false;
@@ -71,6 +73,11 @@ G4bool TrackerSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
 	newHit->SetEdep(edep);
 	
 	newHit->SetDetectorNumber(dNum);
+
+	if( type == "gamma")
+	{
+		newHit->SetIsGamma(true);
+	}
 
 	fHitsCollection->insert(newHit);
 

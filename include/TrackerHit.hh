@@ -35,16 +35,19 @@ class TrackerHit : public G4VHit
 
 		//Set Methods
 		void SetDetectorNumber(G4int dNum)	{fDetectorNumber = dNum; };
+		void SetIsGamma(G4bool g)		{fIsGamma = g; };
 		void SetDecayGammaSourceID(G4int src)	{fDecayGammaSourceID = src; };
 		void SetEdep(G4double de)		{fEdep = de; };
 
 		//Get Methods
 		G4int GetDetectorNumber() const		{return fDetectorNumber; };
+		G4bool GetIsGamma() const 		{return fIsGamma; };
 		G4int GetDecayGammaSourceID() const	{return fDecayGammaSourceID; };
 		G4double GetEdep() const		{return fEdep; };
 
 	private:
 		G4int fDetectorNumber = -1;
+		G4bool fIsGamma = 0;
 		G4int fDecayGammaSourceID;
 		G4double fEdep = 0.;
 

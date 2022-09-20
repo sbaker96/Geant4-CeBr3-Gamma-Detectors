@@ -65,7 +65,11 @@ void EventAction::EndOfEventAction(const G4Event* event)
 		G4int currentSrc = (*trackerHC)[i]->GetDecayGammaSourceID();
 		if(currentSrc != -1)
 		{
-		decayGammaIDs.insert(currentSrc);
+			G4bool isGamma = (*trackerHC)[i]->GetIsGamma();
+		//	if(isGamma)
+			{
+				decayGammaIDs.insert(currentSrc);
+			}
 		}
 		
 	}
