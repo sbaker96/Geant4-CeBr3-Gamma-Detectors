@@ -5,13 +5,13 @@
 #Set Style
 
 /vis/drawVolume
-#/vis/scene/add/axes 0 0 0 10 nm
 
 /vis/viewer/set/style surface
 /vis/geometry/set/visibility World 0 false
-/vis/viewer/set/viewpointVector -1 0 0
-/vis/geometry/set/colour Shell 1 1 1 1 0.5
-/vis/viewer/set/lightsThetaPhi 190 0
+/vis/viewer/set/viewpointVector
+/vis/geometry/set/colour Shell 1 0.5 0.5 0.5 1
+/vis/geometry/set/colour Reflector 1 0.5 0.5 0.5 1
+/vis/geometry/set/colour CeBr3 1 0.5 0.5 0.5 1
 
 #Set Trajectories
 
@@ -19,11 +19,6 @@
 /vis/modeling/trajectories/create/drawByCharge
 /vis/modeling/trajectories/drawByCharge-0/default/setDrawStepPts true
 /vis/modeling/trajectories/drawByCharge-0/default/setStepPtsSize 2
-
-#Particle Filtering
-
-#/vis/filtering/trajectories/create/particleFilter
-#/vis/filtering/trajectories/particleFilter-0/add gamma
 
 #Accumulate All Runs
 
