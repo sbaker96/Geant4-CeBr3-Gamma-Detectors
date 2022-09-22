@@ -12,6 +12,8 @@ void plotFoldedNoZero(int num);
 void plotFoldedNormal(int num);
 void plotFoldedNormalNoZero(int num);
 
+//void plot2DRaw(int numA, int numB);
+
 const char* numAppend(const char* txt, int num);
 
 //////////////////////
@@ -22,7 +24,8 @@ const char* srcName = "output.root";
 const char* outName = "Plots.root";
 const char* histName = "Edep_";
 
-int nofDetectors = 2;
+const int nofDetectors = 1;
+const int maxEnergy = 5000; // in keV
 
 /////////////////////
 
@@ -39,9 +42,9 @@ int GeneratePlots()
 	for(int i = 0; i < nofDetectors; i++)
 	{
 		plotRaw(i);
-		plotFolded(i);
-		plotFoldedNoZero(i);
-		plotFoldedNormal(i);
+//		plotFolded(i);
+//		plotFoldedNoZero(i);
+//		plotFoldedNormal(i);
 		plotFoldedNormalNoZero(i);
 	}
 	return 0;
@@ -50,6 +53,7 @@ int GeneratePlots()
 
 void plotRaw(int num)
 {
+	/*
         TFile f(srcName);
 
 	auto edep = numAppend(histName, num);
@@ -84,6 +88,41 @@ void plotRaw(int num)
         outHist->Write();
 
         outFile->Close();
+*/
+	auto inFile = TFile::Open(srcName);
+	
+	TTreeReader reader("Edep by Detectors", inFile);
+
+	TTreeReaderValue<float> Edep(reader, numAppend(histName, num));
+
+	int nofBins = maxEnergy;
+			    
+	const char* writeName = numAppend("Raw_", num);
+
+	TH1F* outHist = new TH1F(writeName, writeName, nofBins, 0, nofBins);
+
+	while(reader.Next())
+	{
+		float edep = *Edep;
+
+		edep *= 1000; //Convert Units
+
+		cout << edep << endl;
+	
+		outHist->Fill(edep);
+
+	}
+
+	outHist->SetOption("HIST");
+
+	outHist->SetLineColor(1);
+
+	TFile* outFile = new TFile(outName, "UPDATE");
+
+	outHist->Write();
+
+	outFile->Close();
+
 
 }
 
