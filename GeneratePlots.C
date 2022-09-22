@@ -12,7 +12,7 @@ void plotFoldedNoZero(int num);
 void plotFoldedNormal(int num);
 void plotFoldedNormalNoZero(int num);
 
-//void plot2DRaw(int numA, int numB);
+void plot2DRaw(int numA, int numB);
 
 const char* numAppend(const char* txt, int num);
 
@@ -25,7 +25,7 @@ const char* outName = "Plots.root";
 const char* histName = "Edep_";
 
 const int nofDetectors = 1;
-const int maxEnergy = 5000; // in keV
+const int maxEnergy = 2000; // in keV
 
 /////////////////////
 
@@ -47,48 +47,15 @@ int GeneratePlots()
 //		plotFoldedNormal(i);
 		plotFoldedNormalNoZero(i);
 	}
+
+	plot2DRaw(0, 1);
+
 	return 0;
 
 }
 
 void plotRaw(int num)
 {
-	/*
-        TFile f(srcName);
-
-	auto edep = numAppend(histName, num);
-	
-	TH1D* src = (TH1D*)f.Get(edep);
-
-        int lastFilledBin = src->FindLastBinAbove();
-
-        int nofBins = 1.5*lastFilledBin;
-
-        const char* writeName = numAppend("Raw_", num);
-
-        TH1F* outHist = new TH1F(writeName, writeName, nofBins, 0, nofBins);
-
-	for(int i = 0; i < nofBins; i++)
-	{
-		
-		int currentBinContent = src->GetBinContent(i);
-
-			for(int k = 0; k < currentBinContent; k++)
-			{
-				outHist->Fill(i);
-			}
-	}
-
-        outHist->SetOption("HIST");
-
-        outHist->SetLineColor(1);
-	
-        TFile* outFile = new TFile(outName, "UPDATE");
-
-        outHist->Write();
-
-        outFile->Close();
-*/
 	auto inFile = TFile::Open(srcName);
 	
 	TTreeReader reader("Edep by Detectors", inFile);
@@ -107,8 +74,6 @@ void plotRaw(int num)
 
 		edep *= 1000; //Convert Units
 
-		cout << edep << endl;
-	
 		outHist->Fill(edep);
 
 	}
@@ -326,6 +291,51 @@ void plotFoldedNormalNoZero(int num)
         outHist->Write();
 
         outFile->Close();
+}
+
+
+void plot2DRaw(int numA, int numB)
+{
+
+	auto inFile = TFile::Open(srcName);
+
+        TTreeReader reader("Edep by Detectors", inFile);
+
+        TTreeReaderValue<float> EdepA(reader, numAppend(histName, numA));
+        
+	TTreeReaderValue<float> EdepB(reader, numAppend(histName, numB));
+
+        int nofBins = maxEnergy;
+
+        const char* writeName = numAppend(numAppend("Compare_", numA), numB);
+
+	TH2F* outHist = new TH2F(writeName, writeName, nofBins, 0, nofBins, nofBins, 0, nofBins);
+
+        while(reader.Next())
+        {
+                float edepA = *EdepA;
+
+		float edepB = *EdepB;
+
+                edepA *= 1000; //Convert Units
+	
+		edepB *= 1000;
+
+                outHist->Fill(edepA, edepB);
+
+        }
+
+	outHist->SetOption("HIST");
+
+        outHist->SetLineColor(1);
+
+        TFile* outFile = new TFile(outName, "UPDATE");
+
+        outHist->Write();
+
+        outFile->Close();
+
+
 }
 
 
