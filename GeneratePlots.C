@@ -13,6 +13,7 @@ void plotFoldedNormal(int num);
 void plotFoldedNormalNoZero(int num);
 
 void plot2DRaw(int numA, int numB);
+void plot2DFolded(int numA, int numB);
 
 const char* numAppend(const char* txt, int num);
 
@@ -42,13 +43,14 @@ int GeneratePlots()
 	for(int i = 0; i < nofDetectors; i++)
 	{
 		plotRaw(i);
-//		plotFolded(i);
+		plotFolded(i);
 //		plotFoldedNoZero(i);
 //		plotFoldedNormal(i);
 		plotFoldedNormalNoZero(i);
 	}
 
 	plot2DRaw(0, 1);
+	plot2DFolded(0, 1);
 
 	return 0;
 
@@ -93,22 +95,20 @@ void plotRaw(int num)
 
 void plotFolded(int num)
 {
-        TFile f(srcName);
+       	auto inFile = TFile::Open(srcName);
 
-	auto edep = numAppend(histName, num);
+        TTreeReader reader("Edep by Detectors", inFile);
 
-	TH1D* src = (TH1D*)f.Get(edep);
+        TTreeReaderValue<float> Edep(reader, numAppend(histName, num));
 
-        int lastFilledBin = src->FindLastBinAbove();
-
-        int nofBins = 1.5*lastFilledBin;
-
+        int nofBins = maxEnergy;
+	
 	const char* writeName = numAppend("Fold_", num);
 
         TH1F* outHist = new TH1F(writeName, writeName, nofBins, 0, nofBins);
 
         TF1* stDev = new TF1("Standard Deviation", "(x/235.5)*(100/sqrt(x))", 0 , 1000*nofBins);
-
+/*
         for(int i = 0; i < nofBins; i++)
         {
                 auto g = new TF1("g", "gausn(0)");
@@ -124,6 +124,31 @@ void plotFolded(int num)
                 }
 
         }
+
+*/
+
+        while(reader.Next())
+        {
+                float edep = *Edep;
+
+                edep *= 1000; //Convert Units
+	
+		if( edep > 0)
+		{	
+		auto g = new TF1("g", "gausn(0)");
+		g->SetParameter(0, 1);
+		g->SetParameter(1, edep);
+		g->SetParameter(2, stDev->Eval(edep));
+
+                outHist->FillRandom("g", 1);
+		}
+
+        }
+
+  	double factor = 1.0;
+
+        outHist->Scale(factor/outHist->GetMaximum());
+
 
 
         outHist->SetOption("HIST");
@@ -338,6 +363,67 @@ void plot2DRaw(int numA, int numB)
 
 }
 
+void plot2DFolded(int numA, int numB)
+{
+
+        auto inFile = TFile::Open(srcName);
+
+        TTreeReader reader("Edep by Detectors", inFile);
+
+        TTreeReaderValue<float> EdepA(reader, numAppend(histName, numA));
+
+        TTreeReaderValue<float> EdepB(reader, numAppend(histName, numB));
+
+        int nofBins = maxEnergy;
+
+        const char* writeName = numAppend(numAppend("CompareFolded_", numA), numB);
+
+        TH2F* outHist = new TH2F(writeName, writeName, nofBins, 0, nofBins, nofBins, 0, nofBins);
+        
+	TF1* stDev = new TF1("Standard Deviation", "(x/235.5)*(100/sqrt(x))", 0 , 1000*nofBins);
+
+        while(reader.Next())
+        {
+                float edepA = *EdepA;
+
+                float edepB = *EdepB;
+
+                edepA *= 1000; //Convert Units
+
+                edepB *= 1000;
+
+                if( edepA > 0 && edepB > 0)
+                {
+                auto g = new TF2("g", "xygaus(0)"); //!!!
+                g->SetParameter(0, 1);
+                g->SetParameter(1, edepA);
+                g->SetParameter(2, stDev->Eval(edepA));
+		g->SetParameter(3, edepB);
+		g->SetParameter(4, stDev->Eval(edepB));
+
+		cout << "A: " << edepA << " | B: " << edepB << endl;
+
+                outHist->FillRandom("g", 1);
+                }
+
+
+
+                outHist->Fill(edepA, edepB);
+
+        }
+
+        outHist->SetOption("HIST");
+
+        outHist->SetLineColor(1);
+
+        TFile* outFile = new TFile(outName, "UPDATE");
+
+        outHist->Write();
+
+        outFile->Close();
+
+
+}
 
 const char* numAppend(const char* txt, int num)
 {
