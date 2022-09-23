@@ -3,6 +3,7 @@
 #include <string>
 #include <sstream>
 
+using std::set;
 ///////////////////////
 
 //Function Prototypes//
@@ -43,7 +44,7 @@ int GeneratePlots()
 		plotFolded(i);
 	}
 
-//	plot2DRaw(0, 1);
+	plot2DRaw(0, 1);
 
 	return 0;
 
@@ -148,6 +149,8 @@ void plot2DRaw(int numA, int numB)
         TTreeReaderValue<float> EdepA(reader, numAppend(histName, numA));
         
 	TTreeReaderValue<float> EdepB(reader, numAppend(histName, numB));
+	
+	TTreeReaderValue<int> EventID(reader, "EventID");
 
         int nofBins = maxEnergy;
 
@@ -155,6 +158,44 @@ void plot2DRaw(int numA, int numB)
 
 	TH2F* outHist = new TH2F(writeName, writeName, nofBins, 0, nofBins, nofBins, 0, nofBins);
 
+	set<int> ids;
+
+	while(reader.Next())
+	{
+		ids.insert(*EventID);
+
+	}
+
+	for(auto itr = ids.begin(); itr != ids.end(); itr++)
+	{
+//		cout << *itr << endl;
+
+		float edepA = 0; 
+		float edepB = 0;
+	
+		reader.Restart();
+
+		while(reader.Next())
+		{
+
+			if(*EventID == *itr)
+			{
+			
+				edepA += *EdepA;
+
+		                edepB += *EdepB;
+			}
+		}
+		
+		edepA *= 1000; //Convert Units
+        
+        	edepB *= 1000;
+	
+         	outHist->Fill(edepA, edepB);
+	
+	}
+
+/*
         while(reader.Next())
         {
                 float edepA = *EdepA;
@@ -168,6 +209,7 @@ void plot2DRaw(int numA, int numB)
                 outHist->Fill(edepA, edepB);
 
         }
+*/
 
 	outHist->SetOption("HIST");
 
