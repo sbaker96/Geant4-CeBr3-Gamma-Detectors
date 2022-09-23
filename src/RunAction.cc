@@ -31,6 +31,8 @@ RunAction::RunAction()
 
 	analysisManager->CreateNtupleFColumn("Edep_1");
 
+	analysisManager->CreateNtupleIColumn("EventID");
+
 	analysisManager->FinishNtuple();
 
 	analysisManager->SetNtupleMerging(true);

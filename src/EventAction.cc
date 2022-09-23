@@ -66,7 +66,7 @@ void EventAction::EndOfEventAction(const G4Event* event)
 		if(currentSrc != -1)
 		{
 			G4bool isGamma = (*trackerHC)[i]->GetIsGamma();
-		//	if(isGamma)
+			if(isGamma)
 			{
 				decayGammaIDs.insert(currentSrc);
 			}
@@ -100,6 +100,10 @@ void EventAction::EndOfEventAction(const G4Event* event)
 			analysisManager->FillNtupleFColumn(n, totalEdep);
 
 		}
+
+		G4int eventID = G4RunManager::GetRunManager()->GetCurrentEvent()->GetEventID();
+
+		analysisManager->FillNtupleIColumn(nofDetectors, eventID);
 
 		analysisManager->AddNtupleRow();
 	}
