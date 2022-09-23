@@ -23,15 +23,6 @@ RunAction::RunAction()
 
 	analysisManager->SetVerboseLevel(1);
 
-	//Create Histograms
-	
-	analysisManager->CreateH1("Edep_0", "Edep_0", 5000, 0., 5000*keV);
-
-	analysisManager->CreateH1("Edep_1", "Edep_1", 5000, 0., 5000*keV);
-/*
-	analysisManager->CreateH2("Compare_0_1", "Compare_0_1", 5000, 0., 5000*keV, 5000, 0., 5000*keV);
-*/
-
 	//Create N-Tuple
 	
 	analysisManager->CreateNtuple("Edep by Detectors", "Edep by Detectors");
