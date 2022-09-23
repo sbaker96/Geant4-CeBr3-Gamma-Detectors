@@ -22,7 +22,7 @@ const char* srcName = "output.root";
 const char* outName = "Plots.root";
 const char* histName = "Edep_";
 
-const int nofDetectors = 1;
+const int nofDetectors = 2;
 const int maxEnergy = 2000; // in keV
 
 /////////////////////
@@ -43,8 +43,7 @@ int GeneratePlots()
 		plotFolded(i);
 	}
 
-	plot2DRaw(0, 1);
-	plot2DFolded(0, 1);
+//	plot2DRaw(0, 1);
 
 	return 0;
 
@@ -56,7 +55,9 @@ void plotRaw(int num)
 	
 	TTreeReader reader("Edep by Detectors", inFile);
 
-	TTreeReaderValue<float> Edep(reader, numAppend(histName, num));
+	const char* branchName = numAppend(histName, num);
+
+	TTreeReaderValue<float> Edep(reader, branchName);
 
 	int nofBins = maxEnergy;
 			    
@@ -93,7 +94,9 @@ void plotFolded(int num)
 
         TTreeReader reader("Edep by Detectors", inFile);
 
-        TTreeReaderValue<float> Edep(reader, numAppend(histName, num));
+	const char* branchName = numAppend(histName, num);
+
+	TTreeReaderValue<float> Edep(reader, branchName);
 
         int nofBins = maxEnergy;
 	
@@ -102,12 +105,13 @@ void plotFolded(int num)
         TH1F* outHist = new TH1F(writeName, writeName, nofBins, 0, nofBins);
 
         TF1* stDev = new TF1("Standard Deviation", "(x/235.5)*(100/sqrt(x))", 0 , 1000*nofBins);
+	while(reader.Next())
         {
                 float edep = *Edep;
 
                 edep *= 1000; //Convert Units
 	
-		if( edep > 0)
+		if( edep != 0)
 		{	
 		auto g = new TF1("g", "gausn(0)");
 		g->SetParameter(0, 1);
