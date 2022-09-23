@@ -8,12 +8,9 @@
 //Function Prototypes//
 void plotRaw(int num);
 void plotFolded(int num);
-void plotFoldedNoZero(int num);
-void plotFoldedNormal(int num);
-void plotFoldedNormalNoZero(int num);
 
 void plot2DRaw(int numA, int numB);
-void plot2DFolded(int numA, int numB);
+//void plot2DFolded(int numA, int numB);
 
 const char* numAppend(const char* txt, int num);
 
@@ -44,9 +41,6 @@ int GeneratePlots()
 	{
 		plotRaw(i);
 		plotFolded(i);
-//		plotFoldedNoZero(i);
-//		plotFoldedNormal(i);
-		plotFoldedNormalNoZero(i);
 	}
 
 	plot2DRaw(0, 1);
@@ -108,26 +102,6 @@ void plotFolded(int num)
         TH1F* outHist = new TH1F(writeName, writeName, nofBins, 0, nofBins);
 
         TF1* stDev = new TF1("Standard Deviation", "(x/235.5)*(100/sqrt(x))", 0 , 1000*nofBins);
-/*
-        for(int i = 0; i < nofBins; i++)
-        {
-                auto g = new TF1("g", "gausn(0)");
-                g->SetParameter(0, 1);
-                g->SetParameter(1, i);
-                g->SetParameter(2, stDev->Eval(i));
-
-                int currentBinContent = src->GetBinContent(i);
-
-                if(currentBinContent > 0)
-                {
-                outHist->FillRandom("g", currentBinContent);
-                }
-
-        }
-
-*/
-
-        while(reader.Next())
         {
                 float edep = *Edep;
 
@@ -147,11 +121,9 @@ void plotFolded(int num)
 
   	double factor = 1.0;
 
-        outHist->Scale(factor/outHist->GetMaximum());
+	outHist->Scale(factor/outHist->GetMaximum());
 
-
-
-        outHist->SetOption("HIST");
+	outHist->SetOption("HIST");
 
         outHist->SetLineColor(1);
 
@@ -161,163 +133,6 @@ void plotFolded(int num)
 
 	outFile->Close();
 }
-
-void plotFoldedNoZero(int num)
-{
-       TFile f(srcName);
-
-	auto edep = numAppend(histName, num);
-        
-	TH1D* src = (TH1D*)f.Get(edep);
-
-        int lastFilledBin = src->FindLastBinAbove();
-
-        int nofBins = 1.5*lastFilledBin;
-
-	const char* writeName = numAppend("FoldNZ_", num);
-
-        TH1F* outHist = new TH1F(writeName, writeName, nofBins, 0, nofBins);
-
-        TF1* stDev = new TF1("Standard Deviation", "(x/235.5)*(100/sqrt(x))", 0 , 1000*nofBins);
-
-        for(int i = 0; i < nofBins; i++)
-        {
-                auto g = new TF1("g", "gausn(0)");
-                g->SetParameter(0, 1);
-                g->SetParameter(1, i);
-                g->SetParameter(2, stDev->Eval(i));
-
-                int currentBinContent = src->GetBinContent(i);
-
-                if(currentBinContent > 0)
-                {
-                outHist->FillRandom("g", currentBinContent);
-                }
-
-        }
-
-        for(int i = 0; i < 20; i++)
-        {
-        outHist->SetBinContent(i, 0);
-        }
-
-
-        outHist->SetOption("HIST");
-
-        outHist->SetLineColor(1);
-
-        TFile* outFile = new TFile(outName, "UPDATE");
-
-        outHist->Write();
-
-        outFile->Close();
-}
-
-void plotFoldedNormal(int num)
-{
-
-        TFile f(srcName);
-	
-	auto edep = numAppend(histName, num);
-
-        TH1D* src = (TH1D*)f.Get(edep);
-
-        int lastFilledBin = src->FindLastBinAbove();
-
-        int nofBins = 1.5*lastFilledBin;
-	
-	const char* writeName = numAppend("FoldNorm_", num);
-
-        TH1F* outHist = new TH1F(writeName, writeName, nofBins, 0, nofBins);
-
-        TF1* stDev = new TF1("Standard Deviation", "(x/235.5)*(100/sqrt(x))", 0 , 1000*nofBins);
-
-        for(int i = 0; i < nofBins; i++)
-        {
-                auto g = new TF1("g", "gausn(0)");
-                g->SetParameter(0, 1);
-                g->SetParameter(1, i);
-                g->SetParameter(2, stDev->Eval(i));
-
-                int currentBinContent = src->GetBinContent(i);
-
-                if(currentBinContent > 0)
-                {
-                outHist->FillRandom("g", currentBinContent);
-                }
-
-        }
-
-        double factor = 1.0;
-
-        outHist->Scale(factor/outHist->GetMaximum());
-
-        outHist->SetOption("HIST");
-
-        outHist->SetLineColor(1);
-
-        TFile* outFile = new TFile(outName, "UPDATE");
-
-        outHist->Write();
-
-        outFile->Close();
-}
-
-void plotFoldedNormalNoZero(int num)
-{
-	TFile f(srcName);
-	
-	auto edep = numAppend(histName, num);
-       	
-	TH1D* src = (TH1D*)f.Get(edep);
-
-       	int lastFilledBin = src->FindLastBinAbove();
-
-       	int nofBins = 1.5*lastFilledBin;
-	
-	const char* writeName = numAppend("FoldNormNZ_", num);
-
-       	TH1F* outHist = new TH1F(writeName, writeName, nofBins, 0, nofBins);
-
-       	TF1* stDev = new TF1("Standard Deviation", "(x/235.5)*(100/sqrt(x))", 0 , 1000*nofBins);
-
-       	for(int i = 0; i < nofBins; i++)
-       	{
-        	auto g = new TF1("g", "gausn(0)");
-               	g->SetParameter(0, 1);
-               	g->SetParameter(1, i);
-               	g->SetParameter(2, stDev->Eval(i));
-
-        	int currentBinContent = src->GetBinContent(i);
-
-                if(currentBinContent > 0)
-                {
-                outHist->FillRandom("g", currentBinContent);
-                }
-
-        }
-
-        for(int i = 0; i < 20; i++)
-        {
-        outHist->SetBinContent(i, 0);
-        }
-
-
-        double factor = 1.0;
-
-        outHist->Scale(factor/outHist->GetMaximum());
-
-        outHist->SetOption("HIST");
-
-        outHist->SetLineColor(1);
-
-        TFile* outFile = new TFile(outName, "UPDATE");
-
-        outHist->Write();
-
-        outFile->Close();
-}
-
 
 void plot2DRaw(int numA, int numB)
 {
@@ -362,7 +177,7 @@ void plot2DRaw(int numA, int numB)
 
 
 }
-
+/*
 void plot2DFolded(int numA, int numB)
 {
 
@@ -424,7 +239,7 @@ void plot2DFolded(int numA, int numB)
 
 
 }
-
+*/
 const char* numAppend(const char* txt, int num)
 {
 
