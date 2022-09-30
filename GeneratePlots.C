@@ -4,6 +4,8 @@
 #include <sstream>
 
 using std::set;
+
+using namespace std;
 ///////////////////////
 
 //Function Prototypes//
@@ -11,7 +13,7 @@ void plotRaw(int num);
 void plotFolded(int num);
 
 void plot2DRaw(int numA, int numB);
-//void plot2DFolded(int numA, int numB);
+void plot2DFolded(int numA, int numB);
 
 const char* numAppend(const char* txt, int num);
 
@@ -44,7 +46,9 @@ int GeneratePlots()
 		plotFolded(i);
 	}
 
-	plot2DRaw(0, 1);
+//	plot2DRaw(0, 1);
+
+	plot2DFolded(0, 1);
 
 	return 0;
 
@@ -141,6 +145,7 @@ void plotFolded(int num)
 
 void plot2DRaw(int numA, int numB)
 {
+	cout << "Plotting 2D Raw" << endl;
 
 	auto inFile = TFile::Open(srcName);
 
@@ -195,22 +200,6 @@ void plot2DRaw(int numA, int numB)
 	
 	}
 
-/*
-        while(reader.Next())
-        {
-                float edepA = *EdepA;
-
-		float edepB = *EdepB;
-
-                edepA *= 1000; //Convert Units
-	
-		edepB *= 1000;
-
-                outHist->Fill(edepA, edepB);
-
-        }
-*/
-
 	outHist->SetOption("HIST");
 
         outHist->SetLineColor(1);
@@ -223,6 +212,100 @@ void plot2DRaw(int numA, int numB)
 
 
 }
+
+void plot2DFolded(int numA, int numB)
+{
+
+	cout << "Plotting 2D Folded" << endl;
+
+	auto inFile = TFile::Open(srcName);
+
+        TTreeReader reader("Edep by Detectors", inFile);
+
+        TTreeReaderValue<float> EdepA(reader, numAppend(histName, numA));
+        
+	TTreeReaderValue<float> EdepB(reader, numAppend(histName, numB));
+	
+	TTreeReaderValue<int> EventID(reader, "EventID");
+
+        int nofBins = maxEnergy;
+
+        const char* writeName = numAppend(numAppend("CompareFold_", numA), numB);
+
+	TH2F* outHist = new TH2F(writeName, writeName, nofBins, 0, nofBins, nofBins, 0, nofBins);
+	
+	TF1* stDev = new TF1("Standard Deviation", "(x/235.5)*(100/sqrt(x))", 0 , 1000*nofBins);
+
+	set<int> ids;
+
+	while(reader.Next())
+	{
+		ids.insert(*EventID);
+
+	}
+
+	for(auto itr = ids.begin(); itr != ids.end(); itr++)
+	{
+//		cout << *itr << endl;
+
+		float edepA = 0; 
+		float edepB = 0;
+	
+		reader.Restart();
+
+		while(reader.Next())
+		{
+
+			if(*EventID == *itr)
+			{
+			
+				edepA += *EdepA;
+
+		                edepB += *EdepB;
+			}
+		}
+		
+		edepA *= 1000; //Convert Units
+        
+        	edepB *= 1000;
+
+		TF2* g = new TF2("g", "[0]*exp(-(0.5*((x-[1])/[2])**2+(0.5*((y-[3])/[4])**2)))/(sqrt(2*pi)*[2]*[4])", 0, 20, 0, 20); //!!!
+                
+		if( edepA > 0 && edepB > 0)
+                {
+                g->SetParameter(0, 1);
+                g->SetParameter(1, edepA);
+                g->SetParameter(2, stDev->Eval(edepA));
+		g->SetParameter(3, edepB);
+		g->SetParameter(4, stDev->Eval(edepB));
+
+		cout << "A: " << edepA << " | B: " << edepB << endl;
+
+                outHist->FillRandom("g", 100);
+
+	        }
+
+	
+	}
+
+	outHist->SetOption("HIST");
+
+        outHist->SetLineColor(1);
+
+	double factor = 1.0;
+
+        outHist->Scale(factor/outHist->GetMaximum());
+
+        TFile* outFile = new TFile(outName, "UPDATE");
+        
+	outHist->Write();
+
+        outFile->Close();
+
+
+}
+
+
 /*
 void plot2DFolded(int numA, int numB)
 {
