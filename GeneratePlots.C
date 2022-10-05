@@ -23,10 +23,10 @@ const char* numAppend(const char* txt, int num);
 
 const char* srcName = "output.root";
 const char* outName = "Plots.root";
-const char* histName = "Edep_";
+const char* histName = "Edep";
 
 const int nofDetectors = 2;
-const int maxEnergy = 2000; // in keV
+const int maxEnergy = 3000; // in keV
 
 /////////////////////
 
@@ -66,7 +66,7 @@ void plotRaw(int num)
 
 	int nofBins = maxEnergy;
 			    
-	const char* writeName = numAppend("Raw_", num);
+	const char* writeName = numAppend("Raw", num);
 
 	TH1F* outHist = new TH1F(writeName, writeName, nofBins, 0, nofBins);
 
@@ -105,11 +105,14 @@ void plotFolded(int num)
 
         int nofBins = maxEnergy;
 	
-	const char* writeName = numAppend("Fold_", num);
+	const char* writeName = numAppend("Fold", num);
 
         TH1F* outHist = new TH1F(writeName, writeName, nofBins, 0, nofBins);
 
         TF1* stDev = new TF1("Standard Deviation", "(x/235.5)*(100/sqrt(x))", 0 , 1000*nofBins);
+
+	auto g = new TF1("g", "gausn(0)");
+
 	while(reader.Next())
         {
                 float edep = *Edep;
@@ -118,7 +121,6 @@ void plotFolded(int num)
 	
 		if( edep != 0)
 		{	
-		auto g = new TF1("g", "gausn(0)");
 		g->SetParameter(0, 1);
 		g->SetParameter(1, edep);
 		g->SetParameter(2, stDev->Eval(edep));
@@ -159,7 +161,7 @@ void plot2DRaw(int numA, int numB)
 
         int nofBins = maxEnergy;
 
-        const char* writeName = numAppend(numAppend("Compare_", numA), numB);
+        const char* writeName = numAppend(numAppend("Compare", numA), numB);
 
 	TH2F* outHist = new TH2F(writeName, writeName, nofBins, 0, nofBins, nofBins, 0, nofBins);
 
@@ -230,11 +232,13 @@ void plot2DFolded(int numA, int numB)
 
         int nofBins = maxEnergy;
 
-        const char* writeName = numAppend(numAppend("CompareFold_", numA), numB);
+        const char* writeName = numAppend(numAppend("CompareFold", numA), numB);
 
 	TH2F* outHist = new TH2F(writeName, writeName, nofBins, 0, nofBins, nofBins, 0, nofBins);
 	
 	TF1* stDev = new TF1("Standard Deviation", "(x/235.5)*(100/sqrt(x))", 0 , 1000*nofBins);
+		
+	TF2* g = new TF2("g", "[0]*exp(-(0.5*((x-[1])/[2])**2+(0.5*((y-[3])/[4])**2)))/(sqrt(2*pi)*[2]*[4])", 0, 20, 0, 20); //!!!
 
 	set<int> ids;
 
@@ -269,8 +273,6 @@ void plot2DFolded(int numA, int numB)
         
         	edepB *= 1000;
 
-		TF2* g = new TF2("g", "[0]*exp(-(0.5*((x-[1])/[2])**2+(0.5*((y-[3])/[4])**2)))/(sqrt(2*pi)*[2]*[4])", 0, 20, 0, 20); //!!!
-                
 		if( edepA > 0 && edepB > 0)
                 {
                 g->SetParameter(0, 1);
@@ -281,7 +283,7 @@ void plot2DFolded(int numA, int numB)
 
 		cout << "A: " << edepA << " | B: " << edepB << endl;
 
-                outHist->FillRandom("g", 100);
+                outHist->FillRandom("g", 1);
 
 	        }
 
@@ -305,76 +307,12 @@ void plot2DFolded(int numA, int numB)
 
 }
 
-
-/*
-void plot2DFolded(int numA, int numB)
-{
-
-        auto inFile = TFile::Open(srcName);
-
-        TTreeReader reader("Edep by Detectors", inFile);
-
-        TTreeReaderValue<float> EdepA(reader, numAppend(histName, numA));
-
-        TTreeReaderValue<float> EdepB(reader, numAppend(histName, numB));
-
-        int nofBins = maxEnergy;
-
-        const char* writeName = numAppend(numAppend("CompareFolded_", numA), numB);
-
-        TH2F* outHist = new TH2F(writeName, writeName, nofBins, 0, nofBins, nofBins, 0, nofBins);
-        
-	TF1* stDev = new TF1("Standard Deviation", "(x/235.5)*(100/sqrt(x))", 0 , 1000*nofBins);
-
-        while(reader.Next())
-        {
-                float edepA = *EdepA;
-
-                float edepB = *EdepB;
-
-                edepA *= 1000; //Convert Units
-
-                edepB *= 1000;
-
-                if( edepA > 0 && edepB > 0)
-                {
-                auto g = new TF2("g", "xygaus(0)"); //!!!
-                g->SetParameter(0, 1);
-                g->SetParameter(1, edepA);
-                g->SetParameter(2, stDev->Eval(edepA));
-		g->SetParameter(3, edepB);
-		g->SetParameter(4, stDev->Eval(edepB));
-
-		cout << "A: " << edepA << " | B: " << edepB << endl;
-
-                outHist->FillRandom("g", 1);
-                }
-
-
-
-                outHist->Fill(edepA, edepB);
-
-        }
-
-        outHist->SetOption("HIST");
-
-        outHist->SetLineColor(1);
-
-        TFile* outFile = new TFile(outName, "UPDATE");
-
-        outHist->Write();
-
-        outFile->Close();
-
-
-}
-*/
 const char* numAppend(const char* txt, int num)
 {
 
 	stringstream ss;
 
-        ss << txt  << num;
+        ss << txt << "_"  << num;
 	
 	const char* output = ss.str().c_str();
 
