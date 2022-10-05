@@ -46,7 +46,7 @@ int GeneratePlots()
 		plotFolded(i);
 	}
 
-//	plot2DRaw(0, 1);
+	plot2DRaw(0, 1);
 
 	plot2DFolded(0, 1);
 
