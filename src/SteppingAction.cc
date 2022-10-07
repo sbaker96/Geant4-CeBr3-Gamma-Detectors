@@ -36,11 +36,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
 	
 	G4Track* aTrack = aStep->GetTrack();
 
-	G4int copyNumber = aTrack->GetTouchable()->GetCopyNumber();
-
 	G4String name = aTrack->GetTouchable()->GetVolume()->GetName();
-
-//	std::cout << "Copy Number: " << copyNumber << " | Volume Name: " << name  << std::endl;
 
        	if(nofSecTracks > 0)
        	{
