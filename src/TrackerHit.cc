@@ -35,9 +35,6 @@ void TrackerHit::Print()
 {
 
 	G4cout
-//	<< " trackID: " << fTrackID
-//	<< " parentID: " << fParentID
-//	<< " Particle Type: " << fType
 	<< " Edep: " << std::setw(7) << G4BestUnit(fEdep, "Energy")
 	<< G4endl;
 	
