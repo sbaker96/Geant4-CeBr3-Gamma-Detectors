@@ -51,21 +51,27 @@ void TrackerSD::Initialize(G4HCofThisEvent* hce)
 G4bool TrackerSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
 {
 
-	//energy deposit
+	//Get energy deposit
 	G4double edep = aStep->GetTotalEnergyDeposit();
 	
+	//Get copy number of detector
 	G4int copyNumber = aStep->GetTrack()->GetTouchable()->GetCopyNumber();
 	
-	G4int dNum = (copyNumber - 1)/3;
+	G4int dNum = (copyNumber - 1)/3; //This turns the copy number to detector number.
+					 //As the geometry of the setup changes, this equation may need to change.
 
+        //Get particle type
+        G4String type = aStep->GetTrack()->GetDefinition()->GetParticleType();
+
+	//Get track info (Class defined by TrackInformation.hh)
         TrackInformation* trackInfo = (TrackInformation*)aStep->GetTrack()->GetUserInformation();
-
-	G4String type = aStep->GetTrack()->GetDefinition()->GetParticleType();
-
-        G4int srcID = trackInfo->GetDecayGammaSourceID();
-
+        
+	G4int srcID = trackInfo->GetDecayGammaSourceID();
+	
+	//If track does not originate from decay gamma, discard it.
 	if ( srcID  == -1) return false;
 
+	//Create New Hit
 	TrackerHit* newHit = new TrackerHit();
 	
 	newHit->SetDecayGammaSourceID(srcID);
