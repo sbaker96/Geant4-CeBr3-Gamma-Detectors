@@ -30,16 +30,22 @@ TrackingAction::~TrackingAction()
 
 void TrackingAction::PreUserTrackingAction(const G4Track* aTrack)
 {
+	//Get Parent ID
 	G4int parentID = aTrack->GetParentID();
 	
+	//If track is a primary particle, create new track info
 	if( parentID == 0 )
 	{		
 	TrackInformation* trackInfo = new TrackInformation();
 	fpTrackingManager->SetUserTrackInformation(trackInfo);
 	}
 
+	//Get track info
 	TrackInformation* trackInfo = (TrackInformation*)aTrack->GetUserInformation();
 	
+	//Setting Decay Gamma Source IDs//
+
+	//For simulations starting with nuclei
         if(aTrack->GetDefinition() == G4Gamma::Definition() && aTrack->GetTrackID() > 1)
 	{		
 		if(aTrack->GetCreatorProcess()->GetProcessName() == "RadioactiveDecay")
@@ -48,6 +54,8 @@ void TrackingAction::PreUserTrackingAction(const G4Track* aTrack)
                 trackInfo->SetDecayGammaSourceID(trackID);
        		}
 	}
+
+	//For simulations starting with gamma rays
 	if(aTrack->GetDefinition() == G4Gamma::Definition() && aTrack->GetTrackID() == 1)
 	{
 	
