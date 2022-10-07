@@ -2,7 +2,6 @@
 //Physics List Implementation
 //=================================
 
-
 #include "PhysicsList.hh"
 
 #include "G4DecayPhysics.hh"
@@ -17,7 +16,6 @@ PhysicsList::PhysicsList()
         RegisterPhysics(new G4DecayPhysics());
 	RegisterPhysics(new G4EmStandardPhysics_option4());
         RegisterPhysics(new G4RadioactiveDecayPhysics());
-
 }
 
 PhysicsList::~PhysicsList()

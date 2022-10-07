@@ -92,7 +92,7 @@ void plotRaw(int num)
 
 	}
 
-	//Set Histogram Option
+	//Set Histogram Options
 	outHist->SetOption("HIST");
 
 	outHist->SetLineColor(1);
@@ -239,9 +239,7 @@ void plot2DRaw(int numA, int numB)
 	}
 
 	//Set Histogram Options
-	outHist->SetOption("HIST");
-
-        outHist->SetLineColor(1);
+	outHist->SetOption("COLZ");
 
 	//Write Histogram to output file
         TFile* outFile = new TFile(outName, "UPDATE");
@@ -339,9 +337,7 @@ void plot2DFolded(int numA, int numB)
 	}
 
 	//Set Histogram Options
-	outHist->SetOption("HIST");
-
-        outHist->SetLineColor(1);
+	outHist->SetOption("COLZ");
 
 	//Normalize Histogram
 	double factor = 1.0;
