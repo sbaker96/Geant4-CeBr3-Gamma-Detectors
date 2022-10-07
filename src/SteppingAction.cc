@@ -29,23 +29,25 @@ SteppingAction::~SteppingAction()
 
 void SteppingAction::UserSteppingAction(const G4Step* aStep)
 {
-	
+	//Get tracks of secondary particles	
        	G4TrackVector* secTracks = fpSteppingManager->GetfSecondary();
 
 	size_t nofSecTracks = (*secTracks).size();
 	
+	//Get track of current step
 	G4Track* aTrack = aStep->GetTrack();
 
-	G4String name = aTrack->GetTouchable()->GetVolume()->GetName();
-
-       	if(nofSecTracks > 0)
-       	{
+       	if(nofSecTracks > 0) //Check that there are secondary tracks
+       	{i
+		//Get Decay Gamma Source ID of current track
         	TrackInformation* trackInfo = (TrackInformation*)aTrack->GetUserInformation();
 
-      		G4int srcID = trackInfo->GetDecayGammaSourceID();
-               	for(size_t i = 0; i < nofSecTracks; i++)
+		G4int srcID = trackInfo->GetDecayGammaSourceID();
+               
+		//Propagate the Decay Gamma Source ID to secondaries
+		for(size_t i = 0; i < nofSecTracks; i++)
                	{
-			if(!(*secTracks)[i]->GetUserInformation())
+			if(!(*secTracks)[i]->GetUserInformation())	//Check for existance of track infos to prevent duplicates
 			{
 	                TrackInformation* secInfo = new TrackInformation();
 			secInfo->SetDecayGammaSourceID(srcID);
