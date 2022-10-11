@@ -105,18 +105,35 @@ void EventAction::EndOfEventAction(const G4Event* event)
                         }
 
 			//Add total to ntuple
-			analysisManager->FillNtupleFColumn(n, totalEdep);
+			analysisManager->FillNtupleFColumn(0, n, totalEdep);
 
 		}
 
 		//Add eventID to ntuple
 		G4int eventID = G4RunManager::GetRunManager()->GetCurrentEvent()->GetEventID();
 
-		analysisManager->FillNtupleIColumn(nofDetectors, eventID);
+		analysisManager->FillNtupleIColumn(0, nofDetectors, eventID);
 
 		//Complete ntuple row
-		analysisManager->AddNtupleRow();
+		analysisManager->AddNtupleRow(0);
 	}
+
+	for(G4int n = 0; n < nofDetectors; n++)
+	{
+		G4double totalEdep = 0.0;
+		for(G4int i = 0; i < nofHits; i++)
+		{
+			if((*trackerHC)[i]->GetDetectorNumber() == n)
+				{ totalEdep += (*trackerHC)[i]->GetEdep(); }
+
+		}
+
+		analysisManager->FillNtupleFColumn(1, n, totalEdep);
+
+	}
+
+	analysisManager->AddNtupleRow(1);
+
 }
 
 }

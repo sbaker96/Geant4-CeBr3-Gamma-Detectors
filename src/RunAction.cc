@@ -25,13 +25,21 @@ RunAction::RunAction()
 
 	//Create N-Tuple
 	
-	analysisManager->CreateNtuple("Edep by Detectors", "Edep by Detectors");
+	analysisManager->CreateNtuple("Edep by Gamma", "Edep by Gamma");
 	
 	analysisManager->CreateNtupleFColumn("Edep_0");
 
 	analysisManager->CreateNtupleFColumn("Edep_1");
 
 	analysisManager->CreateNtupleIColumn("EventID");
+
+	analysisManager->FinishNtuple();
+
+	analysisManager->CreateNtuple("Edep by Event", "Edep by Event");
+
+	analysisManager->CreateNtupleFColumn("Edep_0");
+
+	analysisManager->CreateNtupleFColumn("Edep_1");
 
 	analysisManager->FinishNtuple();
 

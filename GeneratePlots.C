@@ -66,7 +66,7 @@ void plotRaw(int num)
 	auto inFile = TFile::Open(srcName);
 	
 	//Create reader for the output ntuple
-	TTreeReader reader("Edep by Detectors", inFile);
+	TTreeReader reader("Edep by Gamma", inFile);
 
 	//Get name of branch to look at
 	const char* branchName = numAppend(histName, num);
@@ -116,7 +116,7 @@ void plotFolded(int num)
        	auto inFile = TFile::Open(srcName);
 
 	//Create reader for the output ntuple
-        TTreeReader reader("Edep by Detectors", inFile);
+        TTreeReader reader("Edep by Gamma", inFile);
 
 	//Get name of branch to look at
 	const char* branchName = numAppend(histName, num);
@@ -182,59 +182,29 @@ void plot2DRaw(int numA, int numB)
 	auto inFile = TFile::Open(srcName);
 
 	//Create reader for the output ntuple
-        TTreeReader reader("Edep by Detectors", inFile);
+        TTreeReader reader("Edep by Event", inFile);
 
 	//Create readerValues for Edep
         TTreeReaderValue<float> EdepA(reader, numAppend(histName, numA));
         
 	TTreeReaderValue<float> EdepB(reader, numAppend(histName, numB));
 	
-	TTreeReaderValue<int> EventID(reader, "EventID");
-
 	//Create Histogram
         int nofBins = maxEnergy;
 
         const char* writeName = numAppend(numAppend("Compare_", numA), numB);
 
 	TH2F* outHist = new TH2F(writeName, writeName, nofBins, 0, nofBins, nofBins, 0, nofBins);
-
-	//Create Set of Valid EventIDs
-	set<int> ids;
-
+	
 	while(reader.Next())
 	{
-		ids.insert(*EventID);
-
-	}
-
-	//Loop through Event IDs
-	for(auto itr = ids.begin(); itr != ids.end(); itr++)
-	{
-//		cout << *itr << endl;
-
-		float edepA = 0; 
-		float edepB = 0;
 	
-		reader.Restart();
+		float edepA = *EdepA*1000;
 
-		//Loop through values to sum over energies for each event
-		while(reader.Next())
-		{
+		float edepB = *EdepB*1000;
 
-			if(*EventID == *itr)
-			{
-			
-				edepA += *EdepA;
 
-		                edepB += *EdepB;
-			}
-		}
-		
-		edepA *= 1000; //Convert Units
-        
-        	edepB *= 1000;
-	
-         	outHist->Fill(edepA, edepB);
+		outHist->Fill(edepA, edepB);
 	
 	}
 
@@ -261,15 +231,13 @@ void plot2DFolded(int numA, int numB)
 	auto inFile = TFile::Open(srcName);
 
 	//Create reader for the output ntuple
-        TTreeReader reader("Edep by Detectors", inFile);
+        TTreeReader reader("Edep by Event", inFile);
 
 	//Create readerValues for Edep
         TTreeReaderValue<float> EdepA(reader, numAppend(histName, numA));
         
 	TTreeReaderValue<float> EdepB(reader, numAppend(histName, numB));
 	
-	TTreeReaderValue<int> EventID(reader, "EventID");
-
 	//Create Histogram
         int nofBins = maxEnergy;
 
@@ -282,59 +250,29 @@ void plot2DFolded(int numA, int numB)
 		
 	TF2* g = new TF2("g", "[0]*exp(-(0.5*((x-[1])/[2])**2+(0.5*((y-[3])/[4])**2)))/(sqrt(2*pi)*[2]*[4])", 0, 20, 0, 20); //!!!
 
-	//Create Set of Valid EventIDs
-	set<int> ids;
+        while(reader.Next())
+        {
 
-	while(reader.Next())
-	{
-		ids.insert(*EventID);
+                float edepA = *EdepA*1000;
 
-	}
+                float edepB = *EdepB*1000;
 
-	//Loop through Event IDs
-	for(auto itr = ids.begin(); itr != ids.end(); itr++)
-	{
-//		cout << *itr << endl;
-
-		float edepA = 0; 
-		float edepB = 0;
-	
-		reader.Restart();
-
-		//Loop through values to sum over energies for each event
-		while(reader.Next())
-		{
-
-			if(*EventID == *itr)
-			{
-			
-				edepA += *EdepA;
-
-		                edepB += *EdepB;
-			}
-		}
-		
-		edepA *= 1000; //Convert Units
-        
-        	edepB *= 1000;
-
-		//Set Parameters
-		if( edepA > 0 && edepB > 0)
+                if( edepA > 0 && edepB > 0)
                 {
                 g->SetParameter(0, 1);
                 g->SetParameter(1, edepA);
                 g->SetParameter(2, stDev->Eval(edepA));
-		g->SetParameter(3, edepB);
-		g->SetParameter(4, stDev->Eval(edepB));
+                g->SetParameter(3, edepB);
+                g->SetParameter(4, stDev->Eval(edepB));
 
-		cout << "A: " << edepA << " | B: " << edepB << endl;
+//              cout << "A: " << edepA << " | B: " << edepB << endl;
 
                 outHist->FillRandom("g", 1);
 
-	        }
+                }
 
-	
-	}
+        }
+
 
 	//Set Histogram Options
 	outHist->SetOption("COLZ");
