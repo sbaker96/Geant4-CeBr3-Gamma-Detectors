@@ -38,7 +38,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
 	G4Track* aTrack = aStep->GetTrack();
 
        	if(nofSecTracks > 0) //Check that there are secondary tracks
-       	{i
+       	{
 		//Get Decay Gamma Source ID of current track
         	TrackInformation* trackInfo = (TrackInformation*)aTrack->GetUserInformation();
 
