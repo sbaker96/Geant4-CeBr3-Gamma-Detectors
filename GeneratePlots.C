@@ -111,7 +111,11 @@ void plotFolded(int num)
 {
 	//Start Message 
 	cout << "Plotting Folded Data for Detector " << num << endl;
-        
+
+	TFile* inFile = new TFile(outName);
+
+	TH1F* srcHist = static_cast<TH1F*>(inFile->Get(numAppend("Raw_", num)));
+/*        
 	//Open output from simulation
        	auto inFile = TFile::Open(srcName);
 
@@ -123,7 +127,7 @@ void plotFolded(int num)
 
 	//Create readerValue for Edep
 	TTreeReaderValue<float> Edep(reader, branchName);
-
+*/
 	//Create Histogram
         int nofBins = maxEnergy;
 	
@@ -136,6 +140,24 @@ void plotFolded(int num)
 
 	auto g = new TF1("g", "gausn(0)");
 
+	int maxFilledBin = srcHist->FindLastBinAbove();
+
+	for(int i = 2; i <= maxFilledBin; i++)
+	{
+		int counts  = srcHist->GetBinContent(i);
+		
+		if(counts != 0) 
+		{
+		g->SetParameter(0, 1);
+                g->SetParameter(1, i);
+                g->SetParameter(2, stDev->Eval(i));
+
+                outHist->FillRandom("g", counts);
+		}
+	}
+
+
+/*
 	//Loop through values to fill histogram
 	while(reader.Next())
         {
@@ -154,7 +176,7 @@ void plotFolded(int num)
 		}
 
         }
-
+*/
 	//Normalize Histogram
   	double factor = 1.0;
 
@@ -227,17 +249,10 @@ void plot2DFolded(int numA, int numB)
 	//Start Message
 	cout << "Plotting 2D Folded" << endl;
 
-	//Open output from Simulation
-	auto inFile = TFile::Open(srcName);
+	TFile* inFile = new TFile(outName);
 
-	//Create reader for the output ntuple
-        TTreeReader reader("Edep by Event", inFile);
+        TH1F* srcHist = static_cast<TH1F*>(inFile->Get(numAppend(numAppend("Compare_", numA), numB)));
 
-	//Create readerValues for Edep
-        TTreeReaderValue<float> EdepA(reader, numAppend(histName, numA));
-        
-	TTreeReaderValue<float> EdepB(reader, numAppend(histName, numB));
-	
 	//Create Histogram
         int nofBins = maxEnergy;
 
@@ -250,27 +265,29 @@ void plot2DFolded(int numA, int numB)
 		
 	TF2* g = new TF2("g", "[0]*exp(-(0.5*((x-[1])/[2])**2+(0.5*((y-[3])/[4])**2)))/(sqrt(2*pi)*[2]*[4])", 0, 20, 0, 20); //!!!
 
-        while(reader.Next())
+        int maxFilledBinX = srcHist->FindLastBinAbove(1);
+
+	int maxFilledBinY = srcHist->FindLastBinAbove(2);
+
+        for(int i = 2; i <= maxFilledBinX; i++)
         {
+		for(int k = 2; k <= maxFilledBinY; k++)
+		{
+			int counts  = srcHist->GetBinContent(i, k);
+			
+                	if(counts != 0)
+                	{
+			cout << "X: " << i << " Y: " << k << endl;
+               		g->SetParameter(0, 1);
+                	g->SetParameter(1, i);
+                	g->SetParameter(2, stDev->Eval(i));
+			g->SetParameter(3, k);
+			g->SetParameter(4, stDev->Eval(k));
 
-                float edepA = *EdepA*1000;
-
-                float edepB = *EdepB*1000;
-
-                if( edepA > 0 && edepB > 0)
-                {
-                g->SetParameter(0, 1);
-                g->SetParameter(1, edepA);
-                g->SetParameter(2, stDev->Eval(edepA));
-                g->SetParameter(3, edepB);
-                g->SetParameter(4, stDev->Eval(edepB));
-
-//              cout << "A: " << edepA << " | B: " << edepB << endl;
-
-                outHist->FillRandom("g", 1);
-
-                }
-
+                	outHist->FillRandom("g", counts);
+			cout << "Filled" << endl << endl;
+                	}
+		}
         }
 
 
