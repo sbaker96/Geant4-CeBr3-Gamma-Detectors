@@ -115,19 +115,7 @@ void plotFolded(int num)
 	TFile* inFile = new TFile(outName);
 
 	TH1F* srcHist = static_cast<TH1F*>(inFile->Get(numAppend("Raw_", num)));
-/*        
-	//Open output from simulation
-       	auto inFile = TFile::Open(srcName);
-
-	//Create reader for the output ntuple
-        TTreeReader reader("Edep by Gamma", inFile);
-
-	//Get name of branch to look at
-	const char* branchName = numAppend(histName, num);
-
-	//Create readerValue for Edep
-	TTreeReaderValue<float> Edep(reader, branchName);
-*/
+	
 	//Create Histogram
         int nofBins = maxEnergy;
 	
@@ -157,26 +145,6 @@ void plotFolded(int num)
 	}
 
 
-/*
-	//Loop through values to fill histogram
-	while(reader.Next())
-        {
-                float edep = *Edep;
-
-                edep *= 1000; //Convert Units
-	
-		//Set Parameters of gaussian
-		if( edep != 0)
-		{	
-		g->SetParameter(0, 1);
-		g->SetParameter(1, edep);
-		g->SetParameter(2, stDev->Eval(edep));
-
-                outHist->FillRandom("g", 1);
-		}
-
-        }
-*/
 	//Normalize Histogram
   	double factor = 1.0;
 
