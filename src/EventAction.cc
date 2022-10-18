@@ -128,18 +128,22 @@ void EventAction::EndOfEventAction(const G4Event* event)
 	//Loop through each detector//
 	for(G4int n = 0; n < nofDetectors; n++)
 	{
-		G4double totalEdep = 0.0;
-		G4bool isValid = 0;
+		G4double totalEdep = 0.0;	//Total Energy of Event
+		G4bool isValid = 0;		//Bool value if energies of this even came from gamma rays
 
+		//Loop through Hits
 		for(G4int i = 0; i < nofHits; i++)
-		{
+		{	
+			//Check if there is a Gamma among the hits
 			if((*trackerHC)[i]->GetIsGamma())
 				{ isValid = 1; }
+			//Sum over hits in this detector
 			if((*trackerHC)[i]->GetDetectorNumber() == n)
 				{ totalEdep += (*trackerHC)[i]->GetEdep(); }
 
 		}
 
+		//Only fill Energies if there is a Gamma among the hits
 		if(isValid)
 			{ analysisManager->FillNtupleFColumn(1, n, totalEdep);}
 		else
