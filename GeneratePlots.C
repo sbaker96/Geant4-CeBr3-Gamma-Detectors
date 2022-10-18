@@ -278,13 +278,15 @@ void plot2DFolded(int numA, int numB)
                 	if(counts != 0)
                 	{
 			cout << "X: " << i << " Y: " << k << endl;
+
                		g->SetParameter(0, 1);
                 	g->SetParameter(1, i);
                 	g->SetParameter(2, stDev->Eval(i));
 			g->SetParameter(3, k);
 			g->SetParameter(4, stDev->Eval(k));
 
-                	outHist->FillRandom("g", counts);
+			cout << "Filling Histogram... " << endl;
+                	outHist->FillRandom("g", 1000*counts);
 			cout << "Filled" << endl << endl;
                 	}
 		}
@@ -295,10 +297,11 @@ void plot2DFolded(int numA, int numB)
 	outHist->SetOption("COLZ");
 
 	//Normalize Histogram
+/*
 	double factor = 1.0;
 
         outHist->Scale(factor/outHist->GetMaximum());
-
+*/
 	//Write Histogram to output file
         TFile* outFile = new TFile(outName, "UPDATE");
         
