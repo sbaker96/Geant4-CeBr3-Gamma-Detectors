@@ -286,7 +286,7 @@ void plot2DFolded(int numA, int numB)
 			g->SetParameter(4, stDev->Eval(k));
 
 			cout << "Filling Histogram... " << endl;
-                	outHist->FillRandom("g", 1000*counts);
+                	outHist->FillRandom("g", counts);
 			cout << "Filled" << endl << endl;
                 	}
 		}
