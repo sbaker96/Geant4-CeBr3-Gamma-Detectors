@@ -80,7 +80,12 @@ void EventAction::EndOfEventAction(const G4Event* event)
     	auto analysisManager = G4AnalysisManager::Instance();
 	G4int nofDetectors = 2;	
 	
-	//Fill Ntuple
+	////////////////
+	//Fill Ntuples//
+	////////////////
+	
+
+	//Edep by Gamma
 	
 	//Loop through Ids
 	for(auto itr = decayGammaIDs.begin(); itr != decayGammaIDs.end(); itr++)
@@ -118,17 +123,27 @@ void EventAction::EndOfEventAction(const G4Event* event)
 		analysisManager->AddNtupleRow(0);
 	}
 
+	//Edep by Event
+
+	//Loop through each detector//
 	for(G4int n = 0; n < nofDetectors; n++)
 	{
 		G4double totalEdep = 0.0;
+		G4bool isValid = 0;
+
 		for(G4int i = 0; i < nofHits; i++)
 		{
+			if((*trackerHC)[i]->GetIsGamma())
+				{ isValid = 1; }
 			if((*trackerHC)[i]->GetDetectorNumber() == n)
 				{ totalEdep += (*trackerHC)[i]->GetEdep(); }
 
 		}
 
-		analysisManager->FillNtupleFColumn(1, n, totalEdep);
+		if(isValid)
+			{ analysisManager->FillNtupleFColumn(1, n, totalEdep);}
+		else
+			{ analysisManager->FillNtupleFColumn(1, n, 0);}
 
 	}
 
