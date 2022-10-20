@@ -231,7 +231,7 @@ void plot2DFolded(int numA, int numB)
 	//Create Functions
 	TF1* stDev = new TF1("Standard Deviation", "(x/235.5)*(100/sqrt(x))", 0 , 1000*nofBins);
 		
-	TF2* g = new TF2("g", "[0]*exp(-(0.5*((x-[1])/[2])**2+(0.5*((y-[3])/[4])**2)))/(sqrt(2*pi)*[2]*[4])", 0, 20, 0, 20); //!!!
+	TF2* g = new TF2("g", "xygaus(0)");
 
         int maxFilledBinX = srcHist->FindLastBinAbove(1);
 
