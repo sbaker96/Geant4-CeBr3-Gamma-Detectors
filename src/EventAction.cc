@@ -53,9 +53,12 @@ void EventAction::EndOfEventAction(const G4Event* event)
 
 	auto trackerHC = GetHitsCollection(fHCID, event);
 
+	const G4int nofDetectors = 2;
+
+    	auto analysisManager = G4AnalysisManager::Instance();
 
 	G4int nofHits = trackerHC->entries();
-	
+/*	
 	//Create Set  of TrackIDs corresponding to Decay Gammas
 
 	set<G4int> decayGammaIDs; //Using a set prevents the need to keep track of duplicates
@@ -77,8 +80,6 @@ void EventAction::EndOfEventAction(const G4Event* event)
 	}
 	//-----
 	
-    	auto analysisManager = G4AnalysisManager::Instance();
-	G4int nofDetectors = 2;	
 	
 	////////////////
 	//Fill Ntuples//
@@ -122,6 +123,89 @@ void EventAction::EndOfEventAction(const G4Event* event)
 		//Complete ntuple row
 		analysisManager->AddNtupleRow(0);
 	}
+*/
+
+	set<G4int>validIDs[nofDetectors+1]; //validIds[n] corresponds to the valid ids for detector n,
+					    //except for validIds[nofDetectors] which is the full set of
+					    //valid ids.
+
+	//Loop through hits
+	
+	for(G4int i = 0; i < nofHits; i++)
+	{
+		G4int currentSrc = (*trackerHC)[i]->GetDecayGammaSourceID();
+                if(currentSrc != -1)
+		{
+			if((*trackerHC)[i]->GetIsGamma())
+			{
+		
+				validIDs[nofDetectors].insert(currentSrc);
+
+				validIDs[(*trackerHC)[i]->GetDetectorNumber()].insert(currentSrc);
+		
+			}
+		}
+	}
+
+
+	//Edep by Gamma
+	
+	//Loop through each detector//
+
+		//Loop through Ids
+		
+		for(auto itr = validIDs[nofDetectors].begin(); itr != validIDs[nofDetectors].end(); itr++)
+       		{
+			G4int currentID = *itr;
+
+			//Loop through detectors
+
+			for(G4int n = 0; n < nofDetectors; n++)
+			{
+			
+				if(validIDs[n].count(currentID))
+				{
+					G4double totalEdep = 0.0;
+
+					//Loop through hits
+
+					for(G4int i = 0; i < nofHits; i++)
+					{
+					
+						//Add energy if hit matches current detector and decay ID
+                		                if((*trackerHC)[i]->GetDecayGammaSourceID() == currentID
+                                        	        && (*trackerHC)[i]->GetDetectorNumber() == n)
+                                		{ totalEdep += (*trackerHC)[i]->GetEdep(); }
+
+
+
+					}
+			
+					//Add total to ntuple
+        		                analysisManager->FillNtupleFColumn(0, n, totalEdep);
+	
+
+				
+				}
+
+				else
+				{ analysisManager->FillNtupleFColumn(0, n, 0.0); }
+			
+			}
+
+	        	//Add eventID to ntuple
+        	        G4int eventID = G4RunManager::GetRunManager()->GetCurrentEvent()->GetEventID();
+
+                	analysisManager->FillNtupleIColumn(0, nofDetectors, eventID);
+	        
+			//Complete ntuple row
+        	        analysisManager->AddNtupleRow(0);
+
+		
+		}
+
+
+
 
 	//Edep by Event
 
@@ -129,26 +213,45 @@ void EventAction::EndOfEventAction(const G4Event* event)
 	for(G4int n = 0; n < nofDetectors; n++)
 	{
 		G4double totalEdep = 0.0;	//Total Energy of Event
-		G4bool isValid = 0;		//Bool value if energies of this even came from gamma rays
-
+/*
 		//Loop through Hits
 		for(G4int i = 0; i < nofHits; i++)
 		{	
-			//Check if there is a Gamma among the hits
-			if((*trackerHC)[i]->GetIsGamma())
+			//Check if there is a Gamma among the hits in this detector
+			if((*trackerHC)[i]->GetIsGamma() && (*trackerHC)[i]->GetDetectorNumber() == n)
 				{ isValid = 1; }
 			//Sum over hits in this detector
 			if((*trackerHC)[i]->GetDetectorNumber() == n)
 				{ totalEdep += (*trackerHC)[i]->GetEdep(); }
 
 		}
+*/
 
+		//Loop through Ids
+                for(auto itr = validIDs[n].begin(); itr != validIDs[n].end(); itr++)
+		{
+			G4int currentID = *itr;
+		
+			//Loop Through Hits
+			for(G4int i = 0; i < nofHits; i++)
+			{
+			
+				if((*trackerHC)[i]->GetDecayGammaSourceID() == currentID)
+				{ totalEdep += (*trackerHC)[i]->GetEdep(); }
+			
+			}
+		
+		
+		}
+
+/*
 		//Only fill Energies if there is a Gamma among the hits
 		if(isValid)
 			{ analysisManager->FillNtupleFColumn(1, n, totalEdep);}
 		else
 			{ analysisManager->FillNtupleFColumn(1, n, 0);}
-
+*/
+		analysisManager->FillNtupleFColumn(1, n, totalEdep);
 	}
 
 	analysisManager->AddNtupleRow(1);
