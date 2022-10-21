@@ -152,7 +152,7 @@ void EventAction::EndOfEventAction(const G4Event* event)
 			for(G4int i = 0; i < nofHits; i++)
 			{
 			
-				if((*trackerHC)[i]->GetDecayGammaSourceID() == currentID)
+				if((*trackerHC)[i]->GetDecayGammaSourceID() == currentID && (*trackerHC)[i]->GetDetectorNumber() == n)
 				{ totalEdep += (*trackerHC)[i]->GetEdep(); }
 			}
 		
