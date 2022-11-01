@@ -11,6 +11,9 @@
 #include "G4LogicalVolume.hh"
 #include "G4PVPlacement.hh"
 #include "G4SystemOfUnits.hh"
+
+#include "G4PhysicalConstants.hh"
+
 #include "G4UnionSolid.hh"
 #include "G4SubtractionSolid.hh"
 #include "TrackerSD.hh"
@@ -229,23 +232,42 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 	G4Transform3D Mp;
 
+	G4double dist;
+	G4double theta;
+	G4double phi;
+
 	//Lengths
 	G4double addL = c_hz + totThickness;
 
-	G4double l_0 = 114.3*mm;
+	//Detector_0
 
-	G4double l_1 = -114.3*mm;
+	dist = 114.3*mm;
+	dist += addL;
 
-	Tp.setZ(l_0 + addL);
+	theta = 0*rad;
+	phi = 0*rad;
+
+	Rp.rotateX(0); Rp.rotateY(theta); Rp.rotateZ(phi);
+
+	Tp.setX(dist*sin(theta)*cos(phi)); Tp.setY(dist*sin(theta)*sin(phi)); Tp.setZ(dist*cos(theta));
 	Mp = G4Transform3D(Rp, Tp);
 
 	detectorAssembly->MakeImprint(worldLog, Mp);
 
-	Tp.setZ(l_1 - addL);
-	Rp.rotateY(180*deg);
-	Mp = G4Transform3D(Rp, Tp);
+	//Detector_1
+        
+	dist = 114.3*mm;
+        dist += addL;
 
-	detectorAssembly->MakeImprint(worldLog, Mp);
+        theta = pi*rad;
+        phi = 0*rad;
+
+        Rp.rotateX(0); Rp.rotateY(theta); Rp.rotateZ(phi);
+
+        Tp.setX(dist*sin(theta)*cos(phi)); Tp.setY(dist*sin(theta)*sin(phi)); Tp.setZ(dist*cos(theta));
+        Mp = G4Transform3D(Rp, Tp);
+
+        detectorAssembly->MakeImprint(worldLog, Mp);
 
 
 
