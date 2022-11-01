@@ -57,7 +57,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
         }
 
 //Debug
-	G4cout << aStep->GetTrack()->GetPosition() << G4endl;
+//	G4cout << aStep->GetTrack()->GetPosition() << G4endl;
 }
 
 }
