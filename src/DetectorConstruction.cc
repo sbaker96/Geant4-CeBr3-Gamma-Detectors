@@ -101,7 +101,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         //Physical Volume Parameters
         G4double c_x = 0.0*cm;
         G4double c_y = 0.0*cm;
-        G4double c_z = 5*cm;
+        G4double c_z = 0.0*cm; //!!!!!!!!!!
 
 //==============================================
 	//Create Reflector
@@ -229,12 +229,19 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 	G4Transform3D Mp;
 
-	Tp.setZ(5.0*cm);
+	//Lengths
+	G4double addL = c_hz + totThickness;
+
+	G4double l_0 = 114.3*mm;
+
+	G4double l_1 = -114.3*mm;
+
+	Tp.setZ(l_0 + addL);
 	Mp = G4Transform3D(Rp, Tp);
 
 	detectorAssembly->MakeImprint(worldLog, Mp);
 
-	Tp.setZ(-5.0*cm);
+	Tp.setZ(l_1 - addL);
 	Rp.rotateY(180*deg);
 	Mp = G4Transform3D(Rp, Tp);
 
