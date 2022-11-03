@@ -227,7 +227,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         detectorAssembly->AddPlacedVolume(sLog, Ma);
 	
 	//Place Detectors
-	G4RotationMatrix Rp;
+	G4RotationMatrix Rp, Rp_inv;
 	G4ThreeVector Tp;
 
 	G4Transform3D Mp;
@@ -235,6 +235,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	G4double dist;
 	G4double theta;
 	G4double phi;
+
+	G4ThreeVector p_x, p_y, p_z;
 
 	//Lengths
 	G4double addL = c_hz + totThickness;
@@ -247,10 +249,13 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	theta = 0*rad;
 	phi = 0*rad;
 
-	Rp.rotateX(0); Rp.rotateY(-1*theta); Rp.rotateZ(phi);
+	Tp.setX(dist*sin(theta)*cos(phi)); Tp.setY(dist*sin(theta)*sin(phi)); Tp.setZ(dist*cos(theta));	
+	
+	Rp.rotateY(theta); Rp.rotateZ(phi);
 
-	Tp.setX(dist*sin(theta)*cos(phi)); Tp.setY(dist*sin(theta)*sin(phi)); Tp.setZ(dist*cos(theta));
 	Mp = G4Transform3D(Rp, Tp);
+
+
 
 	detectorAssembly->MakeImprint(worldLog, Mp);
 
@@ -259,13 +264,15 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	dist = 114.3*mm;
         dist += addL;
 
-        theta = pi*rad;
+        theta =pi*rad;
         phi = 0*rad;
 
-        Rp.rotateX(0); Rp.rotateY(-1*theta); Rp.rotateZ(phi);
+       	Tp.setX(dist*sin(theta)*cos(phi)); Tp.setY(dist*sin(theta)*sin(phi)); Tp.setZ(dist*cos(theta));
 
-        Tp.setX(dist*sin(theta)*cos(phi)); Tp.setY(dist*sin(theta)*sin(phi)); Tp.setZ(dist*cos(theta));
+        Rp.rotateY(theta); Rp.rotateZ(phi);
+
         Mp = G4Transform3D(Rp, Tp);
+
 
         detectorAssembly->MakeImprint(worldLog, Mp);
 
