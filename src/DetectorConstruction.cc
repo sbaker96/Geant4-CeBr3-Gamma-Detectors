@@ -224,6 +224,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         Ta.setX(s_x); Ta.setY(s_y); Ta.setZ(s_z);
 	Ma = G4Transform3D(Ra, Ta);
         detectorAssembly->AddPlacedVolume(sLog, Ma);
+
+//==========================================
 	
 	//Place Detectors
 	G4RotationMatrix Rp;
@@ -234,6 +236,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	G4double dist;
 	G4double theta;
 	G4double phi;
+
+	G4double spin;
 
 	//Lengths
 	G4double addL = c_hz + totThickness;
@@ -246,9 +250,11 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	theta = 0*rad;
 	phi = 0*rad;
 
+	spin = 0*rad;
+
 	Tp.setX(dist*sin(theta)*cos(phi)); Tp.setY(dist*sin(theta)*sin(phi)); Tp.setZ(dist*cos(theta));	
 	
-	Rp.rotateY(theta); Rp.rotateZ(phi);
+	Rp.rotateX(spin); Rp.rotateY(theta); Rp.rotateZ(phi);
 
 	Mp = G4Transform3D(Rp, Tp);
 
@@ -262,9 +268,11 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         theta = pi*rad;
         phi = 0*rad;
 
+	spin = 0*rad;
+
        	Tp.setX(dist*sin(theta)*cos(phi)); Tp.setY(dist*sin(theta)*sin(phi)); Tp.setZ(dist*cos(theta));
 
-        Rp.rotateY(theta); Rp.rotateZ(phi);
+        Rp.rotateX(spin); Rp.rotateY(theta); Rp.rotateZ(phi);
 
         Mp = G4Transform3D(Rp, Tp);
 
