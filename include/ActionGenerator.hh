@@ -22,9 +22,9 @@ class ActionGenerator : public G4VUserPrimaryGeneratorAction
         public:
                ActionGenerator(
                 const G4String& particleName = "gamma",
-                G4double energy = 0.0*keV,
+                G4double energy = 500.0*keV,
                 G4ThreeVector position = G4ThreeVector(0,0,0),
-                G4ThreeVector momentumDirection = G4ThreeVector(0,0,0));
+                G4ThreeVector momentumDirection = G4ThreeVector(0,0,1));
                ~ActionGenerator();
 
                virtual void GeneratePrimaries(G4Event*);
