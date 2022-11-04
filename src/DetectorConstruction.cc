@@ -254,7 +254,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 	Tp.setX(dist*sin(theta)*cos(phi)); Tp.setY(dist*sin(theta)*sin(phi)); Tp.setZ(dist*cos(theta));	
 	
-	Rp.rotateX(spin); Rp.rotateY(theta); Rp.rotateZ(phi);
+	Rp.rotateZ(spin); Rp.rotateY(theta); Rp.rotateZ(phi);
 
 	Mp = G4Transform3D(Rp, Tp);
 
@@ -272,7 +272,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
        	Tp.setX(dist*sin(theta)*cos(phi)); Tp.setY(dist*sin(theta)*sin(phi)); Tp.setZ(dist*cos(theta));
 
-        Rp.rotateX(spin); Rp.rotateY(theta); Rp.rotateZ(phi);
+        Rp.rotateZ(spin); Rp.rotateY(theta); Rp.rotateZ(phi);
 
         Mp = G4Transform3D(Rp, Tp);
 
