@@ -104,7 +104,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         //Physical Volume Parameters
         G4double c_x = 0.0*cm;
         G4double c_y = 0.0*cm;
-        G4double c_z = 0.0*cm; //!!!!!!!!!!
+        G4double c_z = 0.0*cm;
 
 //==============================================
 	//Create Reflector
