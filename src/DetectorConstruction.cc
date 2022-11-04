@@ -210,7 +210,6 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 	G4Transform3D Ma;
 
-
 	//Add Crystal
 	Ta.setX(c_x); Ta.setY(c_y); Ta.setZ(c_z);
 	Ma = G4Transform3D(Ra, Ta);
@@ -227,7 +226,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         detectorAssembly->AddPlacedVolume(sLog, Ma);
 	
 	//Place Detectors
-	G4RotationMatrix Rp, Rp_inv;
+	G4RotationMatrix Rp;
 	G4ThreeVector Tp;
 
 	G4Transform3D Mp;
@@ -235,8 +234,6 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	G4double dist;
 	G4double theta;
 	G4double phi;
-
-	G4ThreeVector p_x, p_y, p_z;
 
 	//Lengths
 	G4double addL = c_hz + totThickness;
@@ -255,8 +252,6 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 	Mp = G4Transform3D(Rp, Tp);
 
-
-
 	detectorAssembly->MakeImprint(worldLog, Mp);
 
 	//Detector_1
@@ -264,7 +259,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	dist = 114.3*mm;
         dist += addL;
 
-        theta =pi*rad;
+        theta = pi*rad;
         phi = 0*rad;
 
        	Tp.setX(dist*sin(theta)*cos(phi)); Tp.setY(dist*sin(theta)*sin(phi)); Tp.setZ(dist*cos(theta));
@@ -272,7 +267,6 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         Rp.rotateY(theta); Rp.rotateZ(phi);
 
         Mp = G4Transform3D(Rp, Tp);
-
 
         detectorAssembly->MakeImprint(worldLog, Mp);
 
