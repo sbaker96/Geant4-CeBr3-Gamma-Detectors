@@ -76,26 +76,20 @@ void EventAction::EndOfEventAction(const G4Event* event)
 		{
 			if((*trackerHC)[i]->GetIsGamma())
 			{
-		
 				validIDs[nofDetectors].insert(currentSrc);
-
-				validIDs[(*trackerHC)[i]->GetDetectorNumber()].insert(currentSrc);
-		
+				validIDs[(*trackerHC)[i]->GetDetectorNumber()].insert(currentSrc);	
 			}
 		}
 	}
 
-
 	//Edep by Gamma
 	
 	//Loop through Ids
-	
 	for(auto itr = validIDs[nofDetectors].begin(); itr != validIDs[nofDetectors].end(); itr++)
        	{
 		G4int currentID = *itr;
 
 		//Loop through detectors
-
 		for(G4int n = 0; n < nofDetectors; n++)
 		{
 		
@@ -104,7 +98,6 @@ void EventAction::EndOfEventAction(const G4Event* event)
 				G4double totalEdep = 0.0;
 
 				//Loop through hits
-
 				for(G4int i = 0; i < nofHits; i++)
 				{
 				
@@ -151,7 +144,6 @@ void EventAction::EndOfEventAction(const G4Event* event)
 			//Loop Through Hits
 			for(G4int i = 0; i < nofHits; i++)
 			{
-			
 				if((*trackerHC)[i]->GetDecayGammaSourceID() == currentID && (*trackerHC)[i]->GetDetectorNumber() == n)
 				{ totalEdep += (*trackerHC)[i]->GetEdep(); }
 			}
