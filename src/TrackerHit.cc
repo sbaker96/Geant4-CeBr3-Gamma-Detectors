@@ -33,11 +33,11 @@ G4bool TrackerHit::operator==(const TrackerHit& right) const
 
 void TrackerHit::Print()
 {
-
+/*
 	G4cout
 	<< " Edep: " << std::setw(7) << G4BestUnit(fEdep, "Energy")
 	<< G4endl;
-	
+*/	
 }
 
 }
