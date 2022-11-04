@@ -67,7 +67,16 @@ G4bool TrackerSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
         TrackInformation* trackInfo = (TrackInformation*)aStep->GetTrack()->GetUserInformation();
         
 	G4int srcID = trackInfo->GetDecayGammaSourceID();
+
+	//---------------------//
+	//Debug Parameters 
+		
+	//Get Position
+	G4ThreeVector pos = aStep->GetTrack()->GetPosition();
 	
+	//--------------------//
+	
+
 	//If track does not originate from decay gamma, discard it.
 	if ( srcID  == -1) return false;
 
@@ -84,6 +93,13 @@ G4bool TrackerSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
 	{
 		newHit->SetIsGamma(true);
 	}
+
+	//--------------------//
+	//Set Debug Parameters
+	
+	newHit->SetPosition(pos);
+
+	//--------------------//
 
 	fHitsCollection->insert(newHit);
 
