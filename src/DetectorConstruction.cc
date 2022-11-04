@@ -23,7 +23,7 @@
 
 namespace CeBr3
 {
-///////////////////////
+//////////////////////
 
 DetectorConstruction::DetectorConstruction()
 {}
@@ -228,16 +228,12 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 //==========================================
 	
 	//Place Detectors
-	G4RotationMatrix Rp;
-	G4ThreeVector Tp;
-
+	
+	//Transform
 	G4Transform3D Mp;
 
-	G4double dist;
-	G4double theta;
-	G4double phi;
-
-	G4double spin;
+	//Placement Variables
+	G4double dist; G4double theta; G4double phi; G4double spin;
 
 	//Lengths
 	G4double addL = c_hz + totThickness;
@@ -252,11 +248,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 	spin = 0*rad;
 
-	Tp.setX(dist*sin(theta)*cos(phi)); Tp.setY(dist*sin(theta)*sin(phi)); Tp.setZ(dist*cos(theta));	
-	
-	Rp.rotateZ(spin); Rp.rotateY(theta); Rp.rotateZ(phi);
-
-	Mp = G4Transform3D(Rp, Tp);
+	Mp = CreateTransform(dist, theta, phi, spin);
 
 	detectorAssembly->MakeImprint(worldLog, Mp);
 
@@ -269,12 +261,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         phi = 0*rad;
 
 	spin = 0*rad;
-
-       	Tp.setX(dist*sin(theta)*cos(phi)); Tp.setY(dist*sin(theta)*sin(phi)); Tp.setZ(dist*cos(theta));
-
-        Rp.rotateZ(spin); Rp.rotateY(theta); Rp.rotateZ(phi);
-
-        Mp = G4Transform3D(Rp, Tp);
+	
+	Mp = CreateTransform(dist, theta, phi, spin);
 
         detectorAssembly->MakeImprint(worldLog, Mp);
 
@@ -308,5 +296,28 @@ void DetectorConstruction::ConstructSDandField()
 	SetSensitiveDetector("CeBr3", detector, true);
 	
 }
+
+G4Transform3D DetectorConstruction::CreateTransform(G4double dist, G4double theta, G4double phi, G4double spin)
+{
+
+	//Create Transforms
+	G4RotationMatrix Rp;
+        G4ThreeVector Tp;
+        G4Transform3D Mp;
+
+	//Set Parameters
+	
+	//Set Translation
+	Tp.setX(dist*sin(theta)*cos(phi)); Tp.setY(dist*sin(theta)*sin(phi)); Tp.setZ(dist*cos(theta));
+
+	//Set Rotation
+        Rp.rotateZ(spin); Rp.rotateY(theta); Rp.rotateZ(phi);
+
+	//Set Transform
+        Mp = G4Transform3D(Rp, Tp);
+
+	return Mp;
+}
+
 
 }
