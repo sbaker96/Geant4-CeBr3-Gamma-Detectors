@@ -53,7 +53,6 @@ int main(int argc, char** argv)
         int numOfEvent = 0;
 
         //UI Test
-//	UImanager->ApplyCommand("/control/execute vis.mac");
         runManager->BeamOn(numOfEvent);
         ui->SessionStart();
         delete ui;
