@@ -57,8 +57,17 @@ G4bool TrackerSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
 	//Get copy number of detector
 	G4int copyNumber = aStep->GetTrack()->GetTouchable()->GetCopyNumber();
 	
-	G4int dNum = (copyNumber - 1)/3; //This turns the copy number to detector number.
-					 //As the geometry of the setup changes, this equation may need to change.
+	//!!!!!!
+	std::cout << copyNumber << std::endl;
+
+	//Get detector number from copy number
+	
+       	//Parameters
+	G4int n = 1;	//Number of physical volumes before detectors are placed (including world)
+	G4int p = 3;	//Number of components of each detector
+
+	G4int dNum = (copyNumber - n)/p; //This turns the copy number to detector number.
+					 //For this equation to work.
 
         //Get particle type
         G4String type = aStep->GetTrack()->GetDefinition()->GetParticleType();
