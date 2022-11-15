@@ -57,8 +57,8 @@ G4bool TrackerSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
 	//Get copy number of detector
 	G4int copyNumber = aStep->GetTrack()->GetTouchable()->GetCopyNumber();
 	
-	//!!!!!!
-	std::cout << copyNumber << std::endl;
+	//print copyNumber
+	//std::cout << copyNumber << std::endl;
 
 	//Get detector number from copy number
 	
