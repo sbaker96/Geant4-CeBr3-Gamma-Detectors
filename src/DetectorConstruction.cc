@@ -242,35 +242,6 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	G4double addL = c_hz + totThickness;
 
 //===========================================
-/*
-        //Define Test Cube Parameters
-        G4double tc_hx = 5.0*mm;
-        G4double tc_hy = 5.0*mm;
-        G4double tc_hz = 5.0*mm;
-
-        //Create Solid Test Cube
-        G4Box* tcSolid  = new G4Box("Test Cube", tc_hx, tc_hy, tc_hz);
-
-        //Create Logical Test Cube
-        G4LogicalVolume* tcLog = new G4LogicalVolume(tcSolid, Al, "Test Cube");
-
-        //Define Physical Test Cube Parameters
-        G4double tc_x = 0.0*cm;
-        G4double tc_y = 10.0*cm;
-        G4double tc_z = 0.0*cm;
-
-        //Create Physical Test Cube 1
-        G4VPhysicalVolume* tcPhys =
-        new G4PVPlacement(0,            //no rotation
-                        G4ThreeVector(tc_x, tc_y, tc_z),
-                                        //translation position
-                        tcLog,      	//logical volume
-                        "Test Cube",    //name
-                        worldLog,       //Mother volume
-                        false,          //no bool
-                        0);             //copy number
-*/
-//===========================================
 	//Detector_0
 
 	dist = 114.3*mm;
