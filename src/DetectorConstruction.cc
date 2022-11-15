@@ -299,6 +299,11 @@ void DetectorConstruction::ConstructSDandField()
 	
 }
 
+//Auxillary Functions//
+
+// CreateTransform:
+// Takes the placement parameters as input and produces a G4Transform3D object as output.
+
 G4Transform3D DetectorConstruction::CreateTransform(G4double dist, G4double theta, G4double phi, G4double spin)
 {
 
