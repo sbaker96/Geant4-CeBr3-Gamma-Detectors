@@ -227,13 +227,16 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 //==========================================
 	
-	//Place Detectors
+	//Detectors//
 	
 	//Transform
 	G4Transform3D Mp;
 
 	//Placement Variables
-	G4double dist; G4double theta; G4double phi; G4double spin;
+	G4double dist;		//Distance of detector from origin
+       	G4double theta; 	//Polar Angle of detector
+	G4double phi; 		//Azimuthal Angle of detector
+	G4double spin;		//Rotation of detector along its symmetry axis
 
 	//Lengths
 	G4double addL = c_hz + totThickness;
@@ -265,7 +268,6 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	Mp = CreateTransform(dist, theta, phi, spin);
 
         detectorAssembly->MakeImprint(worldLog, Mp);
-
 
 
 //===========================================
