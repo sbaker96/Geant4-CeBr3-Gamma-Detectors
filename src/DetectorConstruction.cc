@@ -277,7 +277,21 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
         detectorAssembly->MakeImprint(worldLog, Mp);
 
+/*
+	//Detector_2
+        
+	dist = 114.3*mm;
+        dist += addL;
 
+        theta = halfpi*rad;
+        phi = 0*rad;
+
+	spin = 0*rad;
+	
+	Mp = CreateTransform(dist, theta, phi, spin);
+
+        detectorAssembly->MakeImprint(worldLog, Mp);
+*/
 //===========================================
 
 
