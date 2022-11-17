@@ -240,14 +240,18 @@ void plot2DFolded(int numA, int numB)
 		
 	TF2* g = new TF2("g", "xygaus(0)");
 
+	//Get the maximum filled bins
         int maxFilledBinX = srcHist->FindLastBinAbove(1);
 
 	int maxFilledBinY = srcHist->FindLastBinAbove(2);
 
+	//Loop through x bins
         for(int i = 2; i <= maxFilledBinX; i++)
         {
+		//Loop through y bins
 		for(int k = 2; k <= maxFilledBinY; k++)
 		{
+			//Get number of counts
 			int counts  = srcHist->GetBinContent(i, k);
 			
                 	if(counts != 0)
