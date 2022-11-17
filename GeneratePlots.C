@@ -50,8 +50,17 @@ int GeneratePlots()
 	}
 
 	//Generate raw and folded 2D plots
-	plot2DRaw(0, 1);
-	plot2DFolded(0, 1);
+	for(int j = 0; j < nofDetectors; j++)
+	{
+		for(int k = 0; k < j; k++)
+		{
+			plot2DRaw(k, j);
+			plot2DFolded(k, j);
+		}
+
+	}
+//	plot2DRaw(0, 1);
+//	plot2DFolded(0, 1);
 
 	return 0;
 
