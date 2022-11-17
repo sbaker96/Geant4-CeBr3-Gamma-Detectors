@@ -59,8 +59,6 @@ int GeneratePlots()
 		}
 
 	}
-//	plot2DRaw(0, 1);
-//	plot2DFolded(0, 1);
 
 	return 0;
 
@@ -157,7 +155,7 @@ void plotFolded(int num)
 	//Normalize Histogram
   	double factor = 1.0;
 
-	outHist->Scale(factor/outHist->GetMaximum());
+	outHist->Scale(factor/outHist->GetMaximum());	//Sets the highest bin to one
 
 	//Set Histogram Option
 	outHist->SetOption("HIST");
@@ -272,13 +270,7 @@ void plot2DFolded(int numA, int numB)
 
 	//Set Histogram Options
 	outHist->SetOption("COLZ");
-
-	//Normalize Histogram
-/*
-	double factor = 1.0;
-
-        outHist->Scale(factor/outHist->GetMaximum());
-*/
+	
 	//Write Histogram to output file
         TFile* outFile = new TFile(outName, "UPDATE");
         
