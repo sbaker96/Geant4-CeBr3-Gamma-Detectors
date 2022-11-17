@@ -49,9 +49,9 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
                	{
 			if(!(*secTracks)[i]->GetUserInformation())	//Check for existance of track infos to prevent duplicates
 			{
-	                TrackInformation* secInfo = new TrackInformation();
-			secInfo->SetDecayGammaSourceID(srcID);
-			(*secTracks)[i]->SetUserInformation(secInfo);
+	                	TrackInformation* secInfo = new TrackInformation();	//Create new track info
+				secInfo->SetDecayGammaSourceID(srcID);			//Set Decay Gamma Source ID of new track info
+				(*secTracks)[i]->SetUserInformation(secInfo);		//Give new track info to all secondaries
                		}
 		}
         }
