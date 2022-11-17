@@ -10,7 +10,7 @@ Build Instructions:
 
 	% cd path_to_folder_with_source		# go to directory which contains the source folder 
 	% mkdir CeBr3Detector_build		# make empty directory for build
-       	% cd exampleXYZ_build			# go to build directory
+       	% cd CeBr3Detector_build		# go to build directory
 
 	3. Run CMake
 	
@@ -44,6 +44,8 @@ Run Instructions:
 
 	/run/beamOn N				# N is the number of nuclei that are simulated
 
+						# A message will appear for every 10000 events
+
 	4. Exit Executable
 	
 	exit
@@ -53,7 +55,10 @@ Run Instructions:
 	Open ROOT and run the macro GeneratePlots.C
 	
 	.x GeneratePlots.C			# Generates Root file Plots.root
-						# Should return 0
+
+						# If working properly, a message will appear
+						# for each graph being generated. For 2D folded,
+						# plots, progress is continously shown.
 	
 
 	These plots can viewed with TBrowser.
