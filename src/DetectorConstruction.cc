@@ -26,12 +26,12 @@ namespace CeBr3
 //////////////////////
 
 DetectorConstruction::DetectorConstruction()
-{}
+{;}
 
 ///////////////////////
 
 DetectorConstruction::~DetectorConstruction()
-{}
+{;}
 
 ////////////////////////
 G4VPhysicalVolume* DetectorConstruction::Construct()
@@ -86,7 +86,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 //============================================
 
-//Create CeBr3 Crystal
+	//Create CeBr3 Crystal
 
         //Parameters
         G4double c_inRad = 0.0*cm;
@@ -107,6 +107,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         G4double c_z = 0.0*cm;
 
 //==============================================
+	
 	//Create Reflector
 
 	
@@ -153,7 +154,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
                                                                          
 
 //==============================================
-        //Create Al Shell
+        
+	//Create Al Shell
 
 
         //Base Shell Parameters
@@ -227,7 +229,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 //==========================================
 	
-	//Detectors//
+
+	//Detector Parameters//
 	
 	//Transform
 	G4Transform3D Mp;
@@ -242,6 +245,10 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	G4double addL = c_hz + totThickness;
 
 //===========================================
+
+
+	//Detector Placement//
+
 	//Detector_0
 
 	dist = 114.3*mm;
