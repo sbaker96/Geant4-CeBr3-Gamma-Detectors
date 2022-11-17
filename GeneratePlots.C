@@ -173,7 +173,7 @@ void plotFolded(int num)
 void plot2DRaw(int numA, int numB)
 {
 	//Start Message
-	cout << "Plotting 2D Raw" << endl;
+	cout << "Plotting 2D Raw for Detctors "<< numA << " and " << numB << endl;
 
 	//Open output from Simulation
 	auto inFile = TFile::Open(srcName);
@@ -222,7 +222,7 @@ void plot2DFolded(int numA, int numB)
 {
 
 	//Start Message
-	cout << "Plotting 2D Folded" << endl;
+	cout << "Plotting 2D Folded for Detctors "<< numA << " and " << numB << endl;
 
 	TFile* inFile = new TFile(outName);
 
