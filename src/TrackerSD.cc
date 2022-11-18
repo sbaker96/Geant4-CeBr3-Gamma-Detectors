@@ -63,7 +63,7 @@ G4bool TrackerSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
 	//Get detector number from copy number
 	
        	//Parameters
-	G4int n = 1;	//Number of physical volumes before detectors are placed (including world)
+	G4int n = 2;	//Number of physical volumes before detectors are placed (including world)
 	G4int p = 3;	//Number of components of each detector
 
 	G4int dNum = (copyNumber - n)/p; //This turns the copy number to detector number.
