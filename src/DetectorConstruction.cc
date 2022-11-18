@@ -293,7 +293,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 	//Detector_0
 
-	dist = 114.3*mm+1*cm;
+	dist = ss_outRad;
 	dist += addL;
 
 	theta = 0*rad;
@@ -307,7 +307,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 	//Detector_1
         
-	dist = 114.3*mm+1*cm;
+	dist = ss_outRad;
         dist += addL;
 
         theta = pi*rad;
