@@ -8,6 +8,7 @@
 #include "G4NistManager.hh"
 #include "G4Box.hh"
 #include "G4Tubs.hh"
+#include "G4Sphere.hh"
 #include "G4LogicalVolume.hh"
 #include "G4PVPlacement.hh"
 #include "G4SystemOfUnits.hh"
@@ -83,6 +84,47 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
                         0,              //Mother volume
                         false,          //no bool
                         0);             //copy number
+//============================================
+
+	//Create Al Spherical Shell
+	
+	//Parameters
+	G4double ss_trueRad = 114.3*mm;		//Distance from center to inside wall (4 inches)
+	G4double ss_thickness = 3.0*mm;
+
+	G4double ss_inRad = ss_trueRad;
+	G4double ss_outRad = ss_trueRad + ss_thickness;
+	G4double ss_startPhi = 0*rad;
+	G4double ss_spanPhi = 2*pi*rad;
+	G4double ss_startTheta = 0*rad;
+	G4double ss_spanTheta = pi*rad;
+
+	//Solid
+	G4Sphere* ssSolid = new G4Sphere("Spherical Shell", ss_inRad, ss_outRad,
+			ss_startPhi, ss_spanPhi, ss_startTheta, ss_spanTheta);
+
+	//Logical Volume
+	
+	G4LogicalVolume* ssLog = new G4LogicalVolume(ssSolid, Al, "Spherical Shell");
+
+	//Physical Volume Parameters
+	G4double ss_x = 0.0*cm;
+	G4double ss_y = 0.0*cm;
+	G4double ss_z = 0.0*cm;
+
+	//Physical Volume
+	
+	G4VPhysicalVolume* ssPhys =
+       	new G4PVPlacement(0,            	//no rotation
+                        G4ThreeVector(ss_x, ss_y, ss_z),
+                                        	//translation position
+                        ssLog,       		//logical volume
+                        "Spherical Shell",      //name
+                        worldLog,              	//Mother volume
+                        false,          	//no bool
+                        0);             	//copy number
+
+	
 
 //============================================
 
@@ -251,7 +293,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 	//Detector_0
 
-	dist = 114.3*mm;
+	dist = 114.3*mm+1*cm;
 	dist += addL;
 
 	theta = 0*rad;
@@ -265,7 +307,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 	//Detector_1
         
-	dist = 114.3*mm;
+	dist = 114.3*mm+1*cm;
         dist += addL;
 
         theta = pi*rad;
