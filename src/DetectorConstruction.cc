@@ -85,7 +85,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
                         false,          //no bool
                         0);             //copy number
 //============================================
-
+/*
 	//Create Al Spherical Shell
 	
 	//Parameters
@@ -125,7 +125,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
                         0);             	//copy number
 
 	
-
+*/
 //============================================
 
 	//Create CeBr3 Crystal
@@ -307,7 +307,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	detectorAssembly->MakeImprint(worldLog, Mp);
 
 	//Detector_1
-        
+/*        
 	dist = ss_outRad;
         dist += addL;
 
@@ -319,7 +319,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	Mp = CreateTransform(dist, theta, phi, spin);
 
         detectorAssembly->MakeImprint(worldLog, Mp);
-
+*/
 /*
 	//Detector_2
         
