@@ -515,6 +515,7 @@ void DetectorConstruction::ConstructSDandField()
 	//Set Sensitive Detector
 	SetSensitiveDetector("sd_CeBr3", detector, true);
 	
+	SetSensitiveDetector("ld_CeBr3", detector, true);
 }
 
 //Auxillary Functions//
