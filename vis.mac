@@ -15,6 +15,10 @@
 /vis/geometry/set/colour sd_Reflector 1 0.5 0.5 0.5 0
 /vis/geometry/set/colour sd_CeBr3 1 0 0 1 1
 
+/vis/geometry/set/colour ld_Shell 1 0.5 0.5 0.5 0.5
+/vis/geometry/set/colour ld_Reflector 1 0.5 0.5 0.5 0
+/vis/geometry/set/colour ld_CeBr3 1 0 0 1 1
+
 #Set Trajectories
 
 /vis/scene/add/trajectories smooth

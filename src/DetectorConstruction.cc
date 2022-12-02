@@ -276,6 +276,145 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 //==========================================
 	
+//===========================================//
+//		Large Detector		     //
+//===========================================//
+
+	//Create CeBr3 Crystal
+
+        //Parameters
+        G4double ld_c_inRad = 0.0*cm;
+        G4double ld_c_outRad = 25.5*mm;
+        G4double ld_c_hz = 25.5*mm;
+        G4double ld_c_startAngle = 0.0*deg;
+        G4double ld_c_spanAngle = 360.0*deg;
+
+        //Solid
+        G4Tubs* ld_cSolid = new G4Tubs("ld_CeBr3", ld_c_inRad, ld_c_outRad,
+                        ld_c_hz, ld_c_startAngle, ld_c_spanAngle);
+        //Logical Volume
+        G4LogicalVolume* ld_cLog = new G4LogicalVolume(ld_cSolid, CeBr3, "ld_CeBr3");
+
+        //Physical Volume Parameters
+        G4double ld_c_x = 0.0*cm;
+        G4double ld_c_y = 0.0*cm;
+        G4double ld_c_z = 0.0*cm;
+
+//------------------------------------------------
+	
+	//Create Reflector
+
+	
+        //Base Parameters
+        
+	G4double ld_rThickness = 0.01*mm;
+        
+	G4double ld_rBase_outRad = ld_c_outRad+ld_rThickness;
+        G4double ld_rBase_inRad = ld_c_inRad;
+        G4double ld_rBase_hz = ld_c_hz+ld_rThickness/2;
+        G4double ld_rBase_startAngle = 0.0*deg;
+        G4double ld_rBase_spanAngle = 360*deg;
+
+        //Base Solid
+        G4Tubs* ld_rBase = new G4Tubs("ld_rBase", ld_rBase_inRad, ld_rBase_outRad,
+                        ld_rBase_hz, ld_rBase_startAngle, ld_rBase_spanAngle);
+
+        //Hole Parameters
+        G4double ld_rHole_outRad = ld_c_outRad;
+        G4double ld_rHole_inRad = ld_c_inRad;
+        G4double ld_rHole_hz = ld_rBase_hz;
+        G4double ld_rHole_startAngle = ld_rBase_startAngle;
+        G4double ld_rHole_spanAngle = ld_rBase_spanAngle;
+
+        //Hole Solid
+        G4Tubs* ld_rHole = new G4Tubs("ld_Hole", ld_rHole_inRad, ld_rHole_outRad,
+                        ld_rHole_hz, ld_rHole_startAngle, ld_rHole_spanAngle);
+
+        //Hole Positioning
+        G4ThreeVector ld_rHoleTrans(0, 0, 1* ld_rThickness);
+
+        //Build Shell Solid
+        G4SubtractionSolid* ld_rSolid =
+                new G4SubtractionSolid("ld_Reflector_Shell", ld_rBase, ld_rHole, nullRot, ld_rHoleTrans);
+
+        //Reflector Logical Volume
+        G4LogicalVolume* ld_rLog  = new G4LogicalVolume(ld_rSolid, Al, "ld_Reflector");
+
+        //Physical Volume Parameters
+        G4double ld_r_x = 0.0*m;
+        G4double ld_r_y = 0.0*m;
+        G4double ld_r_z = ld_c_z-(ld_rThickness/2); 
+                                                                         
+
+//-------------------------------------------------------
+        
+	//Create Al Shell
+
+
+        //Base Shell Parameters
+
+        G4double ld_sThickness = 0.5*mm;
+	G4double ld_gapThickness = 1.0*mm;
+
+	G4double ld_totThickness = ld_sThickness + ld_gapThickness;
+
+        G4double ld_sBase_outRad = ld_c_outRad+ld_totThickness;
+        G4double ld_sBase_inRad = ld_c_inRad;
+        G4double ld_sBase_hz = ld_c_hz+ld_totThickness/2;
+        G4double ld_sBase_startAngle = 0.0*deg;
+        G4double ld_sBase_spanAngle = 360*deg;
+
+        //Base Shell Solid
+        G4Tubs* ld_sBase = new G4Tubs("ld_Base_Shell", ld_sBase_inRad, ld_sBase_outRad,
+                        ld_sBase_hz, ld_sBase_startAngle, ld_sBase_spanAngle);
+
+        //Hole Parameters
+        G4double ld_sHole_outRad = ld_c_outRad + ld_gapThickness;
+        G4double ld_sHole_inRad = ld_c_inRad;
+        G4double ld_sHole_hz = ld_sBase_hz;
+        G4double ld_sHole_startAngle = ld_sBase_startAngle;
+        G4double ld_sHole_spanAngle = ld_sBase_spanAngle;
+
+        //Hole Solid
+        G4Tubs* ld_sHole = new G4Tubs("ld_Shell_Hole", ld_sHole_inRad, ld_sHole_outRad,
+                        ld_sHole_hz, ld_sHole_startAngle, ld_sHole_spanAngle);
+
+        //Hole Positioning
+        G4ThreeVector ld_sHoleTrans(0, 0, 1*ld_sThickness );
+
+        //Build Shell Solid
+        G4SubtractionSolid* ld_sSolid =
+                new G4SubtractionSolid("ld_Shell", ld_sBase, ld_sHole, nullRot, ld_sHoleTrans);
+
+        //Shell Logical Volume
+        G4LogicalVolume* ld_sLog  = new G4LogicalVolume(ld_sSolid, Al, "ld_Shell");
+
+        //Physical Volume Parameters
+        G4double ld_s_x = 0.0*m;
+        G4double ld_s_y = 0.0*m;
+        G4double ld_s_z = ld_c_z-(ld_totThickness/2);
+
+//------------------------------------------------------------
+
+	//Detector Assembly
+	G4AssemblyVolume* ld_detectorAssembly = new G4AssemblyVolume;
+
+	//Add Crystal
+	Ta.setX(ld_c_x); Ta.setY(ld_c_y); Ta.setZ(ld_c_z);
+	Ma = G4Transform3D(Ra, Ta);
+	ld_detectorAssembly->AddPlacedVolume(ld_cLog, Ma);
+
+	//Add Reflector
+        Ta.setX(ld_r_x); Ta.setY(ld_r_y); Ta.setZ(ld_r_z);
+	Ma = G4Transform3D(Ra, Ta);
+        ld_detectorAssembly->AddPlacedVolume(ld_rLog, Ma);
+	
+	//Add Shell
+        Ta.setX(ld_s_x); Ta.setY(ld_s_y); Ta.setZ(ld_s_z);
+	Ma = G4Transform3D(Ra, Ta);
+        ld_detectorAssembly->AddPlacedVolume(ld_sLog, Ma);
+
+//==========================================
 
 	//Detector Parameters//
 	
@@ -315,9 +454,9 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	sd_detectorAssembly->MakeImprint(worldLog, Mp);
 
 	//Detector_1
-/*        
+        
 	gap = 0.0*mm;
-	addL = sd_c_hz + sd_totThickness + gap;
+	addL = ld_c_hz + ld_totThickness + gap;
 	
 	dist = ss_outRad;
         dist += addL;
@@ -329,8 +468,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	
 	Mp = CreateTransform(dist, theta, phi, spin);
 
-        detectorAssembly->MakeImprint(worldLog, Mp);
-*/
+        ld_detectorAssembly->MakeImprint(worldLog, Mp);
+
 /*
 	//Detector_2
         
