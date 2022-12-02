@@ -289,8 +289,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	G4double spin;		//Rotation of detector along its symmetry axis
 
 	//Lengths
-	G4double gap = 0.0*mm;
-	G4double addL = sd_c_hz + sd_totThickness + gap;
+	G4double gap;
+	G4double addL;
 
 //===========================================
 
@@ -298,6 +298,9 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	//Detector Placement//
 
 	//Detector_0
+	
+	gap = 0.0*mm;
+	addL = sd_c_hz + sd_totThickness + gap;
 
 	dist = ss_outRad;
 	dist += addL;
@@ -313,6 +316,9 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 	//Detector_1
 /*        
+	gap = 0.0*mm;
+	addL = sd_c_hz + sd_totThickness + gap;
+	
 	dist = ss_outRad;
         dist += addL;
 
@@ -328,6 +334,9 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 /*
 	//Detector_2
         
+	gap = 0.0*mm;
+	addL = sd_c_hz + sd_totThickness + gap;
+	
 	dist = 114.3*mm;
         dist += addL;
 
