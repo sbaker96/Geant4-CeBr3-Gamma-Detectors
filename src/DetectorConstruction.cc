@@ -284,8 +284,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
         //Parameters
         G4double ld_c_inRad = 0.0*cm;
-        G4double ld_c_outRad = 25.5*mm;
-        G4double ld_c_hz = 25.5*mm;
+        G4double ld_c_outRad = 38*mm;
+        G4double ld_c_hz = 38*mm;
         G4double ld_c_startAngle = 0.0*deg;
         G4double ld_c_spanAngle = 360.0*deg;
 
@@ -354,7 +354,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         //Base Shell Parameters
 
         G4double ld_sThickness = 0.5*mm;
-	G4double ld_gapThickness = 1.0*mm;
+	G4double ld_gapThickness = 2.4*mm;
 
 	G4double ld_totThickness = ld_sThickness + ld_gapThickness;
 
