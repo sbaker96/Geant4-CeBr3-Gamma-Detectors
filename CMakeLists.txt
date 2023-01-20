@@ -37,6 +37,7 @@ set(EX_SCRIPTS
 	exampleRun.mac
 	
 	GeneratePlots.C
+	GetCounts.C
 	)
 
 foreach(_script ${EX_SCRIPTS})
