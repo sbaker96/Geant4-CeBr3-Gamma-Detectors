@@ -89,11 +89,11 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	//Create Al Spherical Shell
 	
 	//Parameters
-	G4double ss_trueRad = 114.3*mm;		//Distance from center to inside wall (4 inches)
-	G4double ss_thickness = 3.0*mm;
+	G4double ss_trueRad = 114.3*mm;		
+	G4double ss_thickness = 2.0*mm;
 
-	G4double ss_inRad = ss_trueRad;
-	G4double ss_outRad = ss_trueRad + ss_thickness;
+	G4double ss_inRad = ss_trueRad - ss_thickness;
+	G4double ss_outRad = ss_trueRad;
 	G4double ss_startPhi = 0*rad;
 	G4double ss_spanPhi = 2*pi*rad;
 	G4double ss_startTheta = 0*rad;
@@ -305,7 +305,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	Mp = CreateTransform(dist, theta, phi, spin);
 
 	detectorAssembly->MakeImprint(worldLog, Mp);
-
+/*
 	//Detector_1
         
 	dist = ss_outRad;
@@ -319,7 +319,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	Mp = CreateTransform(dist, theta, phi, spin);
 
         detectorAssembly->MakeImprint(worldLog, Mp);
-
+*/
 /*
 	//Detector_2
         
