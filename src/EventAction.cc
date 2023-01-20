@@ -53,7 +53,7 @@ void EventAction::EndOfEventAction(const G4Event* event)
 
 	auto trackerHC = GetHitsCollection(fHCID, event);
 
-	const G4int nofDetectors = 2;
+	const G4int nofDetectors = 1;
 
     	auto analysisManager = G4AnalysisManager::Instance();
 
