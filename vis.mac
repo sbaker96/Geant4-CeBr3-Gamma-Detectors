@@ -11,9 +11,13 @@
 /vis/viewer/set/style surface
 /vis/geometry/set/visibility World 0 false
 /vis/viewer/set/viewpointVector
-/vis/geometry/set/colour Shell 1 0.5 0.5 0.5 0.5
-/vis/geometry/set/colour Reflector 1 0.5 0.5 0.5 0
-/vis/geometry/set/colour CeBr3 1 0 0 1 1
+/vis/geometry/set/colour sd_Shell 1 0.5 0.5 0.5 0.5
+/vis/geometry/set/colour sd_Reflector 1 0.5 0.5 0.5 0
+/vis/geometry/set/colour sd_CeBr3 1 0 0 1 1
+
+/vis/geometry/set/colour ld_Shell 1 0.5 0.5 0.5 0.5
+/vis/geometry/set/colour ld_Reflector 1 0.5 0.5 0.5 0
+/vis/geometry/set/colour ld_CeBr3 1 0 0 1 1
 
 #Set Trajectories
 
