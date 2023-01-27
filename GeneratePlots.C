@@ -25,8 +25,8 @@ const char* srcName = "output.root";
 const char* outName = "Plots.root";
 const char* histName = "Edep_";
 
-const int nofDetectors = 2;
-const int maxEnergy = 3000; // in keV
+const int nofDetectors = 1;
+const int maxEnergy = 4000; // in keV
 
 /////////////////////
 
@@ -52,12 +52,13 @@ int GeneratePlots()
 	//Generate raw and folded 2D plots
 	for(int j = 0; j < nofDetectors; j++)
 	{
+/*
 		for(int k = 0; k < j; k++)
 		{
 			plot2DRaw(k, j);
 			plot2DFolded(k, j);
 		}
-
+*/
 	}
 
 	return 0;
