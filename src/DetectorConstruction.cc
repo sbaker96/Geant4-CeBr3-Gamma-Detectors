@@ -111,7 +111,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	G4double ss_x = 0.0*cm;
 	G4double ss_y = 0.0*cm;
 	G4double ss_z = 0.0*cm;
-/*
+
 	//Physical Volume
 	
 	G4VPhysicalVolume* ssPhys =
@@ -125,7 +125,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
                         0);             	//copy number
 
 	
-*/
+
 
 //=============================================
 
@@ -452,7 +452,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	Mp = CreateTransform(dist, theta, phi, spin);
 
 	sd_detectorAssembly->MakeImprint(worldLog, Mp);
-
+/*
 	//Detector_1
         
 	gap = 0.0*mm;
@@ -469,7 +469,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	Mp = CreateTransform(dist, theta, phi, spin);
 
         ld_detectorAssembly->MakeImprint(worldLog, Mp);
-
+*/
 /*
 	//Detector_2
         
