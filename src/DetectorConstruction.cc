@@ -284,8 +284,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
         //Parameters
         G4double ld_c_inRad = 0.0*cm;
-        G4double ld_c_outRad = 38*mm;
-        G4double ld_c_hz = 38*mm;
+        G4double ld_c_outRad = 38.1*mm;
+        G4double ld_c_hz = 50.8*mm;
         G4double ld_c_startAngle = 0.0*deg;
         G4double ld_c_spanAngle = 360.0*deg;
 
