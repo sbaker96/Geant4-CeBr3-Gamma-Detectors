@@ -452,11 +452,11 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	Mp = CreateTransform(dist, theta, phi, spin);
 
 	sd_detectorAssembly->MakeImprint(worldLog, Mp);
-/*
+
 	//Detector_1
-        
+/*        
 	gap = 0.0*mm;
-	addL = ld_c_hz + ld_totThickness + gap;
+	addL = sd_c_hz + sd_totThickness + gap;
 	
 	dist = ss_outRad;
         dist += addL;
@@ -468,7 +468,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	
 	Mp = CreateTransform(dist, theta, phi, spin);
 
-        ld_detectorAssembly->MakeImprint(worldLog, Mp);
+        sd_detectorAssembly->MakeImprint(worldLog, Mp);
 */
 /*
 	//Detector_2
