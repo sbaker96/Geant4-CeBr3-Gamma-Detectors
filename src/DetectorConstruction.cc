@@ -43,6 +43,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	//Define nist Materials
         G4Material* Air = man->FindOrBuildMaterial("G4_AIR");
         G4Material* Al = man->FindOrBuildMaterial("G4_Al");
+	G4Material* Concrete = man->FindOrBuildMaterial("G4_CONCRETE");
 
 	//Define CeBr3
 
@@ -489,7 +490,41 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
        sd_ detectorAssembly->MakeImprint(worldLog, Mp);
 */
 //===========================================
+	
+	//================//
+	// Concrete Floor //
+	//================//
 
+
+	//Define Floor Parameters
+        G4double floor_hx = 5.0*m;
+        G4double floor_hy = 1.0*m;
+        G4double floor_hz = 5.0*m;
+
+        //Create Solid World
+        G4Box* floorSolid  = new G4Box("Floor", floor_hx, floor_hy, floor_hz);
+
+        //Create Logical World
+        G4LogicalVolume* floorLog = new G4LogicalVolume(floorSolid, Concrete, "Floor");
+
+        //Define Physical World Parameters
+        G4double floor_pos_x = 0.0*m;
+        G4double floor_pos_y = -3.0*m;
+        G4double floor_pos_z = 0.0*m;
+
+        //Create Physical World
+        G4VPhysicalVolume* floorPhys =
+        new G4PVPlacement(0,            //no rotation
+                        G4ThreeVector(floor_pos_x, floor_pos_y, floor_pos_z),
+                                        //translation position
+                        floorLog,       //logical volume
+                        "Floor",        //name
+                        worldLog,              //Mother volume
+                        false,          //no bool
+                        0);             //copy number
+
+
+//===========================================
 
 	//Return
 	G4cout << *(G4Material::GetMaterialTable()) << G4endl;
