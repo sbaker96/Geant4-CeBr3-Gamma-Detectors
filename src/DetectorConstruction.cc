@@ -15,6 +15,7 @@
 
 #include "G4PhysicalConstants.hh"
 
+#include "G4MultiUnion.hh"
 #include "G4UnionSolid.hh"
 #include "G4SubtractionSolid.hh"
 #include "TrackerSD.hh"
@@ -369,6 +370,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         G4Tubs* ld_sBase = new G4Tubs("ld_Base_Shell", ld_sBase_inRad, ld_sBase_outRad,
                         ld_sBase_hz, ld_sBase_startAngle, ld_sBase_spanAngle);
 
+
         //Hole Parameters
         G4double ld_sHole_outRad = ld_c_outRad + ld_gapThickness;
         G4double ld_sHole_inRad = ld_c_inRad;
@@ -496,38 +498,40 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	//================//
 
 	//Parameters
-	G4double floor_dist = 1.5*m;		//-z
-	G4double floor_thickness = 2.0*m;	
+	G4double floor_dist = 2.5*m;		//-y
+	G4double floor_thickness = 1.0*m;	
 
-	G4double ceiling_dist = 1.0*m;		//+z
-	G4double ceiling_thickness = 0.0*m;
+	G4double ceiling_dist = 2.0*m;		//+y
+	G4double ceiling_thickness = 1.0*m;
 
 	G4double wall1_dist = 2.5*m;		//+x
-	G4double wall1_thickness = 0.0*m;
+	G4double wall1_thickness = 1.0*m;
 
-	G4double wall2_dist = 2.5*m;		//+y
-        G4double wall2_thickness = 0.0*m;
+	G4double wall2_dist = 2.5*m;		//+z
+        G4double wall2_thickness = 1.0*m;
 
         G4double wall3_dist = 2.5*m;		//-x
-        G4double wall3_thickness = 0.0*m;
+        G4double wall3_thickness = 1.0*m;
 
-        G4double wall4_dist = 2.5*m;		//-y
-        G4double wall4_thickness = 0.0*m;
-
+        G4double wall4_dist = 2.5*m;		//-z
+        G4double wall4_thickness = 1.0*m;
+/*
 	//Calculated values
 	G4double walls_Base_hx = ((wall1_dist + wall1_thickness) + (wall3_dist + wall3_thickness))/2;
 	G4double walls_Base_hy = ((wall2_dist + wall2_thickness) + (wall4_dist + wall4_thickness))/2;
 	G4double walls_Base_hz = ((ceiling_dist + ceiling_thickness) + (floor_dist + floor_thickness))/2;
 
-        G4double walls_Hole_hx = ((wall1_dist + wall1_thickness) + (wall3_dist + wall3_thickness))/2;
-        G4double walls_Hole_hy = ((wall2_dist + wall2_thickness) + (wall4_dist + wall4_thickness))/2;
-        G4double walls_Hole_hz = ((ceiling_dist + ceiling_thickness) + (floor_dist + floor_thickness))/2;
+        G4double walls_Hole_hx = ((wall1_dist + 0*wall1_thickness) + (wall3_dist + 0*wall3_thickness))/2;
+        G4double walls_Hole_hy = ((wall2_dist + 0*wall2_thickness) + (wall4_dist + 0*wall4_thickness))/2;
+        G4double walls_Hole_hz = ((ceiling_dist + 0*ceiling_thickness) + (floor_dist + 0*floor_thickness))/2;
 
 	G4double walls_x = ((wall1_dist + wall1_thickness) - (wall3_dist + wall3_thickness))/2;
 	G4double walls_y = ((wall2_dist + wall2_thickness) - (wall4_dist + wall4_thickness))/2;
 	G4double walls_z = ((ceiling_dist + ceiling_thickness) - (floor_dist + floor_thickness))/2;
 
 	G4ThreeVector walls_Pos(walls_x, walls_y, walls_z);
+
+
 
 	//Create Base
 	G4Box* walls_Base = new G4Box("Base", walls_Base_hx, walls_Base_hy, walls_Base_hz);
@@ -537,12 +541,62 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 	//Create Solid
 	G4SubtractionSolid* wallsSolid = new G4SubtractionSolid("Walls", walls_Base, walls_Hole);
+*/
+
+	//Calculated Values
+        G4double walls_Base_hx = ((wall1_dist + wall1_thickness) + (wall3_dist + wall3_thickness))/2;
+        G4double walls_Base_hy = ((ceiling_dist + ceiling_thickness) + (floor_dist + floor_thickness))/2;
+        G4double walls_Base_hz = ((wall2_dist + wall2_thickness) + (wall4_dist + wall4_thickness))/2;
+
+	G4double walls_Base_posx = ((wall1_dist + wall1_thickness) - (wall3_dist + wall3_thickness))/2;
+        G4double walls_Base_posy = ((ceiling_dist + ceiling_thickness) - (floor_dist + floor_thickness))/2;
+        G4double walls_Base_posz = ((wall2_dist + wall2_thickness) - (wall4_dist + wall4_thickness))/2;
+
+
+	//Create Solids
+	G4Box* floor = new G4Box("Floor", walls_Base_hx, floor_thickness/2, walls_Base_hz);
+	G4Box* ceiling = new G4Box("Ceiling", walls_Base_hx, ceiling_thickness/2, walls_Base_hz);
+	G4Box* wall1 = new G4Box("Wall 1", wall1_thickness/2, walls_Base_hy, walls_Base_hz);
+	G4Box* wall2 = new G4Box("Wall 2", walls_Base_hx, walls_Base_hy, wall2_thickness/2);
+        G4Box* wall3 = new G4Box("Wall 3", wall3_thickness/2, walls_Base_hy, walls_Base_hz);
+        G4Box* wall4 = new G4Box("Wall 4", walls_Base_hx, walls_Base_hy, wall4_thickness/2);
+
+	//Create Placement Vectors
+	G4ThreeVector floor_pos(walls_Base_posx, -(floor_dist + floor_thickness/2), walls_Base_posz); 
+	G4ThreeVector ceiling_pos(walls_Base_posx, ceiling_dist + ceiling_thickness/2, walls_Base_posz);
+	G4ThreeVector wall1_pos(wall1_dist + wall1_thickness/2, walls_Base_posy, walls_Base_posz);
+	G4ThreeVector wall2_pos(walls_Base_posx, walls_Base_posy,  wall2_dist + wall2_thickness/2);
+	G4ThreeVector wall3_pos(-(wall3_dist + wall3_thickness/2), walls_Base_posy, walls_Base_posz);
+	G4ThreeVector wall4_pos(walls_Base_posx, walls_Base_posy, -(wall4_dist + wall4_thickness/2));
+
+	//Rotation
+	G4RotationMatrix noRot = G4RotationMatrix();
+
+	//Create Transforms
+	G4Transform3D tr_floor = G4Transform3D(noRot, floor_pos);
+	G4Transform3D tr_ceiling = G4Transform3D(noRot, ceiling_pos);
+	G4Transform3D tr_w1 = G4Transform3D(noRot, wall1_pos);
+	G4Transform3D tr_w2 = G4Transform3D(noRot, wall2_pos);
+	G4Transform3D tr_w3 = G4Transform3D(noRot, wall3_pos);
+	G4Transform3D tr_w4 = G4Transform3D(noRot, wall4_pos);
+
+	//Create Union Solid
+	G4MultiUnion* wallsSolid = new G4MultiUnion("Walls");
+
+	wallsSolid->AddNode(*floor, tr_floor);
+	wallsSolid->AddNode(*ceiling, tr_ceiling);
+	wallsSolid->AddNode(*wall1, tr_w1);
+	wallsSolid->AddNode(*wall2, tr_w2);
+	wallsSolid->AddNode(*wall3, tr_w3);
+	wallsSolid->AddNode(*wall4, tr_w4);
+
+	wallsSolid->Voxelize();
 
 	//Create Logical Volume
 	G4LogicalVolume* wallsLog = new G4LogicalVolume(wallsSolid, Concrete, "Walls");
 
 	//Create Physical Volume
-	G4VPhysicalVolume* wallsPhys = new G4PVPlacement(0, walls_Pos, wallsLog, "Walls", worldLog, false, 0);
+	G4VPhysicalVolume* wallsPhys = new G4PVPlacement(0, G4ThreeVector(), wallsLog, "Walls", worldLog, false, 0);
 
 
 
