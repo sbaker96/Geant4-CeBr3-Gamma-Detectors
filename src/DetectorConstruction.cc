@@ -492,7 +492,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
        sd_ detectorAssembly->MakeImprint(worldLog, Mp);
 */
 //===========================================
-	
+/*	
 	//================//
 	// Concrete Walls //
 	//================//
@@ -501,8 +501,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	G4double floor_dist = 2.5*m;		//-y
 	G4double floor_thickness = 1.0*m;	
 
-	G4double ceiling_dist = 2.0*m;		//+y
-	G4double ceiling_thickness = 1.0*m;
+	G4double ceiling_dist = 2.5*m;		//+y
+	G4double ceiling_thickness = 1.5*m;
 
 	G4double wall1_dist = 2.5*m;		//+x
 	G4double wall1_thickness = 1.0*m;
@@ -515,23 +515,21 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
         G4double wall4_dist = 2.5*m;		//-z
         G4double wall4_thickness = 1.0*m;
-/*
+
 	//Calculated values
 	G4double walls_Base_hx = ((wall1_dist + wall1_thickness) + (wall3_dist + wall3_thickness))/2;
-	G4double walls_Base_hy = ((wall2_dist + wall2_thickness) + (wall4_dist + wall4_thickness))/2;
-	G4double walls_Base_hz = ((ceiling_dist + ceiling_thickness) + (floor_dist + floor_thickness))/2;
+	G4double walls_Base_hy = ((ceiling_dist + ceiling_thickness) + (floor_dist + floor_thickness))/2;
+	G4double walls_Base_hz = ((wall2_dist + wall2_thickness) + (wall4_dist + wall4_thickness))/2;
 
         G4double walls_Hole_hx = ((wall1_dist + 0*wall1_thickness) + (wall3_dist + 0*wall3_thickness))/2;
-        G4double walls_Hole_hy = ((wall2_dist + 0*wall2_thickness) + (wall4_dist + 0*wall4_thickness))/2;
-        G4double walls_Hole_hz = ((ceiling_dist + 0*ceiling_thickness) + (floor_dist + 0*floor_thickness))/2;
+        G4double walls_Hole_hy = ((ceiling_dist + 0*ceiling_thickness) + (floor_dist + 0*floor_thickness))/2;
+        G4double walls_Hole_hz = ((wall2_dist + 0*wall2_thickness) + (wall4_dist + 0*wall4_thickness))/2;
 
-	G4double walls_x = ((wall1_dist + wall1_thickness) - (wall3_dist + wall3_thickness))/2;
-	G4double walls_y = ((wall2_dist + wall2_thickness) - (wall4_dist + wall4_thickness))/2;
-	G4double walls_z = ((ceiling_dist + ceiling_thickness) - (floor_dist + floor_thickness))/2;
+	G4double walls_x = ((0*wall1_dist + wall1_thickness) - (0*wall3_dist + wall3_thickness))/2;
+	G4double walls_y = ((0*ceiling_dist + ceiling_thickness) - (0*floor_dist + floor_thickness))/2;
+	G4double walls_z = ((0*wall2_dist + wall2_thickness) - (0*wall4_dist + wall4_thickness))/2;
 
 	G4ThreeVector walls_Pos(walls_x, walls_y, walls_z);
-
-
 
 	//Create Base
 	G4Box* walls_Base = new G4Box("Base", walls_Base_hx, walls_Base_hy, walls_Base_hz);
@@ -540,9 +538,9 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	G4Box* walls_Hole = new G4Box("Hole", walls_Hole_hx, walls_Hole_hy, walls_Hole_hz);
 
 	//Create Solid
-	G4SubtractionSolid* wallsSolid = new G4SubtractionSolid("Walls", walls_Base, walls_Hole);
+	G4SubtractionSolid* wallsSolid = new G4SubtractionSolid("Walls", walls_Base, walls_Hole, 0, walls_Pos);
 */
-
+/*
 	//Calculated Values
         G4double walls_Base_hx = ((wall1_dist + wall1_thickness) + (wall3_dist + wall3_thickness))/2;
         G4double walls_Base_hy = ((ceiling_dist + ceiling_thickness) + (floor_dist + floor_thickness))/2;
@@ -591,13 +589,14 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	wallsSolid->AddNode(*wall4, tr_w4);
 
 	wallsSolid->Voxelize();
-
+*/
+/*
 	//Create Logical Volume
 	G4LogicalVolume* wallsLog = new G4LogicalVolume(wallsSolid, Concrete, "Walls");
 
 	//Create Physical Volume
 	G4VPhysicalVolume* wallsPhys = new G4PVPlacement(0, G4ThreeVector(), wallsLog, "Walls", worldLog, false, 0);
-
+*/
 
 
 /*
@@ -629,6 +628,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
                         0);             //copy number
 
 */
+
 //===========================================
 
 	//Return
