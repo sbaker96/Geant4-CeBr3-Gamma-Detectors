@@ -11,6 +11,7 @@ using namespace std;
 //Function Prototypes//
 void plotRaw(int num);
 void plotFolded(int num);
+void plotExp(int num);
 
 void plot2DRaw(int numA, int numB);
 void plot2DFolded(int numA, int numB);
@@ -47,6 +48,7 @@ int GeneratePlots()
 	{
 		plotRaw(i);
 		plotFolded(i);
+		plotExp(i);
 	}
 
 	//Generate raw and folded 2D plots
@@ -171,6 +173,66 @@ void plotFolded(int num)
 	outFile->Close();
 }
 
+void plotExp(int num)
+
+{
+	//Start Message 
+	cout << "Plotting Folded Data with Exponential Background for Detector " << num << endl;
+
+	TFile* inFile = new TFile(outName);
+
+	TH1F* srcHist = static_cast<TH1F*>(inFile->Get(numAppend("Raw_", num)));
+	
+	//Create Histogram
+        int nofBins = maxEnergy;
+	
+	const char* writeName = numAppend("Exp_", num);
+
+        TH1F* outHist = new TH1F(writeName, writeName, nofBins, 0, nofBins);
+
+	TF1* back = new TF1("back", "exp(x/(-100))", 0, 1000*nofBins);
+
+	outHist->FillRandom("back", 1000000);
+
+	//Create Functions
+        TF1* stDev = new TF1("Standard Deviation", "(x/235.5)*(100/sqrt(x))", 0 , 1000*nofBins);
+
+	auto g = new TF1("g", "gausn(0)");
+
+	int maxFilledBin = srcHist->FindLastBinAbove();
+
+	for(int i = 2; i <= maxFilledBin; i++)
+	{
+		int counts  = srcHist->GetBinContent(i);
+		
+		if(counts != 0) 
+		{
+		g->SetParameter(0, 1);
+                g->SetParameter(1, i);
+                g->SetParameter(2, stDev->Eval(i));
+
+                outHist->FillRandom("g", counts);
+		}
+	}
+
+
+	//Normalize Histogram
+//  	double factor = 1.0;
+
+//	outHist->Scale(factor/outHist->GetMaximum());	//Sets the highest bin to one
+
+	//Set Histogram Option
+	outHist->SetOption("HIST");
+
+        outHist->SetLineColor(1);
+
+	//Write Histogram to output file
+	TFile* outFile = new TFile(outName, "UPDATE");
+	
+	outHist->Write();
+
+	outFile->Close();
+}
 void plot2DRaw(int numA, int numB)
 {
 	//Start Message
