@@ -21,7 +21,10 @@ vector<double> energies {
 867.38,
 964.057,
 1085.837,
+1089.737,
 1112.076,
+1212.948,
+1299.142,
 1408.006
 
 };
@@ -55,6 +58,21 @@ int GetCounts()
 		int bin = (i + 1);
 		int counts = srcHist->GetBinContent(bin);
 		cout << counts << endl;
+	}
+	
+	FILE *fpt;
+
+	fpt = fopen("sim.dat", "w+");
+
+	for(auto i: energies)
+	{
+
+	int bin = (i + 1);
+
+	int counts = srcHist->GetBinContent(bin);
+	
+	fprintf(fpt, "%f, %d\n", i, counts);
+
 	}
 
 return 0;
