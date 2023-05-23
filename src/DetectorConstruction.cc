@@ -3,6 +3,7 @@
 //====================================
 
 #include "DetectorConstruction.hh"
+#include "AuxConstructionFunctions.hh"
 
 #include "G4RunManager.hh"
 #include "G4NistManager.hh"
@@ -44,7 +45,6 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	//Define nist Materials
         G4Material* Air = man->FindOrBuildMaterial("G4_AIR");
         G4Material* Al = man->FindOrBuildMaterial("G4_Al");
-	G4Material* Concrete = man->FindOrBuildMaterial("G4_CONCRETE");
 
 	//Define CeBr3
 
@@ -130,7 +130,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 
 //=============================================
-
+/*
 //===========================================//
 //		Small Detector		     //
 //===========================================//
@@ -277,7 +277,9 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         sd_detectorAssembly->AddPlacedVolume(sd_sLog, Ma);
 
 //==========================================
-	
+*/
+
+
 //===========================================//
 //		Large Detector		     //
 //===========================================//
@@ -519,33 +521,5 @@ void DetectorConstruction::ConstructSDandField()
 	
 	SetSensitiveDetector("ld_CeBr3", detector, true);
 }
-
-//Auxillary Functions//
-
-// CreateTransform:
-// Takes the placement parameters as input and produces a G4Transform3D object as output.
-
-G4Transform3D DetectorConstruction::CreateTransform(G4double dist, G4double theta, G4double phi, G4double spin)
-{
-
-	//Create Transforms
-	G4RotationMatrix Rp;
-        G4ThreeVector Tp;
-        G4Transform3D Mp;
-
-	//Set Parameters
-	
-	//Set Translation
-	Tp.setX(dist*sin(theta)*cos(phi)); Tp.setY(dist*sin(theta)*sin(phi)); Tp.setZ(dist*cos(theta));
-
-	//Set Rotation
-        Rp.rotateZ(spin); Rp.rotateY(theta); Rp.rotateZ(phi);
-
-	//Set Transform
-        Mp = G4Transform3D(Rp, Tp);
-
-	return Mp;
-}
-
 
 }
