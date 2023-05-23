@@ -92,22 +92,22 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	
 	//Parameters
 	G4double ss_trueRad = 114.3*mm;		
-	G4double ss_thickness = 4.0*mm;
+	G4double ss_thickness = 2*mm;
 
-	G4double ss_inRad = ss_trueRad - ss_thickness;
-	G4double ss_outRad = ss_trueRad;
+	G4double ss_inRad = ss_trueRad;
+	G4double ss_outRad = ss_trueRad + ss_thickness;
 	G4double ss_startPhi = 0*rad;
 	G4double ss_spanPhi = 2*pi*rad;
 	G4double ss_startTheta = 0*rad;
 	G4double ss_spanTheta = pi*rad;
 
 	//Solid
-	G4Sphere* ssSolid = new G4Sphere("Spherical Shell", ss_inRad, ss_outRad,
+	G4Sphere* ssSolid = new G4Sphere("SphericalShell", ss_inRad, ss_outRad,
 			ss_startPhi, ss_spanPhi, ss_startTheta, ss_spanTheta);
 
 	//Logical Volume
 	
-	G4LogicalVolume* ssLog = new G4LogicalVolume(ssSolid, Al, "Spherical Shell");
+	G4LogicalVolume* ssLog = new G4LogicalVolume(ssSolid, Al, "SphericalShell");
 
 	//Physical Volume Parameters
 	G4double ss_x = 0.0*cm;
@@ -121,7 +121,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
                         G4ThreeVector(ss_x, ss_y, ss_z),
                                         	//translation position
                         ssLog,       		//logical volume
-                        "Spherical Shell",      //name
+                        "SphericalShell",       //name
                         worldLog,              	//Mother volume
                         false,          	//no bool
                         0);             	//copy number
@@ -162,7 +162,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	
         //Base Parameters
         
-	G4double sd_rThickness = 0.01*mm;
+	G4double sd_rThickness = 0.025*mm;
         
 	G4double sd_rBase_outRad = sd_c_outRad+sd_rThickness;
         G4double sd_rBase_inRad = sd_c_inRad;
@@ -309,7 +309,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	
         //Base Parameters
         
-	G4double ld_rThickness = 0.01*mm;
+	G4double ld_rThickness = 0.025*mm;
         
 	G4double ld_rBase_outRad = ld_c_outRad+ld_rThickness;
         G4double ld_rBase_inRad = ld_c_inRad;
@@ -441,8 +441,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 	//Detector_0
 	
-	gap = 0.0*mm;
-	addL = sd_c_hz + sd_totThickness + gap;
+	gap = 19.0*mm;
+	addL = ld_c_hz + ld_totThickness + gap;
 
 	dist = ss_outRad;
 	dist += addL;
@@ -454,11 +454,11 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 	Mp = CreateTransform(dist, theta, phi, spin);
 
-	sd_detectorAssembly->MakeImprint(worldLog, Mp);
+	ld_detectorAssembly->MakeImprint(worldLog, Mp);
 
 	//Detector_1
 /*        
-	gap = 0.0*mm;
+	gap = 14.0*mm;
 	addL = sd_c_hz + sd_totThickness + gap;
 	
 	dist = ss_outRad;
