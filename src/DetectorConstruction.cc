@@ -255,6 +255,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	//Detector Assembly
 	G4AssemblyVolume* sd_detectorAssembly = new G4AssemblyVolume;
 
+	
 	//Rotation and Translation Matrices
 	G4RotationMatrix Ra;
 	G4ThreeVector Ta;
@@ -279,11 +280,29 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 //==========================================
 */
 
+	//Small Detector
+	
+	//Crystal Parameters
+	G4double width = 2;
+	G4double height = 2;
+
+	//Make Crystal
+	G4LogicalVolume* sd_c = CreateDetectorCrystal(width, height, CeBr3);
+	
+	//Assembly Parameters
+	G4double reflectorThickness = 0.025;
+	G4double shellThickness = 0.5;
+	G4double gapSide = 0.5;
+	G4double gapFront = 0.5;
+
+	//Make Assembly
+	G4AssemblyVolume* sd_detectorAssembly = CreateDetectorAssembly(sd_c, width, height, reflectorThickness, 
+			shellThickness, gapSide, gapFront, Al, Al);
 
 //===========================================//
 //		Large Detector		     //
 //===========================================//
-
+/*
 	//Create CeBr3 Crystal
 
         //Parameters
@@ -420,7 +439,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         ld_detectorAssembly->AddPlacedVolume(ld_sLog, Ma);
 
 //==========================================
-
+*/
 	//Detector Parameters//
 	
 	//Transform
@@ -442,7 +461,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	//Detector Placement//
 
 	//Detector_0
-	
+/*	
 	gap = 19.0*mm;
 	addL = ld_c_hz + ld_totThickness + gap;
 
@@ -457,12 +476,13 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	Mp = CreateTransform(dist, theta, phi, spin);
 
 	ld_detectorAssembly->MakeImprint(worldLog, Mp);
-
+*/
 	//Detector_1
-/*        
+        
 	gap = 14.0*mm;
-	addL = sd_c_hz + sd_totThickness + gap;
-	
+	//addL = sd_c_hz + sd_totThickness + gap;
+	addL = (height*2.54*mm)/2 + (reflectorThickness+gapFront)*mm + gap;	
+
 	dist = ss_outRad;
         dist += addL;
 
@@ -474,7 +494,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	Mp = CreateTransform(dist, theta, phi, spin);
 
         sd_detectorAssembly->MakeImprint(worldLog, Mp);
-*/
+
 /*
 	//Detector_2
         
@@ -517,9 +537,9 @@ void DetectorConstruction::ConstructSDandField()
 	sdman->AddNewDetector(detector);
         
 	//Set Sensitive Detector
-	SetSensitiveDetector("sd_CeBr3", detector, true);
+	SetSensitiveDetector("Logical", detector, true);
 	
-	SetSensitiveDetector("ld_CeBr3", detector, true);
+	//SetSensitiveDetector("ld_CeBr3", detector, true);
 }
 
 }

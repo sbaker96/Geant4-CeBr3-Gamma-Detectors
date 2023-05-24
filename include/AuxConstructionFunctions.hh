@@ -62,7 +62,7 @@ G4LogicalVolume* DetectorConstruction::CreateDetectorCrystal(G4double width, G4d
 //CreateDetectorAssembly:
 // Takes detector parameters and returns detector assembly.
 
-G4AssemblyVolume* CreateDetectorAssembly(G4LogicalVolume* crystal, G4double width, G4double height,
+G4AssemblyVolume* DetectorConstruction::CreateDetectorAssembly(G4LogicalVolume* crystal, G4double width, G4double height,
 	G4double reflectorThickness, G4double shellThickness, G4double gapSide, G4double gapFront,
 	G4Material* rMat, G4Material* sMat)
 {
@@ -79,11 +79,13 @@ G4AssemblyVolume* CreateDetectorAssembly(G4LogicalVolume* crystal, G4double widt
 	//================//
 	//Create Reflector//
 	//================//
-	
+	G4double rThickness = reflectorThickness*mm;
+		
+
 	//Create Base
 	G4double rB_inRad = c_inRad;
-	G4double rB_outRad = c_inRad+reflectorThickness;
-	G4double rB_hz = c_hz + reflectorThickness/2;
+	G4double rB_outRad = c_inRad+rThickness;
+	G4double rB_hz = c_hz + rThickness/2;
 
 	//Base Solid
 	G4Tubs* rB = new G4Tubs("rB", rB_inRad, rB_outRad, rB_hz, startAngle, spanAngle);
@@ -97,7 +99,7 @@ G4AssemblyVolume* CreateDetectorAssembly(G4LogicalVolume* crystal, G4double widt
 	G4Tubs* rH = new G4Tubs("rH", rH_inRad, rH_outRad, rH_hz, startAngle, spanAngle);
 	
 	//Hole Position
-	G4ThreeVector rHoleTrans(0, 0, 1*reflectorThickness);
+	G4ThreeVector rHoleTrans(0, 0, 1*rThickness);
 
 	//Build Reflector Solid
 	G4SubtractionSolid* rSolid = new G4SubtractionSolid("rSolid", rB, rH, nullRot, rHoleTrans);
@@ -108,15 +110,15 @@ G4AssemblyVolume* CreateDetectorAssembly(G4LogicalVolume* crystal, G4double widt
 	//Positioning
 	G4double r_x = c_x;
 	G4double r_y = c_y;
-	G4double r_z = c_z - (reflectorThickness/2);
+	G4double r_z = c_z - (rThickness/2);
 
 	//============//
 	//Create Shell//
 	//============//
 	
 	//Derived Parameters
-	G4double totSideThickness = shellThickness + gapSide;
-	G4double totFrontThickness = shellThickness + gapFront;
+	G4double totSideThickness = (shellThickness + gapSide)*mm;
+	G4double totFrontThickness = (shellThickness + gapFront)*mm;
 
 	//Create Base
 	G4double sB_inRad = c_inRad;
