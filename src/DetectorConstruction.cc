@@ -130,20 +130,22 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 //	Detectors	//
 //======================//	
 
+	G4double in = 25.4*mm;
+
 	//Small Detector
 	
 	//Crystal Parameters
-	G4double width = 2;
-	G4double height = 2;
+	G4double width = 2*in;
+	G4double height = 2*in;
 
 	//Make Crystal
 	G4LogicalVolume* sd_c = CreateDetectorCrystal(width, height, CeBr3);
 	
 	//Assembly Parameters
-	G4double reflectorThickness = 0.025;
-	G4double shellThickness = 0.5;
-	G4double gapSide = 0.5;
-	G4double gapFront = 0.5;
+	G4double reflectorThickness = 0.025*mm;
+	G4double shellThickness = 0.5*mm;
+	G4double gapSide = 0.5*mm;
+	G4double gapFront = 0.5*mm;
 
 	//Make Assembly
 	G4AssemblyVolume* sd_detectorAssembly = CreateDetectorAssembly(sd_c, width, height, reflectorThickness, 
@@ -190,7 +192,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         
 	gap = 14.0*mm;
 	//addL = sd_c_hz + sd_totThickness + gap;
-	addL = (height*25.4*mm)/2 + (shellThickness+gapFront)*mm + gap;	
+	addL = (height)/2 + (shellThickness+gapFront) + gap;	
 
 	dist = ss_outRad;
         dist += addL;

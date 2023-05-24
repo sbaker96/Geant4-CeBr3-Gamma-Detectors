@@ -36,7 +36,7 @@ G4Transform3D DetectorConstruction::CreateTransform(G4double dist, G4double thet
 }
 
 //Constants:
-G4double in = 25.4*mm;
+//G4double in = 25.4*mm;
 G4double startAngle = 0*deg;
 G4double spanAngle = 360.0*deg;
 G4RotationMatrix* nullRot = new G4RotationMatrix;       //Should not rotate
@@ -49,8 +49,8 @@ G4RotationMatrix* nullRot = new G4RotationMatrix;       //Should not rotate
 G4LogicalVolume* DetectorConstruction::CreateDetectorCrystal(G4double width, G4double height, G4Material* mat)
 {
 	G4double inRad = 0.0*cm;
-	G4double outRad = width*in/2;
-	G4double hz = height*in/2;
+	G4double outRad = width/2;
+	G4double hz = height/2;
 
 	G4Tubs* Solid = new G4Tubs("Solid", inRad, outRad, hz, startAngle, spanAngle);
 
@@ -69,8 +69,8 @@ G4AssemblyVolume* DetectorConstruction::CreateDetectorAssembly(G4LogicalVolume* 
 
 	//Crystal Parameters
 	G4double c_inRad = 0.0*cm;
-	G4double c_outRad = width*in/2;
-	G4double c_hz = height*in/2;
+	G4double c_outRad = width/2;
+	G4double c_hz = height/2;
 
 	G4double c_x = 0.0*cm;
 	G4double c_y = 0.0*cm;
@@ -79,7 +79,7 @@ G4AssemblyVolume* DetectorConstruction::CreateDetectorAssembly(G4LogicalVolume* 
 	//================//
 	//Create Reflector//
 	//================//
-	G4double rThickness = reflectorThickness*mm;
+	G4double rThickness = reflectorThickness;
 		
 
 	//Create Base
@@ -117,8 +117,8 @@ G4AssemblyVolume* DetectorConstruction::CreateDetectorAssembly(G4LogicalVolume* 
 	//============//
 	
 	//Derived Parameters
-	G4double totSideThickness = (shellThickness + gapSide)*mm;
-	G4double totFrontThickness = (shellThickness + gapFront)*mm;
+	G4double totSideThickness = (shellThickness + gapSide);
+	G4double totFrontThickness = (shellThickness + gapFront);
 
 	//Create Base
 	G4double sB_inRad = c_inRad;
