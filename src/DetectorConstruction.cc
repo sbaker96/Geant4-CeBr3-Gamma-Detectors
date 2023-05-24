@@ -148,7 +148,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	G4double gapFront = 0.5*mm;
 
 	//Make Assembly
-	G4AssemblyVolume* sd_detectorAssembly = CreateDetectorAssembly(sd_c, width, height, reflectorThickness, 
+	G4AssemblyVolume* sd_detectorAssembly = CreateDetectorAssembly(sd_c, reflectorThickness, 
 			shellThickness, gapSide, gapFront, Al, Al);
 	
 	//Detector Parameters//

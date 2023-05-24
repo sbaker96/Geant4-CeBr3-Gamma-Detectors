@@ -62,15 +62,14 @@ G4LogicalVolume* DetectorConstruction::CreateDetectorCrystal(G4double width, G4d
 //CreateDetectorAssembly:
 // Takes detector parameters and returns detector assembly.
 
-G4AssemblyVolume* DetectorConstruction::CreateDetectorAssembly(G4LogicalVolume* crystal, G4double width, G4double height,
-	G4double reflectorThickness, G4double shellThickness, G4double gapSide, G4double gapFront,
-	G4Material* rMat, G4Material* sMat)
+G4AssemblyVolume* DetectorConstruction::CreateDetectorAssembly(G4LogicalVolume* crystal,G4double reflectorThickness, 
+	G4double shellThickness, G4double gapSide, G4double gapFront, G4Material* rMat, G4Material* sMat)
 {
 
 	//Crystal Parameters
 	G4double c_inRad = 0.0*cm;
-	G4double c_outRad = width/2;
-	G4double c_hz = height/2;
+	G4double c_outRad = dynamic_cast<G4Tubs*>(crystal->GetSolid())->GetOuterRadius();
+	G4double c_hz = dynamic_cast<G4Tubs*>(crystal->GetSolid())->GetZHalfLength();
 
 	G4double c_x = 0.0*cm;
 	G4double c_y = 0.0*cm;
