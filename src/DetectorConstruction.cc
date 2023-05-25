@@ -127,40 +127,28 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
                         false,          	//no bool
                         0);             	//copy number
 
+//=============================================
+
 //======================//
 //	Detectors	//
 //======================//	
 
+	//Construction Parameters//
+	G4double width, length, rThickness, sThickness,
+		gapFront, gapSide;
+	G4String name;
+
+
 	G4double in = 25.4*mm;
-/*
-	//Small Detector
-	
-	//Crystal Parameters
-	G4double width = 2*in;
-	G4double height = 2*in;
 
-	//Make Crystal
-	G4LogicalVolume* sd_c = CreateDetectorCrystal(width, height, CeBr3);
-	
-	//Assembly Parameters
-	G4double reflectorThickness = 0.025*mm;
-	G4double shellThickness = 0.5*mm;
-	G4double gapSide = 0.5*mm;
-	G4double gapFront = 0.5*mm;
-
-	//Make Assembly
-	G4AssemblyVolume* sd_detectorAssembly = CreateDetectorAssembly(sd_c, reflectorThickness, 
-			shellThickness, gapSide, gapFront, Al, Al);
-
-*/
-//New Class Test
+	//2x2 Detector//
 
 	Detector* Detector_2x2 = new Detector();
 	
 	//Construct Crystal
-	G4double width = 2*in;
-	G4double length = 2*in;
-	G4String name = "2x2_Crystal";
+	width = 2*in;
+	length = 2*in;
+	name = "2x2_Crystal";
 	
 	Detector_2x2->SetWidth(width);
 	Detector_2x2->SetLength(length);
@@ -170,10 +158,10 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	Detector_2x2->ConstructCrystal();
 
 	//Construct Detector
-	G4double rThickness = 0.025*mm;
-	G4double sThickness = 0.5*mm;
-	G4double gapFront = 0.5*mm;
-	G4double gapSide = 0.5*mm;
+	rThickness = 0.025*mm;
+	sThickness = 0.5*mm;
+	gapFront = 0.5*mm;
+	gapSide = 0.5*mm;
 	
 	Detector_2x2->SetRThickness(rThickness);
 	Detector_2x2->SetSThickness(sThickness);
@@ -184,7 +172,39 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 	Detector_2x2->ConstructDetector();
 
+	//3x4 Detector//
 
+	Detector* Detector_3x4 = new Detector();
+	
+	//Construct Crystal
+	width = 3*in;
+	length = 4*in;
+	name = "3x4_Crystal";
+	
+	Detector_3x4->SetWidth(width);
+	Detector_3x4->SetLength(length);
+	Detector_3x4->SetName(name);
+	Detector_3x4->SetCMat(CeBr3);
+
+	Detector_3x4->ConstructCrystal();
+
+	//Construct Detector
+	rThickness = 0.025*mm;
+	sThickness = 0.5*mm;
+	gapFront = 0.5*mm;
+	gapSide = 0.5*mm;
+	
+	Detector_3x4->SetRThickness(rThickness);
+	Detector_3x4->SetSThickness(sThickness);
+	Detector_3x4->SetGapFront(gapFront);
+	Detector_3x4->SetGapSide(gapSide);
+	Detector_3x4->SetRMat(Al);
+	Detector_3x4->SetSMat(Al);
+
+	Detector_3x4->ConstructDetector();
+
+
+//===========================================
 	
 	//Placement Parameters//
 	
@@ -192,55 +212,35 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	G4Transform3D Mp;
 
 	//Placement Variables
-	G4double dist;		//Distance of detector from origin
+	G4double gap;		//Distance of detector from apparatus
        	G4double theta; 	//Polar Angle of detector
 	G4double phi; 		//Azimuthal Angle of detector
 	G4double spin;		//Rotation of detector along its symmetry axis
 
-	//Lengths
-	G4double gap;
-	G4double addL;
-
-//===========================================
-
-
 	//Detector Placement//
-
-	//Detector_0
-/*	
-	gap = 19.0*mm;
-	addL = ld_c_hz + ld_totThickness + gap;
-
-	dist = ss_outRad;
-	dist += addL;
-
-	theta = 0*rad;
-	phi = 0*rad;
-
-	spin = 0*rad;
-
-	Mp = CreateTransform(dist, theta, phi, spin);
-
-	ld_detectorAssembly->MakeImprint(worldLog, Mp);
-*/
-	//Detector_1
 	
-	gap = 14.0*mm;
-//	addL = Detector_2x2->GetOffset() + gap;
+	//Detector 0
 
-//	dist = ss_outRad;
-//      dist += addL;
+	gap = 14.0*mm;
 
         theta = pi*rad;
         phi = 0*rad;
 
 	spin = 0*rad;
 	
-//	Mp = CreateTransform(dist, theta, phi, spin);
-
-//      Detector_2x2->GetDetector()->MakeImprint(worldLog, Mp);
-	
 	Detector_2x2->PlaceDetector(worldLog, ss_outRad, gap, theta, phi, spin);
+
+	//Detector 1
+	
+	gap = 19.0*mm;
+
+	theta = 0*rad;
+	phi = 0*rad;
+
+	spin = 0*rad;
+
+	Detector_3x4->PlaceDetector(worldLog, ss_outRad, gap, theta, phi, spin);
+
 //===========================================
 
 	//Return
@@ -267,7 +267,7 @@ void DetectorConstruction::ConstructSDandField()
 	//Set Sensitive Detector
 	SetSensitiveDetector("2x2_Crystal", detector, true);
 	
-	//SetSensitiveDetector("ld_CeBr3", detector, true);
+	SetSensitiveDetector("3x4_Crystal", detector, true);
 }
 
 }
