@@ -113,6 +113,8 @@ void Detector::ConstructDetector()
 
 	//Assembly//
 	
+	detector = new G4AssemblyVolume;
+	
 	//Rotation and Translation Matrices
         G4RotationMatrix Ra;
         G4ThreeVector Ta;
@@ -134,6 +136,14 @@ void Detector::ConstructDetector()
         Ma = G4Transform3D(Ra, Ta);
         detector->AddPlacedVolume(sLog, Ma);
 
+
+}
+
+G4double Detector::GetOffset()
+{
+	G4double offset = length/2 + sThickness + gapFront;
+
+	return offset;
 
 }
 

@@ -49,6 +49,10 @@ class Detector
 		G4double GetSThickness()	{return sThickness;};
 		G4double GetGapFront()		{return gapFront;};
 		G4double GetGapSide()		{return gapSide;};
+
+		G4AssemblyVolume* GetDetector()	{return detector;};
+
+		G4double GetOffset();
 		
 
 
