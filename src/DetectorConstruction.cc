@@ -191,7 +191,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	rThickness = 0.025*mm;
 	sThickness = 0.5*mm;
 	gapFront = 0.5*mm;
-	gapSide = 0.5*mm;
+	gapSide = 2.4*mm;
 	
 	Detector_3x4->SetRThickness(rThickness);
 	Detector_3x4->SetSThickness(sThickness);
