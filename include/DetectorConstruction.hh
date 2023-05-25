@@ -27,12 +27,6 @@ class DetectorConstruction : public G4VUserDetectorConstruction
 		void ConstructSDandField() override;
 		G4LogicalVolume* GetScoringVolume() const  { return fScoringVolume; }
 	
-		//Auxillary Functions
-		G4LogicalVolume* CreateDetectorCrystal(G4double width, G4double height, G4Material* mat);
-		G4AssemblyVolume* CreateDetectorAssembly(G4LogicalVolume* crystal, G4double reflectorThickness, 
-				G4double shellThickness, G4double gapSide, G4double gapFront, G4Material* rMat, G4Material* sMat);
-		G4Transform3D CreateTransform(G4double dist, G4double theta, G4double phi, G4double spin);
-
 	protected:
                 G4LogicalVolume* fScoringVolume = nullptr;
 

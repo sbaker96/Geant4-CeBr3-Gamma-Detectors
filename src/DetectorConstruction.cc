@@ -3,7 +3,6 @@
 //====================================
 
 #include "DetectorConstruction.hh"
-#include "AuxConstructionFunctions.hh"
 #include "Detector.hh"
 
 #include "G4RunManager.hh"
