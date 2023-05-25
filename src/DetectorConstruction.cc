@@ -4,6 +4,7 @@
 
 #include "DetectorConstruction.hh"
 #include "AuxConstructionFunctions.hh"
+#include "Detector.hh"
 
 #include "G4RunManager.hh"
 #include "G4NistManager.hh"
@@ -150,6 +151,13 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	//Make Assembly
 	G4AssemblyVolume* sd_detectorAssembly = CreateDetectorAssembly(sd_c, reflectorThickness, 
 			shellThickness, gapSide, gapFront, Al, Al);
+
+
+//New Class Test
+
+	Detector* Detector_2x2 = new Detector();
+	
+
 	
 	//Detector Parameters//
 	
