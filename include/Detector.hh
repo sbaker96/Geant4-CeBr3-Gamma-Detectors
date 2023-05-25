@@ -51,9 +51,15 @@ class Detector
 		G4double GetGapSide()		{return gapSide;};
 
 		G4AssemblyVolume* GetDetector()	{return detector;};
-
-		G4double GetOffset();
 		
+		//Placement Functions
+		G4double GetOffset();
+
+		G4Transform3D CreateTransform(G4double dist, 
+			G4double theta, G4double phi, G4double spin);
+		
+		void PlaceDetector(G4LogicalVolume* worldLog, G4double dist, G4double gap,
+			G4double theta, G4double phi, G4double spin);
 
 
 	private:

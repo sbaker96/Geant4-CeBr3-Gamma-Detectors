@@ -224,24 +224,23 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	ld_detectorAssembly->MakeImprint(worldLog, Mp);
 */
 	//Detector_1
-        
+	
 	gap = 14.0*mm;
-	//addL = sd_c_hz + sd_totThickness + gap;
-	//addL = (height)/2 + (shellThickness+gapFront) + gap;	
-	addL = Detector_2x2->GetOffset() + gap;
+//	addL = Detector_2x2->GetOffset() + gap;
 
-	dist = ss_outRad;
-        dist += addL;
+//	dist = ss_outRad;
+//      dist += addL;
 
         theta = pi*rad;
         phi = 0*rad;
 
 	spin = 0*rad;
 	
-	Mp = CreateTransform(dist, theta, phi, spin);
+//	Mp = CreateTransform(dist, theta, phi, spin);
 
-        Detector_2x2->GetDetector()->MakeImprint(worldLog, Mp);
-
+//      Detector_2x2->GetDetector()->MakeImprint(worldLog, Mp);
+	
+	Detector_2x2->PlaceDetector(worldLog, ss_outRad, gap, theta, phi, spin);
 //===========================================
 
 	//Return

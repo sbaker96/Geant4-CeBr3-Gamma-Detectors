@@ -147,4 +147,38 @@ G4double Detector::GetOffset()
 
 }
 
+G4Transform3D Detector::CreateTransform(G4double dist, 
+			G4double theta, G4double phi, G4double spin)
+{
+	//Create Transforms
+        G4RotationMatrix Rp;
+        G4ThreeVector Tp;
+        G4Transform3D Mp;
+
+        //Set Parameters
+
+        //Set Translation
+        Tp.setX(dist*sin(theta)*cos(phi)); Tp.setY(dist*sin(theta)*sin(phi)); Tp.setZ(dist*cos(theta));
+
+        //Set Rotation
+        Rp.rotateZ(spin); Rp.rotateY(theta); Rp.rotateZ(phi);
+
+        //Set Transform
+        Mp = G4Transform3D(Rp, Tp);
+
+        return Mp;
+
+}
+
+void Detector::PlaceDetector(G4LogicalVolume* worldLog, G4double dist, G4double gap,
+		G4double theta, G4double phi, G4double spin)
+{
+	G4double placementDist = dist + gap + GetOffset();
+
+	G4Transform3D Mp = CreateTransform(placementDist, theta, phi, spin);
+
+	detector->MakeImprint(worldLog, Mp);
+
+}
+
 }
