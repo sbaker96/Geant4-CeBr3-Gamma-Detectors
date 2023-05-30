@@ -51,7 +51,9 @@ void TrackingAction::PreUserTrackingAction(const G4Track* aTrack)
 		if(aTrack->GetCreatorProcess()->GetProcessName() == "RadioactiveDecay")
        		{
                 G4int trackID = aTrack->GetTrackID();
+		G4double eng = aTrack->GetTotalEnergy();
                 trackInfo->SetDecayGammaSourceID(trackID);
+		trackInfo->SetOriginalEnergy(eng);
        		}
 	}
 
