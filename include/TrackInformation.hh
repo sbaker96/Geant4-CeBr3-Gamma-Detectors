@@ -22,19 +22,22 @@ class TrackInformation : public G4VUserTrackInformation
 	public:
 		TrackInformation();
 		TrackInformation(const G4Track* aTrack);
-		TrackInformation(G4int srcID);
+		TrackInformation(G4int srcID, G4float ogE);
 		virtual ~TrackInformation();
 		
 		inline void *operator new(size_t);
 		inline void operator delete(void *aTrackInfo);
 
 		void SetDecayGammaSourceID(G4int srcID)	{ fDecayGammaSourceID = srcID; };
+		void SetOriginalEng(G4int ogE)		{ fOriginalEng = ogE; };
 
 		G4int GetDecayGammaSourceID()		{ return fDecayGammaSourceID; };
+		G4float GetOriginalEng()		{ return fOriginalEng; };
 
 	private:
 		G4int fDecayGammaSourceID = -1; //TrackID of the Gamma Ray resulting from radioactive
 						//decay that is the ancestor of this track.
+		G4float fOriginalEng = 0.0;	//Original Energy of the first gamma ray
 };
 
 extern G4ThreadLocal
