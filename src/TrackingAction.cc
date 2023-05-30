@@ -53,7 +53,7 @@ void TrackingAction::PreUserTrackingAction(const G4Track* aTrack)
                 G4int trackID = aTrack->GetTrackID();
 		G4double eng = aTrack->GetTotalEnergy();
                 trackInfo->SetDecayGammaSourceID(trackID);
-		trackInfo->SetOriginalEnergy(eng);
+		trackInfo->SetOriginalEng(eng);
        		}
 	}
 

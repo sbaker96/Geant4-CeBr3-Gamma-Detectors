@@ -22,7 +22,7 @@ class TrackInformation : public G4VUserTrackInformation
 	public:
 		TrackInformation();
 		TrackInformation(const G4Track* aTrack);
-		TrackInformation(G4int srcID, G4float ogE);
+		TrackInformation(G4int srcID, G4double ogE);
 		virtual ~TrackInformation();
 		
 		inline void *operator new(size_t);

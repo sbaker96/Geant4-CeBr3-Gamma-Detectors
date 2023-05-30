@@ -43,7 +43,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
         	TrackInformation* trackInfo = (TrackInformation*)aTrack->GetUserInformation();
 
 		G4int srcID = trackInfo->GetDecayGammaSourceID();
-		G4double ogE = trackInfo->GetOriginalEnergy();
+		G4double ogE = trackInfo->GetOriginalEng();
                
 		//Propagate the Decay Gamma Source ID to secondaries
 		for(size_t i = 0; i < nofSecTracks; i++)
@@ -52,7 +52,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
 			{
 	                	TrackInformation* secInfo = new TrackInformation();	//Create new track info
 				secInfo->SetDecayGammaSourceID(srcID);			//Set Decay Gamma Source ID of new track info
-				secInfo->SetOriginalEnergy(ogE);			//Set original energy of new track info
+				secInfo->SetOriginalEng(ogE);				//Set original energy of new track info
 				(*secTracks)[i]->SetUserInformation(secInfo);		//Give new track info to all secondaries
                		}
 		}

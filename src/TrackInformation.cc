@@ -19,12 +19,12 @@ TrackInformation::TrackInformation(const G4Track* aTrack)
 {;}
 
 
-TrackInformation::TrackInformation(G4int src)
+TrackInformation::TrackInformation(G4int src, G4double ogE)
 	: G4VUserTrackInformation()
 {
 
 	fDecayGammaSourceID = src;
-	
+	fOriginalEng = ogE;
 }
 
 
