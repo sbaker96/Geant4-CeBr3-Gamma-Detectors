@@ -32,12 +32,12 @@ class TrackInformation : public G4VUserTrackInformation
 		void SetOriginalEng(G4int ogE)		{ fOriginalEng = ogE; };
 
 		G4int GetDecayGammaSourceID()		{ return fDecayGammaSourceID; };
-		G4float GetOriginalEng()		{ return fOriginalEng; };
+		G4double GetOriginalEng()		{ return fOriginalEng; };
 
 	private:
 		G4int fDecayGammaSourceID = -1; //TrackID of the Gamma Ray resulting from radioactive
 						//decay that is the ancestor of this track.
-		G4float fOriginalEng = 0.0;	//Original Energy of the first gamma ray
+		G4double fOriginalEng = 0.0;	//Original Energy of the first gamma ray
 };
 
 extern G4ThreadLocal
