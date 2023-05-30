@@ -76,6 +76,7 @@ G4bool TrackerSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
         TrackInformation* trackInfo = (TrackInformation*)aStep->GetTrack()->GetUserInformation();
         
 	G4int srcID = trackInfo->GetDecayGammaSourceID();
+	G4double ogE = trackInfo->GetOriginalEng();
 
 	//---------------------//
 	//Debug Parameters 
@@ -95,6 +96,8 @@ G4bool TrackerSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
 	newHit->SetDecayGammaSourceID(srcID);
 
 	newHit->SetEdep(edep);
+
+	newHit->SetOriginalEng(ogE);
 	
 	newHit->SetDetectorNumber(dNum);
 

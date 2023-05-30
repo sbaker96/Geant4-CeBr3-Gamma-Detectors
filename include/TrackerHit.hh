@@ -37,6 +37,7 @@ class TrackerHit : public G4VHit
 		void SetDetectorNumber(G4int dNum)	{fDetectorNumber = dNum; };
 		void SetIsGamma(G4bool g)		{fIsGamma = g; };
 		void SetDecayGammaSourceID(G4int src)	{fDecayGammaSourceID = src; };
+		void SetOriginalEng(G4double ogE)	{fOriginalEng = ogE;	};
 		void SetEdep(G4double de)		{fEdep = de; };
 
 		void SetPosition(G4ThreeVector pos)	{fPos = pos; };
@@ -45,6 +46,7 @@ class TrackerHit : public G4VHit
 		G4int GetDetectorNumber() const		{return fDetectorNumber; };
 		G4bool GetIsGamma() const 		{return fIsGamma; };
 		G4int GetDecayGammaSourceID() const	{return fDecayGammaSourceID; };
+		G4double GetOriginalEng() const		{return fOriginalEng;	};
 		G4double GetEdep() const		{return fEdep; };
 
 		G4ThreeVector GetPosition() const	{return fPos; };
@@ -53,6 +55,7 @@ class TrackerHit : public G4VHit
 		G4int fDetectorNumber = -1;
 		G4bool fIsGamma = 0;
 		G4int fDecayGammaSourceID;
+		G4double fOriginalEng;
 		G4double fEdep = 0.;
 
 		G4ThreeVector fPos;
