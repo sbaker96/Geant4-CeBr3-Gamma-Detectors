@@ -190,7 +190,7 @@ void EventAction::EndOfEventAction(const G4Event* event)
 				//Add total to ntuple
        		                //analysisManager->FillNtupleFColumn(0, n, totalEdep);
 			
-				if(ogE == totalEdep)
+				if(std::round(ogE * 1000.0) == std::round(totalEdep * 1000.0))
 				{ 
 					analysisManager->FillNtupleFColumn(2, n, totalEdep);
 			//		std::cout << "Full Energy Peak" << std::endl; 
