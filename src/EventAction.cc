@@ -155,6 +155,65 @@ void EventAction::EndOfEventAction(const G4Event* event)
 
 	analysisManager->AddNtupleRow(1);
 
+
+	//Get Just Full Energy Peaks
+	
+	//Loop through Ids
+	for(auto itr = validIDs[nofDetectors].begin(); itr != validIDs[nofDetectors].end(); itr++)
+       	{
+		G4int currentID = *itr;
+
+		//Loop through detectors
+		for(G4int n = 0; n < nofDetectors; n++)
+		{
+		
+			if(validIDs[n].count(currentID))
+			{
+				G4double totalEdep = 0.0;
+				G4double ogE = 0.0;
+
+				//Loop through hits
+				for(G4int i = 0; i < nofHits; i++)
+				{
+				
+					//Add energy if hit matches current detector and decay ID
+               		                if((*trackerHC)[i]->GetDecayGammaSourceID() == currentID
+                                       	        && (*trackerHC)[i]->GetDetectorNumber() == n)
+                               		{ 
+						totalEdep += (*trackerHC)[i]->GetEdep();
+					       	ogE = (*trackerHC)[i]->GetOriginalEng();
+						std::cout << ogE << std::endl;
+					}
+
+				}
+		
+				//Add total to ntuple
+       		                //analysisManager->FillNtupleFColumn(0, n, totalEdep);
+			
+				if(ogE == totalEdep)
+				{ 
+					analysisManager->FillNtupleFColumn(2, n, totalEdep);
+					std::cout << "Full Energy Peak" << std::endl; 
+				}
+			}
+
+			else
+			{ analysisManager->FillNtupleFColumn(2, n, 0.0); }
+		
+		}
+
+        	//Add eventID to ntuple
+       	        G4int eventID = G4RunManager::GetRunManager()->GetCurrentEvent()->GetEventID();
+
+               	analysisManager->FillNtupleIColumn(2, nofDetectors, eventID);
+        
+		//Complete ntuple row
+       	        analysisManager->AddNtupleRow(2);
+
+	
+	}
+
+
 }
 
 }
