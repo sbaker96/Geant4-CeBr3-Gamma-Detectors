@@ -29,7 +29,7 @@ class TrackInformation : public G4VUserTrackInformation
 		inline void operator delete(void *aTrackInfo);
 
 		void SetDecayGammaSourceID(G4int srcID)	{ fDecayGammaSourceID = srcID; };
-		void SetOriginalEng(G4int ogE)		{ fOriginalEng = ogE; };
+		void SetOriginalEng(G4double ogE)	{ fOriginalEng = ogE; };
 
 		G4int GetDecayGammaSourceID()		{ return fDecayGammaSourceID; };
 		G4double GetOriginalEng()		{ return fOriginalEng; };

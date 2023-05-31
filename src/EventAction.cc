@@ -182,7 +182,7 @@ void EventAction::EndOfEventAction(const G4Event* event)
                                		{ 
 						totalEdep += (*trackerHC)[i]->GetEdep();
 					       	ogE = (*trackerHC)[i]->GetOriginalEng();
-						std::cout << ogE << std::endl;
+					//	std::cout << ogE << std::endl;
 					}
 
 				}
@@ -193,7 +193,7 @@ void EventAction::EndOfEventAction(const G4Event* event)
 				if(ogE == totalEdep)
 				{ 
 					analysisManager->FillNtupleFColumn(2, n, totalEdep);
-					std::cout << "Full Energy Peak" << std::endl; 
+			//		std::cout << "Full Energy Peak" << std::endl; 
 				}
 			}
 

@@ -16,6 +16,8 @@ void plotExp(int num);
 void plot2DRaw(int numA, int numB);
 void plot2DFolded(int numA, int numB);
 
+void plotPhotopeaks(int num);
+
 const char* numAppend(const char* txt, int num);
 
 //////////////////////
@@ -49,6 +51,7 @@ int GeneratePlots()
 		plotRaw(i);
 		plotFolded(i);
 		plotExp(i);
+		plotPhotopeaks(i);
 	}
 
 	//Generate raw and folded 2D plots
@@ -344,6 +347,56 @@ void plot2DFolded(int numA, int numB)
 	outHist->Write();
 
         outFile->Close();
+
+
+}
+
+void plotPhotopeaks(int num)
+{
+	//Start Message
+	cout << "Plotting Photopeaks for Detector " << num << endl;
+	
+	//Open output from simulation
+	auto inFile = TFile::Open(srcName);
+	
+	//Create reader for the output ntuple
+	TTreeReader reader("Full Photopeak", inFile);
+
+	//Get name of branch to look at
+	const char* branchName = numAppend(histName, num);
+
+	//Create readerValue for Edep
+	TTreeReaderValue<float> Edep(reader, branchName);
+
+	//Create Histogram
+	int nofBins = maxEnergy;
+
+	const char* writeName = numAppend("Photopeak_", num);
+
+	TH1F* outHist = new TH1F(writeName, writeName, nofBins, 0, nofBins);
+
+	//Loop through values to fill histogram
+	while(reader.Next())
+	{
+		float edep = *Edep;
+
+		edep *= 1000; //Convert Units
+
+		outHist->Fill(edep);
+
+	}
+
+	//Set Histogram Options
+	outHist->SetOption("HIST");
+
+	outHist->SetLineColor(1);
+
+	//Write Histogram to output file
+	TFile* outFile = new TFile(outName, "UPDATE");
+
+	outHist->Write();
+
+	outFile->Close();
 
 
 }
