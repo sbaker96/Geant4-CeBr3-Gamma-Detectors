@@ -29,7 +29,7 @@ vector<double> energies {
 
 };
 const char* fileName = "Plots.root";
-const char* plotName = "Raw_0";
+const char* plotName = "Photopeak_0";
 ///////////////////
 
 
@@ -50,7 +50,7 @@ int GetCounts()
 	        cout << " keV | ";
 	        cout << counts << endl;
 	}
-	
+/*	
 	cout << "Just Counts:" << endl;
 
 	for(auto i : energies)
@@ -59,7 +59,7 @@ int GetCounts()
 		int counts = srcHist->GetBinContent(bin);
 		cout << counts << endl;
 	}
-	
+*/	
 	FILE *fpt;
 
 	fpt = fopen("sim.dat", "w+");
