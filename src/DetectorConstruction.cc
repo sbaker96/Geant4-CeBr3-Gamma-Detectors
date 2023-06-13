@@ -132,12 +132,17 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 //	Detectors	//
 //======================//	
 
-	//Construction Parameters//
-	G4double width, length, rThickness, sThickness,
-		gapFront, gapSide;
-	G4String name;
+	//Construction Parameters
+	G4double width,		//width of detector crystal
+		 length, 	//length of detector crystal
+		 rThickness, 	//thickness of reflector
+		 sThickness,	//thickness of shell
+		 gapFront, 	//gap between shell and crystal front
+		 gapSide;	//gap between shell and crystal side
+	
+	G4String name;		//Name of crystal logical volume
 
-
+	//Constants
 	G4double in = 25.4*mm;
 
 	//2x2 Detector//
@@ -264,6 +269,11 @@ void DetectorConstruction::ConstructSDandField()
 	sdman->AddNewDetector(detector);
         
 	//Set Sensitive Detector
+	
+	//Note: Currently, as the detector building takes place
+	// in a seperate function, the names of the logical volumes
+	// of the crystals must be manually set here.
+	
 	SetSensitiveDetector("2x2_Crystal", detector, true);
 	
 	SetSensitiveDetector("3x4_Crystal", detector, true);
