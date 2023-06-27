@@ -38,6 +38,8 @@ set(EX_SCRIPTS
 	
 	GeneratePlots.C
 	GetCounts.C
+
+	SphericalShell.stl
 	)
 
 foreach(_script ${EX_SCRIPTS})
