@@ -88,11 +88,13 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
                         0);             //copy number
 //============================================
 
+	G4double in = 25.4*mm;
+
 	//Create Al Spherical Shell
 	
 	//Parameters
-	G4double ss_trueRad = 114.3*mm;		
-	G4double ss_thickness = 2*mm;
+	G4double ss_trueRad = 4.05*in;		
+	G4double ss_thickness = 2.00*mm;
 
 	G4double ss_inRad = ss_trueRad;
 	G4double ss_outRad = ss_trueRad + ss_thickness;
@@ -143,7 +145,6 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	G4String name;		//Name of crystal logical volume
 
 	//Constants
-	G4double in = 25.4*mm;
 
 	//2x2 Detector//
 
@@ -222,7 +223,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	G4double spin;		//Rotation of detector along its symmetry axis
 
 	//Detector Placement//
-/*	
+
 	//Detector 0
 
 	gap = 14.0*mm;
@@ -233,7 +234,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	spin = 0*rad;
 	
 	Detector_2x2->PlaceDetector(worldLog, ss_outRad, gap, theta, phi, spin);
-*/
+/*
 	//Detector 1
 	
 	gap = 19.0*mm;
@@ -244,7 +245,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	spin = 0*rad;
 
 	Detector_3x4->PlaceDetector(worldLog, ss_outRad, gap, theta, phi, spin);
-
+*/
 //===========================================
 
 	//Return
