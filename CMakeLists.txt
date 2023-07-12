@@ -39,7 +39,7 @@ set(EX_SCRIPTS
 	GeneratePlots.C
 	GetCounts.C
 
-	SphericalShell.obj
+	SphericalShell.stl
 	)
 
 foreach(_script ${EX_SCRIPTS})

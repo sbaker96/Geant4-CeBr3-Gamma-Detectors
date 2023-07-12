@@ -95,7 +95,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	//Create Al Spherical Shell
 	
 	//Parameters
-	G4double ss_trueRad = 4.05*in;		
+	G4double ss_trueRad = 4.20*in;		
 	G4double ss_thickness = 2.00*mm;
 
 	G4double ss_inRad = ss_trueRad;
@@ -105,7 +105,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	G4double ss_startTheta = 0*rad;
 	G4double ss_spanTheta = pi*rad;
 	
-	auto ss_mesh = CADMesh::TessellatedMesh::FromSTL("SphericalShell.stl");
+	auto ss_mesh = CADMesh::TessellatedMesh::FromSTL("./SphericalShell.stl");
 
 	auto ssSolid = ss_mesh->GetSolid();
 /*
@@ -234,7 +234,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	//Detector Placement//
 
 	//Detector 0
-
+/*
 	gap = 14.0*mm;
 
         theta = pi*rad;
@@ -243,7 +243,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	spin = 0*rad;
 	
 	Detector_2x2->PlaceDetector(worldLog, ss_outRad, gap, theta, phi, spin);
-/*
+*/
 	//Detector 1
 	
 	gap = 19.0*mm;
@@ -254,7 +254,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	spin = 0*rad;
 
 	Detector_3x4->PlaceDetector(worldLog, ss_outRad, gap, theta, phi, spin);
-*/
+
 //===========================================
 
 	//Return
