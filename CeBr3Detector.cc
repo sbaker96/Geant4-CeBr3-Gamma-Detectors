@@ -28,7 +28,6 @@ int main(int argc, char** argv)
         runManager->SetUserInitialization(new DetectorConstruction);
 
         //Physics List
-
 	runManager->SetUserInitialization(new PhysicsList);
         
 	//ActionInit
