@@ -153,8 +153,6 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	
 	G4String name;		//Name of crystal logical volume
 
-	//Constants
-
 	//2x2 Detector//
 
 	Detector* Detector_2x2 = new Detector();
