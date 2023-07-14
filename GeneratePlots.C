@@ -195,7 +195,7 @@ void plotExp(int num)
 
 	TF1* back = new TF1("back", "exp(x/(-100))", 0, 1000*nofBins);
 
-	outHist->FillRandom("back", 1000000);
+	outHist->FillRandom("back", 100000);
 
 	//Create Functions
         TF1* stDev = new TF1("Standard Deviation", "(x/235.5)*(100/sqrt(x))", 0 , 1000*nofBins);
