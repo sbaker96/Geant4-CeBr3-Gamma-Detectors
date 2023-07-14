@@ -95,8 +95,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	//Create Al Spherical Shell
 	
 	//Parameters
-	G4double ss_trueRad = 4.20*in;		
-	G4double ss_thickness = 2.00*mm;
+	G4double ss_trueRad = 4.15*in;		
+	G4double ss_thickness = 1.75*mm;
 
 	G4double ss_inRad = ss_trueRad;
 	G4double ss_outRad = ss_trueRad + ss_thickness;
