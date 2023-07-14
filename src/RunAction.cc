@@ -29,7 +29,7 @@ RunAction::RunAction()
 	
 	analysisManager->CreateNtupleFColumn("Edep_0");
 
-//	analysisManager->CreateNtupleFColumn("Edep_1");
+	analysisManager->CreateNtupleFColumn("Edep_1");
 
 //	analysisManager->CreateNtupleFColumn("Edep_2");
 
@@ -41,7 +41,7 @@ RunAction::RunAction()
 
 	analysisManager->CreateNtupleFColumn("Edep_0");
 
-//	analysisManager->CreateNtupleFColumn("Edep_1");
+	analysisManager->CreateNtupleFColumn("Edep_1");
 
 //	analysisManager->CreateNtupleFColumn("Edep_2");
 
@@ -51,7 +51,7 @@ RunAction::RunAction()
 
 	analysisManager->CreateNtupleFColumn("Edep_0");
 
-//	analysisManager->CreateNtupleFColumn("Edep_1");
+	analysisManager->CreateNtupleFColumn("Edep_1");
 
 //	analysisManager->CreateNtupleFColumn("Edep_2");
 
