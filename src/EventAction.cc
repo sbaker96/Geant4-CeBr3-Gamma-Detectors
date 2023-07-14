@@ -192,7 +192,7 @@ void EventAction::EndOfEventAction(const G4Event* event)
 			
 				if(std::round(ogE * 1000.0) == std::round(totalEdep * 1000.0))
 				{ 
-					analysisManager->FillNtupleFColumn(2, n, totalEdep);
+					analysisManager->FillNtupleFColumn(2, n, ogE);
 			//		std::cout << "Full Energy Peak" << std::endl; 
 				}
 			}
