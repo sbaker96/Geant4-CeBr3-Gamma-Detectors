@@ -232,7 +232,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	//Detector Placement//
 
 	//Detector 0
-/*
+
 	gap = 14.0*mm;
 
         theta = pi*rad;
@@ -241,7 +241,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	spin = 0*rad;
 	
 	Detector_2x2->PlaceDetector(worldLog, ss_outRad, gap, theta, phi, spin);
-*/
+
 	//Detector 1
 	
 	gap = 19.0*mm;
