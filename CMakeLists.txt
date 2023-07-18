@@ -30,6 +30,7 @@ target_link_libraries(CeBr3Detector ${Geant4_LIBRARIES})
 #(6)
 set(EX_SCRIPTS
 	macros/vis.mac
+
 	macros/60Co.mac
 	macros/137Cs.mac
 	macros/152Eu.mac
