@@ -3,6 +3,10 @@
 #include <string>
 #include <sstream>
 
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <dirent.h>
+
 using std::set;
 
 using namespace std;
@@ -17,18 +21,23 @@ void plot2DRaw(int numA, int numB);
 void plot2DFolded(int numA, int numB);
 
 void plotPhotopeaks(int num);
+void writePhotopeaks(int num);
 
-const char* numAppend(const char* txt, int num);
+string numAppend(string txt, int num);
+string genSimOutFile(string folder, string base, int num);
 
 //////////////////////
 
 //Constants//
 
-const char* srcName = "output.root";
-const char* outName = "Plots.root";
-const char* histName = "Edep_";
+string srcName = "output.root";
+string outName = "Plots.root";
+string histName = "Edep_";
 
-const int nofDetectors = 1;
+string simDirName = "simOutputPhotopeaks";
+string simFileName = "detector_";
+
+const int nofDetectors = 2;
 const int maxEnergy = 4000; // in keV
 
 /////////////////////
@@ -38,13 +47,14 @@ const int maxEnergy = 4000; // in keV
 int GeneratePlots()
 {
 	//Create Output File
-	TFile* outFile = new TFile(outName, "RECREATE");
+	TFile* outFile = new TFile(outName.c_str(), "RECREATE");
 
 	outFile->Close();
 
+	/*
 	//Clear writeName
 	const char* writeName = numAppend("Flush", 0);
-	
+	*/
 	//Generate raw and folded plots for each detector
 	for(int i = 0; i < nofDetectors; i++)
 	{
@@ -52,6 +62,8 @@ int GeneratePlots()
 		plotFolded(i);
 		plotExp(i);
 		plotPhotopeaks(i);
+	
+		writePhotopeaks(i);
 	}
 
 	//Generate raw and folded 2D plots
@@ -76,23 +88,23 @@ void plotRaw(int num)
 	cout << "Plotting Raw Data for Detector " << num << endl;
 	
 	//Open output from simulation
-	auto inFile = TFile::Open(srcName);
+	auto inFile = TFile::Open(srcName.c_str());
 	
 	//Create reader for the output ntuple
 	TTreeReader reader("Edep by Gamma", inFile);
 
 	//Get name of branch to look at
-	const char* branchName = numAppend(histName, num);
+	string branchName = numAppend(histName, num);
 
 	//Create readerValue for Edep
-	TTreeReaderValue<float> Edep(reader, branchName);
+	TTreeReaderValue<float> Edep(reader, branchName.c_str());
 
 	//Create Histogram
 	int nofBins = maxEnergy;
 
-	const char* writeName = numAppend("Raw_", num);
+	string writeName = numAppend("Raw_", num);
 
-	TH1F* outHist = new TH1F(writeName, writeName, nofBins, 0, nofBins);
+	TH1F* outHist = new TH1F(writeName.c_str(), writeName.c_str(), nofBins, 0, nofBins);
 
 	//Loop through values to fill histogram
 	while(reader.Next())
@@ -111,7 +123,7 @@ void plotRaw(int num)
 	outHist->SetLineColor(1);
 
 	//Write Histogram to output file
-	TFile* outFile = new TFile(outName, "UPDATE");
+	TFile* outFile = new TFile(outName.c_str(), "UPDATE");
 
 	outHist->Write();
 
@@ -125,16 +137,16 @@ void plotFolded(int num)
 	//Start Message 
 	cout << "Plotting Folded Data for Detector " << num << endl;
 
-	TFile* inFile = new TFile(outName);
+	TFile* inFile = new TFile(outName.c_str());
 
-	TH1F* srcHist = static_cast<TH1F*>(inFile->Get(numAppend("Raw_", num)));
+	TH1F* srcHist = static_cast<TH1F*>(inFile->Get(numAppend("Raw_", num).c_str()));
 	
 	//Create Histogram
         int nofBins = maxEnergy;
 	
-	const char* writeName = numAppend("Fold_", num);
+	string writeName = numAppend("Fold_", num);
 
-        TH1F* outHist = new TH1F(writeName, writeName, nofBins, 0, nofBins);
+        TH1F* outHist = new TH1F(writeName.c_str(), writeName.c_str(), nofBins, 0, nofBins);
 
 	//Create Functions
         TF1* stDev = new TF1("Standard Deviation", "(x/235.5)*(100/sqrt(x))", 0 , 1000*nofBins);
@@ -169,7 +181,7 @@ void plotFolded(int num)
         outHist->SetLineColor(1);
 
 	//Write Histogram to output file
-	TFile* outFile = new TFile(outName, "UPDATE");
+	TFile* outFile = new TFile(outName.c_str(), "UPDATE");
 	
 	outHist->Write();
 
@@ -182,16 +194,16 @@ void plotExp(int num)
 	//Start Message 
 	cout << "Plotting Folded Data with Exponential Background for Detector " << num << endl;
 
-	TFile* inFile = new TFile(outName);
+	TFile* inFile = new TFile(outName.c_str());
 
-	TH1F* srcHist = static_cast<TH1F*>(inFile->Get(numAppend("Raw_", num)));
+	TH1F* srcHist = static_cast<TH1F*>(inFile->Get(numAppend("Raw_", num).c_str()));
 	
 	//Create Histogram
         int nofBins = maxEnergy;
 	
-	const char* writeName = numAppend("Exp_", num);
+	string writeName = numAppend("Exp_", num);
 
-        TH1F* outHist = new TH1F(writeName, writeName, nofBins, 0, nofBins);
+        TH1F* outHist = new TH1F(writeName.c_str(), writeName.c_str(), nofBins, 0, nofBins);
 
 	TF1* back = new TF1("back", "exp(x/(-100))", 0, 1000*nofBins);
 
@@ -230,7 +242,7 @@ void plotExp(int num)
         outHist->SetLineColor(1);
 
 	//Write Histogram to output file
-	TFile* outFile = new TFile(outName, "UPDATE");
+	TFile* outFile = new TFile(outName.c_str(), "UPDATE");
 	
 	outHist->Write();
 
@@ -242,22 +254,22 @@ void plot2DRaw(int numA, int numB)
 	cout << "Plotting 2D Raw for Detctors "<< numA << " and " << numB << endl;
 
 	//Open output from Simulation
-	auto inFile = TFile::Open(srcName);
+	auto inFile = TFile::Open(srcName.c_str());
 
 	//Create reader for the output ntuple
         TTreeReader reader("Edep by Event", inFile);
 
 	//Create readerValues for Edep
-        TTreeReaderValue<float> EdepA(reader, numAppend(histName, numA));
+        TTreeReaderValue<float> EdepA(reader, numAppend(histName, numA).c_str());
         
-	TTreeReaderValue<float> EdepB(reader, numAppend(histName, numB));
+	TTreeReaderValue<float> EdepB(reader, numAppend(histName, numB).c_str());
 	
 	//Create Histogram
         int nofBins = maxEnergy;
 
-        const char* writeName = numAppend(numAppend("Compare_", numA), numB);
+        string writeName = numAppend(numAppend("Compare_", numA).c_str(), numB);
 
-	TH2F* outHist = new TH2F(writeName, writeName, nofBins, 0, nofBins, nofBins, 0, nofBins);
+	TH2F* outHist = new TH2F(writeName.c_str(), writeName.c_str(), nofBins, 0, nofBins, nofBins, 0, nofBins);
 	
 	while(reader.Next())
 	{
@@ -275,7 +287,7 @@ void plot2DRaw(int numA, int numB)
 	outHist->SetOption("COLZ");
 
 	//Write Histogram to output file
-        TFile* outFile = new TFile(outName, "UPDATE");
+        TFile* outFile = new TFile(outName.c_str(), "UPDATE");
 
         outHist->Write();
 
@@ -290,16 +302,16 @@ void plot2DFolded(int numA, int numB)
 	//Start Message
 	cout << "Plotting 2D Folded for Detctors "<< numA << " and " << numB << endl;
 
-	TFile* inFile = new TFile(outName);
+	TFile* inFile = new TFile(outName.c_str());
 
-        TH1F* srcHist = static_cast<TH1F*>(inFile->Get(numAppend(numAppend("Compare_", numA), numB)));
+        TH1F* srcHist = static_cast<TH1F*>(inFile->Get(numAppend(numAppend("Compare_", numA).c_str(), numB).c_str()));
 
 	//Create Histogram
         int nofBins = maxEnergy;
 
-        const char* writeName = numAppend(numAppend("CompareFold_", numA), numB);
+        string writeName = numAppend(numAppend("CompareFold_", numA), numB);
 
-	TH2F* outHist = new TH2F(writeName, writeName, nofBins, 0, nofBins, nofBins, 0, nofBins);
+	TH2F* outHist = new TH2F(writeName.c_str(), writeName.c_str(), nofBins, 0, nofBins, nofBins, 0, nofBins);
 	
 	//Create Functions
 	TF1* stDev = new TF1("Standard Deviation", "(x/235.5)*(100/sqrt(x))", 0 , 1000*nofBins);
@@ -342,7 +354,7 @@ void plot2DFolded(int numA, int numB)
 	outHist->SetOption("COLZ");
 	
 	//Write Histogram to output file
-        TFile* outFile = new TFile(outName, "UPDATE");
+        TFile* outFile = new TFile(outName.c_str(), "UPDATE");
         
 	outHist->Write();
 
@@ -357,23 +369,23 @@ void plotPhotopeaks(int num)
 	cout << "Plotting Photopeaks for Detector " << num << endl;
 	
 	//Open output from simulation
-	auto inFile = TFile::Open(srcName);
+	auto inFile = TFile::Open(srcName.c_str());
 	
 	//Create reader for the output ntuple
 	TTreeReader reader("Full Photopeak", inFile);
 
 	//Get name of branch to look at
-	const char* branchName = numAppend(histName, num);
+	string branchName = numAppend(histName, num);
 
 	//Create readerValue for Edep
-	TTreeReaderValue<float> Edep(reader, branchName);
+	TTreeReaderValue<float> Edep(reader, branchName.c_str());
 
 	//Create Histogram
 	int nofBins = maxEnergy;
 
-	const char* writeName = numAppend("Photopeak_", num);
+	string writeName = numAppend("Photopeak_", num);
 
-	TH1F* outHist = new TH1F(writeName, writeName, nofBins, 0, nofBins);
+	TH1F* outHist = new TH1F(writeName.c_str(), writeName.c_str(), nofBins, 0, nofBins);
 
 	//Loop through values to fill histogram
 	while(reader.Next())
@@ -392,7 +404,7 @@ void plotPhotopeaks(int num)
 	outHist->SetLineColor(1);
 
 	//Write Histogram to output file
-	TFile* outFile = new TFile(outName, "UPDATE");
+	TFile* outFile = new TFile(outName.c_str(), "UPDATE");
 
 	outHist->Write();
 
@@ -401,18 +413,105 @@ void plotPhotopeaks(int num)
 
 }
 
+void writePhotopeaks(int num)
+{
+	//Start Message
+	cout << " Writing Photopeaks for Detector " << num << endl;
+	
+	//Open output from simulation
+	auto inFile = TFile::Open(srcName.c_str());
+	
+	//Create reader for the output ntuple
+	TTreeReader reader("Full Photopeak", inFile);
+
+	//Get name of branch to look at
+	string branchName = numAppend(histName.c_str(), num);
+
+	//Create readerValue for Edep
+	TTreeReaderValue<float> Edep(reader, branchName.c_str());
+
+	//Loop through values to get gammas
+	set<double> gammas;
+	while(reader.Next())
+	{
+		float edep = std::round(*Edep * 10000)/10;
+
+		gammas.insert(edep);
+	}
+
+	DIR *dir;
+
+	mkdir(simDirName.c_str(), 0777);
+
+	dir = opendir(simDirName.c_str());
+	
+	FILE *fpt;
+
+	string outfile = genSimOutFile(simDirName, simFileName, num);
+
+	fpt = fopen(outfile.c_str(), "w+");
+
+	for(auto it = gammas.begin(); it != gammas.end(); ++it)
+	{
+		float currentGamma = *it; 
+		
+		reader.Restart();
+		
+		int counts = 0;
+		
+		while(reader.Next())
+		{
+			if(currentGamma == std::round(*Edep * 10000)/10)
+				counts++;
+		}
+
+		fprintf(fpt, "%f, %d\n", currentGamma, counts);
+		
+	}
+	
+	fclose(fpt);
+
+	closedir(dir);
+	
+
+}
+
 //Function to append a number to a constant character array
-const char* numAppend(const char* txt, int num)
+string numAppend(string txt, int num)
 {
 
 	stringstream ss;
 
-        ss << txt << num;
+        ss << num;
+	string nums = ss.str();
+
+	string output = txt + nums;
 	
-	const char* output = ss.str().c_str();
-
-//	std::cout << output << std::endl;
-
 	return output;
 
 }
+
+string genSimOutFile(string folder, string base, int num)
+{
+
+	string beg = "./";
+	string sep = "/";
+	string ext = ".dat";
+
+	stringstream ss;
+
+	ss << num;
+	string nums = ss.str();
+
+	string output = beg + folder + sep + base + nums + ext;
+	
+	return output;
+
+
+
+	
+
+
+}
+
+
