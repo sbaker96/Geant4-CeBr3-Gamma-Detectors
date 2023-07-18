@@ -51,10 +51,6 @@ int GeneratePlots()
 
 	outFile->Close();
 
-	/*
-	//Clear writeName
-	const char* writeName = numAppend("Flush", 0);
-	*/
 	//Generate raw and folded plots for each detector
 	for(int i = 0; i < nofDetectors; i++)
 	{
