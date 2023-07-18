@@ -31,7 +31,7 @@ Run Instructions:
 	% ./CeBr3Detector
 
 	Note: An example of steps 2 and 3 is given in exampleRun.mac.
-		exampleRun.mac can be run with "/control/execute exampleRun.mac"
+		exampleRun.mac can be run with "/control/execute macros/exampleRun.mac"
 
 
 	2. Set Source
