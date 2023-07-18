@@ -48,6 +48,9 @@ int main(int argc, char** argv)
         UImanager->ApplyCommand("/event/verbose 0");
         UImanager->ApplyCommand("/tracking/verbose 0");
 
+	//Macro Path Setting
+	UImanager->ApplyCommand("/control/macroPath/ macros");
+
         //Start Run
         int numOfEvent = 0;
 
