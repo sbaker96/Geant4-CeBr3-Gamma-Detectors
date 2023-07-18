@@ -29,12 +29,13 @@ target_link_libraries(CeBr3Detector ${Geant4_LIBRARIES})
 
 #(6)
 set(EX_SCRIPTS
-	vis.mac
-	60Co.mac
-	137Cs.mac
-	152Eu.mac
+	macros/vis.mac
+	macros/60Co.mac
+	macros/137Cs.mac
+	macros/152Eu.mac
 
-	exampleRun.mac
+	macros/exampleRun.mac
+	macros/gammaRun.mac
 	
 	GeneratePlots.C
 
