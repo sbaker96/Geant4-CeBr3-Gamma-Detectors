@@ -37,7 +37,6 @@ set(EX_SCRIPTS
 	exampleRun.mac
 	
 	GeneratePlots.C
-	GetCounts.C
 
 	SphericalShell.stl
 	)
