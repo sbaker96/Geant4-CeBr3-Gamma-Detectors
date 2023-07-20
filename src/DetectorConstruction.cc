@@ -104,15 +104,15 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	G4double ss_spanPhi = 2*pi*rad;
 	G4double ss_startTheta = 0*rad;
 	G4double ss_spanTheta = pi*rad;
-	
+/*	
 	auto ss_mesh = CADMesh::TessellatedMesh::FromSTL("./SphericalShell.stl");
 
 	auto ssSolid = ss_mesh->GetSolid();
-/*
+*/
 	//Solid
 	G4Sphere* ssSolid = new G4Sphere("SphericalShell", ss_inRad, ss_outRad,
 			ss_startPhi, ss_spanPhi, ss_startTheta, ss_spanTheta);
-*/
+
 	//Logical Volume
 	
 	G4LogicalVolume* ssLog = new G4LogicalVolume(ssSolid, Al, "SphericalShell");
