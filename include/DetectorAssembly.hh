@@ -19,6 +19,12 @@ class DetectorAssembly
 		DetectorAssembly();
 		~DetectorAssembly();
 
+		//Set Functions
+		void SetDetFront(DetectorFront* f)	{detFront = f;};
+
+		//Get Functions
+		DetectorFront* GetDetFront()		{return detFront;};
+
 		void ConstructAssembly();
 
 		void PlaceAssembly(G4LogicalVolume* worldLog, G4double dist, G4double gap,
@@ -27,7 +33,7 @@ class DetectorAssembly
 		
 	private:
 		//Components
-		DetectorFront detectorFront;
+		DetectorFront* detFront;
 
 		G4AssemblyVolume* assembly;
 
