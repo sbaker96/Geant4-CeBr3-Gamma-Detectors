@@ -264,6 +264,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	detFront_2x2->SetGapFront(gapFront);
 	detFront_2x2->SetGapSide(gapSide);
 
+	detFront_2x2->SetCrystal(crystal_2x2);
+
 	detFront_2x2->ConstructDetFront();
 
 	//Construct Detector Assembly
