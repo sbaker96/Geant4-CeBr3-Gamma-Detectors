@@ -5,6 +5,10 @@
 #include "DetectorConstruction.hh"
 #include "Detector.hh"
 
+#include "DetectorCrystal.hh"
+#include "DetectorFront.hh"
+#include "DetectorAssembly.hh"
+
 #include "G4RunManager.hh"
 #include "G4NistManager.hh"
 #include "G4Box.hh"
@@ -142,7 +146,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 //======================//
 //	Detectors	//
 //======================//	
-
+/*
 	//Construction Parameters
 	G4double width,		//width of detector crystal
 		 length, 	//length of detector crystal
@@ -214,6 +218,61 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	Detector_3x4->SetSMat(Al);
 
 	Detector_3x4->ConstructDetector();
+*/
+
+//New Class Test
+
+	//Construction Parameters
+        G4double width,         //width of detector crystal
+                 length,        //length of detector crystal
+                 rThickness,    //thickness of reflector
+                 sThickness,    //thickness of shell
+                 gapFront,      //gap between shell and crystal front
+                 gapSide;       //gap between shell and crystal side
+        
+        G4String name;          //Name of crystal logical volume
+
+
+
+	//2x2 Detector
+	
+	
+	//Construct Crystal
+	width = 2*in;
+	length = 2*in;
+	name = "2x2 Crystal";
+	
+	DetectorCrystal* crystal_2x2 = new DetectorCrystal();
+	
+	crystal_2x2->SetWidth(width);
+	crystal_2x2->SetLength(length);
+	crystal_2x2->SetName(name);
+	crystal_2x2->SetMaterial(CeBr3);
+
+	crystal_2x2->ConstructCrystal();
+
+	//Construct Detector Front
+	rThickness = 0.025*mm;
+	sThickness = 0.5*mm;
+	gapFront = 0.5*mm;
+	gapSide = 0.5*mm;
+
+	DetectorFront* detFront_2x2 = new DetectorFront();
+
+	detFront_2x2->SetRThickness(rThickness);
+	detFront_2x2->SetSThickness(sThickness);
+	detFront_2x2->SetGapFront(gapFront);
+	detFront_2x2->SetGapSide(gapSide);
+
+	detFront_2x2->ConstructDetFront();
+
+	//Construct Detector Assembly
+	
+	DetectorAssembly* Detector_2x2 = new DetectorAssembly();
+
+	Detector_2x2->SetDetFront(detFront_2x2);
+
+	Detector_2x2->ConstructAssembly();
 
 
 //===========================================
@@ -240,7 +299,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 	spin = 0*rad;
 	
-	Detector_2x2->PlaceDetector(worldLog, ss_outRad, gap, theta, phi, spin);
+	Detector_2x2->PlaceAssembly(worldLog, ss_outRad, gap, theta, phi, spin);
 
 	//Detector 1
 	
@@ -251,7 +310,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 	spin = 0*rad;
 
-	Detector_3x4->PlaceDetector(worldLog, ss_outRad, gap, theta, phi, spin);
+//	Detector_3x4->PlaceDetector(worldLog, ss_outRad, gap, theta, phi, spin);
 
 //===========================================
 
@@ -284,7 +343,7 @@ void DetectorConstruction::ConstructSDandField()
 	
 	SetSensitiveDetector("2x2_Crystal", detector, true);
 	
-	SetSensitiveDetector("3x4_Crystal", detector, true);
+//	SetSensitiveDetector("3x4_Crystal", detector, true);
 }
 
 }
