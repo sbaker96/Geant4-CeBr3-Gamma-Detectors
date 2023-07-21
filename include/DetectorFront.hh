@@ -43,6 +43,8 @@ class DetectorFront
 
 		DetectorCrystal* GetCrystal()		{return crystal;};
 
+		G4AssemblyVolume* GetAssembly()		{return detFront;};
+
 		//Construct Detector Front
 		void ConstructDetFront();
 
