@@ -240,7 +240,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	//Construct Crystal
 	width = 2*in;
 	length = 2*in;
-	name = "2x2 Crystal";
+	name = "2x2_Crystal";
 	
 	DetectorCrystal* crystal_2x2 = new DetectorCrystal();
 	
