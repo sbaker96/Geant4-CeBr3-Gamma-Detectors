@@ -78,6 +78,18 @@ void DetectorFront::ConstructDetFront()
 	
 }
 
+G4double DetectorFront::CalculateLength()
+{
+	G4double length = crystal->GetLength() + gapFront + sThickness;
+	return length;
+}
+
+G4double DetectorFront::CalculateWidth()
+{
+	G4double width = crystal->GetWidth() + gapSide + sThickness;
+	return width;
+}
+
 G4LogicalVolume* DetectorFront::GenerateCan(G4double thick, G4double inRad,
                                 G4double length, G4Material* mat, G4String name)
 {

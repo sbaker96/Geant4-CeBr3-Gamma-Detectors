@@ -48,6 +48,10 @@ class DetectorFront
 		//Construct Detector Front
 		void ConstructDetFront();
 
+		//Helper Functions
+		G4double CalculateLength();
+		G4double CalculateWidth();
+
 		
 	
 	private:
