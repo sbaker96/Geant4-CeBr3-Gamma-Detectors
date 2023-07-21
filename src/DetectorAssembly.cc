@@ -33,7 +33,7 @@ void DetectorAssembly::ConstructAssembly()
 	Ta.setX(f_x); Ta.setY(f_y); Ta.setZ(f_z);
 	Ma = G4Transform3D(Ra, Ta);
 
-	assembly->AddPlacedVolume(detFront->GetAssembly(), Ma);
+	assembly->AddPlacedAssembly(detFront->GetAssembly(), Ma);
 
 }
 
@@ -60,7 +60,7 @@ void DetectorAssembly::PlaceAssembly(G4LogicalVolume* worldLog, G4double dist, G
         //Set Transform
         Mp = G4Transform3D(Rp, Tp);
 
-	detector->MakeImprint(worldLog, Mp);
+	assembly->MakeImprint(worldLog, Mp);
 
 }
 
