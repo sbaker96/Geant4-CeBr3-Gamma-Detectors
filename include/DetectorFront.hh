@@ -8,7 +8,7 @@
 #include "globals.hh"
 #include "G4LogicalVolume.hh"
 #include "G4AssemblyVolume.hh"
-#include "G4NistManger.hh"
+#include "G4NistManager.hh"
 
 #include "DetectorCrystal.hh"
 
@@ -72,7 +72,7 @@ class DetectorFront
 
 
 
-}
+};
 
 }
 
