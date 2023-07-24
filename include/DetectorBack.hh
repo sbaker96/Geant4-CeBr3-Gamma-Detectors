@@ -21,12 +21,12 @@ class DetectorBack
 		~DetectorBack();
 
 		//Set Functions
-		void setSideGap(G4double g)		{sideGap = g;};
-		void setShieldThickness(G4double t)	{shieldThickness = t;};
+		void SetSideGap(G4double g)		{sideGap = g;};
+		void SetShieldThickness(G4double t)	{shieldThickness = t;};
 
-		void setShieldMat(G4Material* m)	{shieldMat = m;};
+		void SetShieldMat(G4Material* m)	{shieldMat = m;};
 
-		void setPMT(DetectorPMT* p)		{pmt = p;};
+		void SetPMT(DetectorPMT* p)		{pmt = p;};
 
 		//Get Functions
 		G4double GetSideGap()			{return sideGap;};
