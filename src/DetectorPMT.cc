@@ -31,7 +31,7 @@ void DetectorPMT::ConstructPMT()
 	G4Tubs* outerSolid = new G4Tubs("outerSolid", inRad, glassOutRad, glass_hz, 0*deg, 360*deg);
 	G4Tubs* innerSolid = new G4Tubs("innerSolid", inRad, gasOutRad, gas_hz, 0*deg, 360*deg);
 
-	G4SubtractionSolid* shellSolid = new G4Tubs("shellSolid", outerSolid, innerSolid);
+	G4SubtractionSolid* shellSolid = new G4SubtractionSolid("shellSolid", outerSolid, innerSolid);
 
 	//Logical Volume Construction
 	
