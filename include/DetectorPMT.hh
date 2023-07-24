@@ -32,6 +32,8 @@ class DetectorPMT
 		G4double GetLength()			{return length;};
 		G4double GetThickness()			{return thickness;};
 
+		G4AssemblyVolume* GetPMT()		{return pmt;};
+
 		//Construct
 		void ConstructPMT();
 
