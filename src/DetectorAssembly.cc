@@ -60,9 +60,10 @@ void DetectorAssembly::PlaceAssembly(G4LogicalVolume* worldLog, G4double dist, G
         G4Transform3D Mp;
 
         //Set Parameters
+	G4double placeDist = dist + gap + CalculateLength()/2;
 
         //Set Translation
-        Tp.setX(dist*sin(theta)*cos(phi)); Tp.setY(dist*sin(theta)*sin(phi)); Tp.setZ(dist*cos(theta));
+        Tp.setX(placeDist*sin(theta)*cos(phi)); Tp.setY(placeDist*sin(theta)*sin(phi)); Tp.setZ(placeDist*cos(theta));
 
         //Set Rotation
         Rp.rotateZ(spin); Rp.rotateY(theta); Rp.rotateZ(phi);
