@@ -34,9 +34,9 @@ class DetectorAssembly
                         G4double theta, G4double phi, G4double spin);
 
 		//Helper Functions
-		G4double GetLength();
+		G4double CalculateLength();
 
-		G4double GetWidth();
+		G4double CalculateWidth();
 		
 	private:
 		//Components

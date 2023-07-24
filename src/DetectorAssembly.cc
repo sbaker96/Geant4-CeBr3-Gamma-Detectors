@@ -23,7 +23,7 @@ void DetectorAssembly::ConstructAssembly()
 
 	G4double b_x = f_x;
 	G4double b_y = f_y;
-	G4double b_z = f_z + detFront->GetLength()/2 + detBack->GetLength()/2;
+	G4double b_z = f_z + detFront->CalculateLength()/2 + detBack->CalculateLength()/2;
 
 	assembly = new G4AssemblyVolume;
 
@@ -74,16 +74,16 @@ void DetectorAssembly::PlaceAssembly(G4LogicalVolume* worldLog, G4double dist, G
 
 }
 
-G4double DetectorAssembly::GetLength()
+G4double DetectorAssembly::CalculateLength()
 {
-	length = detFront->GetLength() + detBack->GetLength();
+	length = detFront->CalculateLength() + detBack->CalculateLength();
 
 	return length;
 }
 
-G4double DetectorAssembly::GetWidth()
+G4double DetectorAssembly::CalculateWidth()
 {
-	width = max(detFront->GetWidth(), detBack->GetWidth());
+	width = max(detFront->CalculateWidth(), detBack->CalculateWidth());
 
 	return width;
 }
