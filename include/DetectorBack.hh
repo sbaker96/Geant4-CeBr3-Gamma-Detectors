@@ -36,6 +36,8 @@ class DetectorBack
 
 		DetectorPMT* GetPMT()			{return pmt;};
 
+		G4AssemblyVolume* GetAssembly()		{return detBack;};
+
 		//Construct
 		void ConstructDetBack();
 
