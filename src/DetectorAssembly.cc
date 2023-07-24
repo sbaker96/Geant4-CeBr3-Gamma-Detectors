@@ -21,6 +21,10 @@ void DetectorAssembly::ConstructAssembly()
 	G4double f_y = 0*mm;
 	G4double f_z = 0*mm;
 
+	G4double b_x = f_x;
+	G4double b_y = f_y;
+	G4double b_z = f_z + detFront->GetLength()/2 + detBack->GetLength()/2;
+
 	assembly = new G4AssemblyVolume;
 
 	//Rotation and Translation Matrices
@@ -34,6 +38,12 @@ void DetectorAssembly::ConstructAssembly()
 	Ma = G4Transform3D(Ra, Ta);
 
 	assembly->AddPlacedAssembly(detFront->GetAssembly(), Ma);
+
+	//Add Detector Back
+	Ta.setX(b_x); Ta.setY(b_y); Ta.setZ(b_z);
+	Ma = G4Transform3D(Ra, Ta);
+
+	assembly->AddPlacedAssembly(detBack->GetAssembly(), Ma);
 
 }
 
