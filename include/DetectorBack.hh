@@ -9,6 +9,8 @@
 #include "G4NistManager.hh"
 #include "G4AssemblyVolume.hh"
 
+#include "DetectorPMT.hh"
+
 namespace CeBr3
 {
 
