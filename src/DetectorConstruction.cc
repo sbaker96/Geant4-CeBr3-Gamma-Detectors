@@ -51,6 +51,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	//Define nist Materials
         G4Material* Air = man->FindOrBuildMaterial("G4_AIR");
         G4Material* Al = man->FindOrBuildMaterial("G4_Al");
+	G4Material* Glass = man->FindOrBuildMaterial("G4_Pyrex_Glass");
 
 	//Define CeBr3
 
@@ -222,7 +223,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 //New Class Test
 
-	//Construction Parameters
+	//Detector Front Construction Parameters
         G4double width,         //width of detector crystal
                  length,        //length of detector crystal
                  rThickness,    //thickness of reflector
@@ -232,6 +233,12 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         
         G4String name;          //Name of crystal logical volume
 
+	//Detector Back Construction Parameters
+	G4double pmtWidth,	//width of PMT
+		 pmtLength,	//length of PMT
+		 pmtThick,	//thickness of PMT glass
+		 shieldSideGap,	//gap between magnetic shield and PMT
+		 shieldThick;	//thickness of magnetic shield
 
 
 	//2x2 Detector
@@ -271,11 +278,43 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 	detFront_2x2->ConstructDetFront();
 
+	//Construct PMT
+	pmtWidth = 2*in;
+	pmtLength = 2*in;
+	pmtThick = 5*mm;
+
+	DetectorPMT* pmt_2x2 = new DetectorPMT();
+
+	pmt_2x2->SetWidth(pmtWidth);
+	pmt_2x2->SetLength(pmtLength);
+	pmt_2x2->SetThickness(pmtThick);
+
+	pmt_2x2->SetGlassMat(Glass);
+	pmt_2x2->SetGasMat(Air);
+
+	pmt_2x2->ConstructPMT();
+
+	//Construct Detector Back
+	shieldSideGap = 5*mm;
+	shieldThick = 0.64*mm;
+
+	DetectorBack* detBack_2x2 = new DetectorBack();
+
+	detBack_2x2->SetSideGap(shieldSideGap);
+	detBack_2x2->SetShieldThickness(shieldThick);
+
+	detBack_2x2->SetShieldMat(Al);
+
+	detBack_2x2->SetPMT(pmt_2x2);
+
+	detBack_2x2->ConstructDetBack();
+
 	//Construct Detector Assembly
 	
 	DetectorAssembly* Detector_2x2 = new DetectorAssembly();
 
 	Detector_2x2->SetDetFront(detFront_2x2);
+	Detector_2x2->SetDetBack(detBack_2x2);
 
 	Detector_2x2->ConstructAssembly();
 
