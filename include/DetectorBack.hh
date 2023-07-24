@@ -24,7 +24,7 @@ class DetectorBack
 		void setSideGap(G4double g)		{sideGap = g;};
 		void setShieldThickness(G4double t)	{shieldThickness = t;};
 
-		void setShieldMat(G4Material* m)	{sheildMat = m;};
+		void setShieldMat(G4Material* m)	{shieldMat = m;};
 
 		void setPMT(DetectorPMT* p)		{pmt = p;};
 
@@ -32,7 +32,7 @@ class DetectorBack
 		G4double GetSideGap()			{return sideGap;};
 		G4double GetShieldThickness()		{return shieldThickness;};
 
-		G4Material* GetShieldMat()		{return sheildMat;};
+		G4Material* GetShieldMat()		{return shieldMat;};
 
 		DetectorPMT* GetPMT()			{return pmt;};
 
@@ -61,4 +61,4 @@ class DetectorBack
 }
 
 
-#endif DetectorBack_h
+#endif

@@ -16,11 +16,11 @@ DetectorBack::DetectorBack()
 DetectorBack::~DetectorBack()
 {;}
 
-DetectorBack::ConstructDetectorBack()
+void DetectorBack::ConstructDetBack()
 {
 	//Parameters
 	G4double sInRad = (pmt->GetWidth())/2;
-	G4double sOutRad = (pmt->GetWidth())/2 + shieldThickness();
+	G4double sOutRad = (pmt->GetWidth())/2 + shieldThickness;
 	G4double s_hz = (pmt->GetLength())/2;
 
 	//Sheilding Solid
@@ -31,7 +31,7 @@ DetectorBack::ConstructDetectorBack()
 
 	//Construct DetectorBack Assembly
 	
-	detBack = new G4AssemblyVolume*;
+	detBack = new G4AssemblyVolume;
 
 	//Rotation and Translation Matrices
         G4RotationMatrix Ra;
@@ -44,16 +44,16 @@ DetectorBack::ConstructDetectorBack()
 
 }
 
-DetectorBack::CalculateLength()
+G4double DetectorBack::CalculateLength()
 {
-	length = pmt->GetLength();
+	G4double length = pmt->GetLength();
 	
 	return length;
 }
 
-DetectorBack::CalculateWidth()
+G4double DetectorBack::CalculateWidth()
 {
-	width = pmt->GetWidth() + 2*shieldThickness();
+	G4double width = pmt->GetWidth() + 2*shieldThickness;
 
 	return width;
 }
