@@ -74,4 +74,18 @@ void DetectorAssembly::PlaceAssembly(G4LogicalVolume* worldLog, G4double dist, G
 
 }
 
+G4double DetectorAssembly::GetLength()
+{
+	length = detFront->GetLength() + detBack->GetLength();
+
+	return length;
+}
+
+G4double DetectorAssembly::GetWidth()
+{
+	width = max(detFront->GetWidth(), detBack->GetWidth());
+
+	return width;
+}
+
 }
