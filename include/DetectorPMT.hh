@@ -45,8 +45,8 @@ class DetectorPMT
 		G4Material* gasMat;
 
 		//Assembly
-		G4Assembly* pmt;
-}
+		G4AssemblyVolume* pmt;
+};
 	
 }
 
