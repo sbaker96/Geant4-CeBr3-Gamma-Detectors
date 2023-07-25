@@ -26,7 +26,7 @@ void DetectorFront::ConstructDetFront()
 
 	G4double c_x = 0*mm;
 	G4double c_y = 0*mm;
-	G4double c_z = 0*mm;
+	G4double c_z = c_hz + gapFront + sThickness;
 
 	//Generate Reflector
 	

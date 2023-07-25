@@ -23,6 +23,10 @@ void DetectorBack::ConstructDetBack()
 	G4double sOutRad = (pmt->GetWidth())/2 + shieldThickness;
 	G4double s_hz = (pmt->GetLength())/2;
 
+	G4double s_x = 0*mm;
+	G4double s_y = 0*mm;
+	G4double s_z = s_hz;
+
 	//Sheilding Solid
 	G4Tubs* sSolid = new G4Tubs("sSolid", sInRad, sOutRad, s_hz, 0*deg, 360*deg);
 
@@ -38,6 +42,9 @@ void DetectorBack::ConstructDetBack()
         G4ThreeVector Ta;
 
         G4Transform3D Ma;
+
+	Ta.setX(s_x); Ta.setY(s_y); Ta.setZ(s_z);
+	Ma = G4Transform3D(Ra, Ta);
 
 	detBack->AddPlacedAssembly(pmt->GetPMT(), Ma);
 	detBack->AddPlacedVolume(sLog, Ma);

@@ -23,7 +23,7 @@ void DetectorAssembly::ConstructAssembly()
 
 	G4double b_x = f_x;
 	G4double b_y = f_y;
-	G4double b_z = f_z + detFront->CalculateLength()/2 + detBack->CalculateLength()/2;
+	G4double b_z = f_z + detFront->CalculateLength();
 
 	assembly = new G4AssemblyVolume;
 
@@ -60,7 +60,7 @@ void DetectorAssembly::PlaceAssembly(G4LogicalVolume* worldLog, G4double dist, G
         G4Transform3D Mp;
 
         //Set Parameters
-	G4double placeDist = dist + gap + CalculateLength()/2;
+	G4double placeDist = dist + gap;
 
         //Set Translation
         Tp.setX(placeDist*sin(theta)*cos(phi)); Tp.setY(placeDist*sin(theta)*sin(phi)); Tp.setZ(placeDist*cos(theta));
