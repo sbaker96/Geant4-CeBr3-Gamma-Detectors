@@ -224,12 +224,12 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 //New Class Test
 
 	//Detector Front Construction Parameters
-        G4double width,         //width of detector crystal
-                 length,        //length of detector crystal
-                 rThickness,    //thickness of reflector
-                 sThickness,    //thickness of shell
-                 gapFront,      //gap between shell and crystal front
-                 gapSide;       //gap between shell and crystal side
+        G4double cWidth,   	//width of detector crystal
+                 cLength,       //length of detector crystal
+                 refThick,    	//thickness of reflector
+                 shellThick,    //thickness of shell
+                 shellFrontGap, //gap between shell and crystal front
+                 shellSideGap;  //gap between shell and crystal side
         
         G4String name;          //Name of crystal logical volume
 
@@ -245,31 +245,31 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	
 	
 	//Construct Crystal
-	width = 2*in;
-	length = 2*in;
+	cWidth = 2*in;
+	cLength = 2*in;
 	name = "2x2_Crystal";
 	
 	DetectorCrystal* crystal_2x2 = new DetectorCrystal();
 	
-	crystal_2x2->SetWidth(width);
-	crystal_2x2->SetLength(length);
+	crystal_2x2->SetWidth(cWidth);
+	crystal_2x2->SetLength(cLength);
 	crystal_2x2->SetName(name);
 	crystal_2x2->SetMaterial(CeBr3);
 
 	crystal_2x2->ConstructCrystal();
 
 	//Construct Detector Front
-	rThickness = 0.025*mm;
-	sThickness = 0.5*mm;
-	gapFront = 0.5*mm;
-	gapSide = 0.5*mm;
+	refThick = 0.025*mm;
+	shellThick = 0.5*mm;
+	shellFrontGap = 0.5*mm;
+	shellSideGap = 0.5*mm;
 
 	DetectorFront* detFront_2x2 = new DetectorFront();
 
-	detFront_2x2->SetRThickness(rThickness);
-	detFront_2x2->SetSThickness(sThickness);
-	detFront_2x2->SetGapFront(gapFront);
-	detFront_2x2->SetGapSide(gapSide);
+	detFront_2x2->SetRThickness(refThick);
+	detFront_2x2->SetSThickness(shellThick);
+	detFront_2x2->SetGapFront(shellFrontGap);
+	detFront_2x2->SetGapSide(shellSideGap);
 
 	detFront_2x2->SetRMat(Al);
 	detFront_2x2->SetSMat(Al);
