@@ -32,6 +32,9 @@ class DetectorPMT
 		G4double GetLength()			{return length;};
 		G4double GetThickness()			{return thickness;};
 
+		G4Material* GetGlassMat()		{return glassMat;};
+		G4Material* GetGasMat()			{return gasMat;};
+
 		G4AssemblyVolume* GetPMT()		{return pmt;};
 
 		//Construct
