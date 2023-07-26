@@ -3,10 +3,11 @@
 //====================================
 
 #include "DetectorConstruction.hh"
-#include "Detector.hh"
 
 #include "DetectorCrystal.hh"
 #include "DetectorFront.hh"
+#include "DetectorPMT.hh"
+#include "DetectorBack.hh"
 #include "DetectorAssembly.hh"
 
 #include "G4RunManager.hh"
@@ -147,81 +148,6 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 //======================//
 //	Detectors	//
 //======================//	
-/*
-	//Construction Parameters
-	G4double width,		//width of detector crystal
-		 length, 	//length of detector crystal
-		 rThickness, 	//thickness of reflector
-		 sThickness,	//thickness of shell
-		 gapFront, 	//gap between shell and crystal front
-		 gapSide;	//gap between shell and crystal side
-	
-	G4String name;		//Name of crystal logical volume
-
-	//2x2 Detector//
-
-	Detector* Detector_2x2 = new Detector();
-	
-	//Construct Crystal
-	width = 2*in;
-	length = 2*in;
-	name = "2x2_Crystal";
-	
-	Detector_2x2->SetWidth(width);
-	Detector_2x2->SetLength(length);
-	Detector_2x2->SetName(name);
-	Detector_2x2->SetCMat(CeBr3);
-
-	Detector_2x2->ConstructCrystal();
-
-	//Construct Detector
-	rThickness = 0.025*mm;
-	sThickness = 0.5*mm;
-	gapFront = 0.5*mm;
-	gapSide = 0.5*mm;
-	
-	Detector_2x2->SetRThickness(rThickness);
-	Detector_2x2->SetSThickness(sThickness);
-	Detector_2x2->SetGapFront(gapFront);
-	Detector_2x2->SetGapSide(gapSide);
-	Detector_2x2->SetRMat(Al);
-	Detector_2x2->SetSMat(Al);
-
-	Detector_2x2->ConstructDetector();
-
-	//3x4 Detector//
-
-	Detector* Detector_3x4 = new Detector();
-	
-	//Construct Crystal
-	width = 3*in;
-	length = 4*in;
-	name = "3x4_Crystal";
-	
-	Detector_3x4->SetWidth(width);
-	Detector_3x4->SetLength(length);
-	Detector_3x4->SetName(name);
-	Detector_3x4->SetCMat(CeBr3);
-
-	Detector_3x4->ConstructCrystal();
-
-	//Construct Detector
-	rThickness = 0.025*mm;
-	sThickness = 0.5*mm;
-	gapFront = 0.5*mm;
-	gapSide = 2.4*mm;
-	
-	Detector_3x4->SetRThickness(rThickness);
-	Detector_3x4->SetSThickness(sThickness);
-	Detector_3x4->SetGapFront(gapFront);
-	Detector_3x4->SetGapSide(gapSide);
-	Detector_3x4->SetRMat(Al);
-	Detector_3x4->SetSMat(Al);
-
-	Detector_3x4->ConstructDetector();
-*/
-
-//New Class Test
 
 	//Detector Front Construction Parameters
         G4double cWidth,   	//width of detector crystal
@@ -237,6 +163,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	G4double pmtWidth,	//width of PMT
 		 pmtLength,	//length of PMT
 		 pmtThick,	//thickness of PMT glass
+		 cathodeThick,	//thickness of photocathode
 		 shieldSideGap,	//gap between magnetic shield and PMT
 		 shieldThick;	//thickness of magnetic shield
 
@@ -282,15 +209,18 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	pmtWidth = 2*in;
 	pmtLength = 90*mm;
 	pmtThick = 5*mm;
+	cathodeThick = 1*mm;
 
 	DetectorPMT* pmt_2x2 = new DetectorPMT();
 
 	pmt_2x2->SetWidth(pmtWidth);
 	pmt_2x2->SetLength(pmtLength);
 	pmt_2x2->SetThickness(pmtThick);
+	pmt_2x2->SetCathodeThick(cathodeThick);
 
 	pmt_2x2->SetGlassMat(Glass);
 	pmt_2x2->SetGasMat(Air);
+	pmt_2x2->SetCathodeMat(Glass);
 
 	pmt_2x2->ConstructPMT();
 
