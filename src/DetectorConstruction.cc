@@ -280,7 +280,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 	//Construct PMT
 	pmtWidth = 2*in;
-	pmtLength = 2*in;
+	pmtLength = 90*mm;
 	pmtThick = 5*mm;
 
 	DetectorPMT* pmt_2x2 = new DetectorPMT();
