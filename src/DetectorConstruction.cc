@@ -63,8 +63,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 					   5.1*g/cm3,	//density
 					   2);		//ncomponents
 
-	CeBr3->AddElement(Ce, 36.889*perCent);
-       	CeBr3->AddElement(Br, 63.111*perCent);
+	CeBr3->AddElement(Ce, 1);
+       	CeBr3->AddElement(Br, 3);
 
 	//Define Bialkali
 	
