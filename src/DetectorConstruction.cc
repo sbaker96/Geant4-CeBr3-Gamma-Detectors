@@ -66,6 +66,18 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	CeBr3->AddElement(Ce, 36.889*perCent);
        	CeBr3->AddElement(Br, 63.111*perCent);
 
+	//Define Bialkali
+	
+	G4Element* Sb = new G4Element("Antimony", "Sb", 51., 121.760*g/mole);
+	G4Element* K  = new G4Element("Potassium", "K", 19., 39.098*g/mole);
+	G4Element* Cs = new G4Element("Cesium", "Cs", 55., 132.91*g/mole);
+
+	G4Material* Bialkali = new G4Material("Bialkali", 3.46*g/cm3, 3);
+
+	Bialkali->AddElement(Sb, 1);
+	Bialkali->AddElement(K, 2);
+	Bialkali->AddElement(Cs, 1);
+
 //======================================
 
 	//Define World Parameters
@@ -220,7 +232,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 	pmt_2x2->SetGlassMat(Glass);
 	pmt_2x2->SetGasMat(Air);
-	pmt_2x2->SetCathodeMat(Glass);
+	pmt_2x2->SetCathodeMat(Bialkali);
 
 	pmt_2x2->ConstructPMT();
 
