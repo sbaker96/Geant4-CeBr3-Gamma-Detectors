@@ -145,7 +145,7 @@ void plotFolded(int num)
         TH1F* outHist = new TH1F(writeName.c_str(), writeName.c_str(), nofBins, 0, nofBins);
 
 	//Create Functions
-        TF1* stDev = new TF1("Standard Deviation", "(x/235.5)*(100/sqrt(x))", 0 , 1000*nofBins);
+        TF1* stDev = new TF1("Standard Deviation", "(x/235.5)*(105.19272980942735/sqrt(x))", 0 , 1000*nofBins);
 
 	auto g = new TF1("g", "gausn(0)");
 
@@ -194,6 +194,8 @@ void plotExp(int num)
 
 	TH1F* srcHist = static_cast<TH1F*>(inFile->Get(numAppend("Raw_", num).c_str()));
 	
+	int maxFilledBin = srcHist->FindLastBinAbove();
+	
 	//Create Histogram
         int nofBins = maxEnergy;
 	
@@ -201,16 +203,19 @@ void plotExp(int num)
 
         TH1F* outHist = new TH1F(writeName.c_str(), writeName.c_str(), nofBins, 0, nofBins);
 
-	TF1* back = new TF1("back", "exp(x/(-100))", 0, 1000*nofBins);
+	TF1* back = new TF1("back", "[0]*exp(-[1]*x)", 0, 1000*nofBins);
 
-	outHist->FillRandom("back", 100000);
+	back->SetParameter(0, 1408.4249659284883);
+	back->SetParameter(1, 0.006687176944486383);
+
+	auto integral = back->Integral(0, 1000*nofBins);
+
+	outHist->FillRandom("back", integral);
 
 	//Create Functions
-        TF1* stDev = new TF1("Standard Deviation", "(x/235.5)*(100/sqrt(x))", 0 , 1000*nofBins);
+        TF1* stDev = new TF1("Standard Deviation", "(x/235.5)*(106.1738108093346/sqrt(x))", 0 , 1000*nofBins);
 
 	auto g = new TF1("g", "gausn(0)");
-
-	int maxFilledBin = srcHist->FindLastBinAbove();
 
 	for(int i = 2; i <= maxFilledBin; i++)
 	{
@@ -227,10 +232,9 @@ void plotExp(int num)
 	}
 
 
-	//Normalize Histogram
-//  	double factor = 1.0;
-
-//	outHist->Scale(factor/outHist->GetMaximum());	//Sets the highest bin to one
+	//Scale Back Histogram
+//	int nofCounts = 10000000;
+//	outHist->Scale(static_cast<double>(nofCounts)/static_cast<double>(integral + nofCounts));	
 
 	//Set Histogram Option
 	outHist->SetOption("HIST");
