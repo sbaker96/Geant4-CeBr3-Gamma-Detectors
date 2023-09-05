@@ -17,10 +17,16 @@
 /vis/geometry/set/colour 3x4_Crystal 1 0 0 1 1
 
 /vis/geometry/set/colour rLog 1 0.5 0.5 0.5 1
+/vis/geometry/set/colour Reflector 1 0.5 0.5 0.5 1
+/vis/geometry/set/colour Shell 1 0.5 0.5 0.5 1
 /vis/geometry/set/colour sLog 1 0.5 0.5 0.5 1
  
 
 /vis/geometry/set/colour SphericalShell 1 0.7 0.7 0.7 1
+
+/vis/geometry/set/colour PMTGlass 1 0.5 0.5 0.5 0.1
+/vis/geometry/set/colour PMTCathode 1 0.7 0.7 0.7 0.2
+/vis/geometry/set/colour PMTGas 1 0 0 0 0
 
 #Set Trajectories
 
