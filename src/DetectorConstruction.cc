@@ -78,6 +78,18 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	Bialkali->AddElement(K, 2);
 	Bialkali->AddElement(Cs, 1);
 
+	//Define Mu Metal
+	
+	G4Element* Ni = new G4Element("Nickel", "Ni", 28., 58.693*g/mole);
+	G4Element* Fe = new G4Element("Iron", "Fe", 26., 55.845*g/mole);
+	G4Element* Mo = new G4Element("Molybdenum", "Mo", 42., 95.95*g/mole);
+
+	G4Material* MuMetal = new G4Material("MuMetal", 8.7*g/cm3, 3);
+
+	MuMetal->AddElement(Ni, 80*perCent);
+	MuMetal->AddElement(Fe, 15*perCent);
+	MuMetal->AddElement(Mo, 5*perCent);
+
 //======================================
 
 	//Define World Parameters
@@ -245,7 +257,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	detBack_2x2->SetSideGap(shieldSideGap);
 	detBack_2x2->SetShieldThickness(shieldThick);
 
-	detBack_2x2->SetShieldMat(Al);
+	detBack_2x2->SetShieldMat(MuMetal);
 
 	detBack_2x2->SetPMT(pmt_2x2);
 
