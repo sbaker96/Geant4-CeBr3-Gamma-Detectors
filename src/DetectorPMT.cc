@@ -51,9 +51,9 @@ void DetectorPMT::ConstructPMT()
 
 	//Logical Volume Construction
 	
-	G4LogicalVolume* glassLog = new G4LogicalVolume(shellSolid, glassMat, "PMT Glass");
-	G4LogicalVolume* cathodeLog = new G4LogicalVolume(cathodeSolid, cathodeMat, "PMT Cathode");
-	G4LogicalVolume* gasLog = new G4LogicalVolume(gasSolid, gasMat, "PMT Gas"); 
+	G4LogicalVolume* glassLog = new G4LogicalVolume(shellSolid, glassMat, "PMTGlass");
+	G4LogicalVolume* cathodeLog = new G4LogicalVolume(cathodeSolid, cathodeMat, "PMTCathode");
+	G4LogicalVolume* gasLog = new G4LogicalVolume(gasSolid, gasMat, "PMTGas"); 
 
 	//Assembly Construction
 	
