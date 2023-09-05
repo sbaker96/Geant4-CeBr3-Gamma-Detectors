@@ -169,7 +169,7 @@ void plotFolded(int num)
 	//Normalize Histogram
   	double factor = 1.0;
 
-	outHist->Scale(factor/outHist->GetMaximum());	//Sets the highest bin to one
+//	outHist->Scale(factor/outHist->GetMaximum());	//Sets the highest bin to one
 
 	//Set Histogram Option
 	outHist->SetOption("HIST");
@@ -205,8 +205,8 @@ void plotExp(int num)
 
 	TF1* back = new TF1("back", "[0]*exp(-[1]*x)", 0, 1000*nofBins);
 
-	back->SetParameter(0, 1408.4249659284883);
-	back->SetParameter(1, 0.006687176944486383);
+	back->SetParameter(0, 6437.944008871607);
+	back->SetParameter(1, 0.006219787025252926);
 
 	auto integral = back->Integral(0, 1000*nofBins);
 
