@@ -153,7 +153,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	G4double ss_z = 0.0*cm;
 
 	//Physical Volume
-	
+/*	
 	G4VPhysicalVolume* ssPhys =
        	new G4PVPlacement(0,            	//no rotation
                         G4ThreeVector(ss_x, ss_y, ss_z),
@@ -165,7 +165,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
                         0);             	//copy number
 
 
-
+*/
 
 //=============================================
 
@@ -272,6 +272,86 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 	Detector_2x2->ConstructAssembly();
 
+	//3x4 Detector
+	
+	
+	//Construct Crystal
+	cWidth = 3*in;
+	cLength = 4*in;
+	name = "3x4_Crystal";
+	
+	DetectorCrystal* crystal_3x4 = new DetectorCrystal();
+	
+	crystal_3x4->SetWidth(cWidth);
+	crystal_3x4->SetLength(cLength);
+	crystal_3x4->SetName(name);
+	crystal_3x4->SetMaterial(CeBr3);
+
+	crystal_3x4->ConstructCrystal();
+
+	//Construct Detector Front
+	refThick = 0.025*mm;
+	shellThick = 0.5*mm;
+	shellFrontGap = 0.5*mm;
+	shellSideGap = 0.5*mm;
+
+	DetectorFront* detFront_3x4 = new DetectorFront();
+
+	detFront_3x4->SetRThickness(refThick);
+	detFront_3x4->SetSThickness(shellThick);
+	detFront_3x4->SetGapFront(shellFrontGap);
+	detFront_3x4->SetGapSide(shellSideGap);
+
+	detFront_3x4->SetRMat(Al);
+	detFront_3x4->SetSMat(Al);
+
+	detFront_3x4->SetCrystal(crystal_3x4);
+
+	detFront_3x4->ConstructDetFront();
+
+	//Construct PMT
+	pmtWidth = 3*in;
+	pmtLength = 90*mm;
+	pmtThick = 5*mm;
+	cathodeThick = 1*mm;
+
+	DetectorPMT* pmt_3x4 = new DetectorPMT();
+
+	pmt_3x4->SetWidth(pmtWidth);
+	pmt_3x4->SetLength(pmtLength);
+	pmt_3x4->SetThickness(pmtThick);
+	pmt_3x4->SetCathodeThick(cathodeThick);
+
+	pmt_3x4->SetGlassMat(Glass);
+	pmt_3x4->SetGasMat(Air);
+	pmt_3x4->SetCathodeMat(Bialkali);
+
+	pmt_3x4->ConstructPMT();
+
+	//Construct Detector Back
+	shieldSideGap = 5*mm;
+	shieldThick = 0.64*mm;
+
+	DetectorBack* detBack_3x4 = new DetectorBack();
+
+	detBack_3x4->SetSideGap(shieldSideGap);
+	detBack_3x4->SetShieldThickness(shieldThick);
+
+	detBack_3x4->SetShieldMat(MuMetal);
+
+	detBack_3x4->SetPMT(pmt_3x4);
+
+	detBack_3x4->ConstructDetBack();
+
+	//Construct Detector Assembly
+	
+	DetectorAssembly* Detector_3x4 = new DetectorAssembly();
+
+	Detector_3x4->SetDetFront(detFront_3x4);
+	Detector_3x4->SetDetBack(detBack_3x4);
+
+	Detector_3x4->ConstructAssembly();
+
 
 //===========================================
 	
@@ -292,12 +372,12 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 	gap = 14.0*mm;
 
-        theta = pi*rad;
+        theta = 0*rad;
         phi = 0*rad;
 
 	spin = 0*rad;
 	
-	Detector_2x2->PlaceAssembly(worldLog, ss_outRad, gap, theta, phi, spin);
+//	Detector_2x2->PlaceAssembly(worldLog, ss_outRad, gap, theta, phi, spin);
 
 	//Detector 1
 	
@@ -308,7 +388,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 	spin = 0*rad;
 
-//	Detector_3x4->PlaceDetector(worldLog, ss_outRad, gap, theta, phi, spin);
+	Detector_3x4->PlaceAssembly(worldLog, ss_outRad, gap, theta, phi, spin);
 
 //===========================================
 
@@ -341,7 +421,7 @@ void DetectorConstruction::ConstructSDandField()
 	
 	SetSensitiveDetector("2x2_Crystal", detector, true);
 	
-//	SetSensitiveDetector("3x4_Crystal", detector, true);
+	SetSensitiveDetector("3x4_Crystal", detector, true);
 }
 
 }
