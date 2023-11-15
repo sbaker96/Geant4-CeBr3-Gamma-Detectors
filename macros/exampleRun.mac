@@ -1,8 +1,8 @@
 # Example Run Macro
 
-/gun/particle ion 	# Set main particles to ion
+/gps/particle ion 	# Set main particles to ion
 
-/gun/ion 27 60		# Syntax of command is /gun/ion Z A
+/gps/ion 27 60		# Syntax of command is /gun/ion Z A
 			# This example uses 60Co
 
 

@@ -1,5 +1,5 @@
 #Sets source to 152Eu 
 
-/gun/particle ion
-/gun/ion 63 152
+/gps/particle ion
+/gps/ion 63 152
 
