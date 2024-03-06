@@ -37,8 +37,9 @@ string histName = "Edep_";
 string simDirName = "simOutputPhotopeaks";
 string simFileName = "detector_";
 
-const int nofDetectors = 2;
+const int nofDetectors = 1;
 const int maxEnergy = 4000; // in keV
+const int binWidth = 4;
 
 /////////////////////
 
@@ -56,10 +57,10 @@ int GeneratePlots()
 	{
 		plotRaw(i);
 		plotFolded(i);
-		plotExp(i);
-		plotPhotopeaks(i);
+//		plotExp(i);
+//		plotPhotopeaks(i);
 	
-		writePhotopeaks(i);
+//		writePhotopeaks(i);
 	}
 
 	//Generate raw and folded 2D plots
@@ -145,8 +146,8 @@ void plotFolded(int num)
         TH1F* outHist = new TH1F(writeName.c_str(), writeName.c_str(), nofBins, 0, nofBins);
 
 	//Create Functions
-        TF1* stDev = new TF1("Standard Deviation", "(x/235.5)*(105.19272980942735/sqrt(x))", 0 , 1000*nofBins);
-
+        TF1* stDev = new TF1("Standard Deviation", "(x/235.5)*(1.20*(106.0)/sqrt(x))", 0 , 1000*nofBins);
+/*
 	auto g = new TF1("g", "gausn(0)");
 
 	int maxFilledBin = srcHist->FindLastBinAbove();
@@ -164,7 +165,22 @@ void plotFolded(int num)
                 outHist->FillRandom("g", counts);
 		}
 	}
-
+*/
+	int maxFilledBin = srcHist->FindLastBinAbove();
+	for(int i = 2; i <= maxFilledBin; i++)
+	{
+		int counts  = srcHist->GetBinContent(i);
+		if(counts != 0)
+		{
+			for(int j = 0; j < counts; j++)
+			{
+			double currentBin = srcHist->GetBinCenter(i);
+			double bin = currentBin + gRandom->Gaus(1, stDev->Eval(currentBin));
+			//std::cout << currentBin << " | " << bin << endl;
+			outHist->Fill(bin);
+			}
+		}
+	}
 
 	//Normalize Histogram
   	double factor = 1.0;
@@ -174,8 +190,15 @@ void plotFolded(int num)
 	//Set Histogram Option
 	outHist->SetOption("HIST");
 
+	outHist->GetXaxis()->SetTitle("Energy [keV]");
+	outHist->GetXaxis()->CenterTitle();
+	outHist->GetYaxis()->SetTitle("Counts/4 keV");
+	outHist->GetYaxis()->CenterTitle();
+
         outHist->SetLineColor(1);
 
+	outHist->Rebin(binWidth);
+	
 	//Write Histogram to output file
 	TFile* outFile = new TFile(outName.c_str(), "UPDATE");
 	
@@ -235,6 +258,8 @@ void plotExp(int num)
 	//Scale Back Histogram
 //	int nofCounts = 10000000;
 //	outHist->Scale(static_cast<double>(nofCounts)/static_cast<double>(integral + nofCounts));	
+
+	outHist->Rebin(binWidth);
 
 	//Set Histogram Option
 	outHist->SetOption("HIST");
