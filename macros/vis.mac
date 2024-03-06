@@ -12,6 +12,7 @@
 /vis/viewer/set/style surface
 /vis/geometry/set/visibility World 0 false
 /vis/viewer/set/viewpointVector 1 0 0
+/vis/viewer/set/lightsMove cam
 
 /vis/geometry/set/colour 2x2_Crystal 1 0 0 1 1
 /vis/geometry/set/colour 3x4_Crystal 1 0 0 1 1
@@ -19,7 +20,7 @@
 /vis/geometry/set/colour rLog 1 0.5 0.5 0.5 1
 /vis/geometry/set/colour Reflector 1 0.5 0.5 0.5 1
 /vis/geometry/set/colour Shell 1 0.5 0.5 0.5 1
-/vis/geometry/set/colour sLog 1 0.5 0.5 0.5 1
+/vis/geometry/set/colour sLog 1 0.4 0.4 0.4 1
  
 
 /vis/geometry/set/colour SphericalShell 1 0.7 0.7 0.7 1
