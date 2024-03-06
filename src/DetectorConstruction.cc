@@ -53,6 +53,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         G4Material* Air = man->FindOrBuildMaterial("G4_AIR");
         G4Material* Al = man->FindOrBuildMaterial("G4_Al");
 	G4Material* Glass = man->FindOrBuildMaterial("G4_Pyrex_Glass");
+	G4Material* Plastic = man->FindOrBuildMaterial("G4_PLASTIC_SC_VINYLTOLUENE");
 
 	//Define CeBr3
 
@@ -166,6 +167,44 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 
 */
+
+
+//=============================================
+
+//Create Source Plastic
+
+	//Parameters
+	G4double sp_trueRad = 2*cm;
+	G4double sp_thickRad = 0.5*cm;
+	G4double sp_trueHeight = 1*cm;
+	G4double sp_thickHeight = 0.5*cm;
+
+	G4double sp_startAngle = 0*rad;
+	G4double sp_spanAngle = 2*pi*rad;
+
+	G4RotationMatrix* nullRot = new G4RotationMatrix();
+	G4RotationMatrix* placeRot = new G4RotationMatrix();
+		placeRot->rotateX(90*deg);
+	G4ThreeVector nullVec = G4ThreeVector(0*cm, 0*cm, 0*cm);
+
+	//Base Solid
+	G4Tubs* spBaseSolid = new G4Tubs("spBase", 0*cm, sp_trueRad, sp_trueHeight/2, 
+			sp_startAngle, sp_spanAngle);
+	//Hole Solid
+	G4Tubs* spHoleSolid = new G4Tubs("spHole", 0*cm, (sp_trueRad - sp_thickRad), 
+			(sp_trueHeight - sp_thickHeight)/2, sp_startAngle, sp_spanAngle);
+
+	//Source Plastic Solid
+	G4SubtractionSolid* spSolid = new G4SubtractionSolid("spSolid", spBaseSolid,
+			spHoleSolid, nullRot, nullVec);
+	
+	//Logical Volume
+	G4LogicalVolume* spLog = new G4LogicalVolume(spSolid, Plastic, "SourcePlastic");
+
+	//Physical Volume
+	G4VPhysicalVolume* spPhys = new G4PVPlacement(placeRot, nullVec, spLog, "SourcePlastic", worldLog,
+		false, 0);	
+
 
 //=============================================
 
@@ -370,9 +409,10 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 	//Detector 0
 
-	gap = 14.0*mm;
+//	gap = //14.0*mm;
+	gap = 5.0*in - ss_outRad;
 
-        theta = 0*rad;
+        theta = pi*rad;
         phi = 0*rad;
 
 	spin = 0*rad;
@@ -381,7 +421,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 	//Detector 1
 	
-	gap = 19.0*mm;
+//	gap = 19.0*mm;
+	gap = 5.0*in - ss_outRad;
 
 	theta = 0*rad;
 	phi = 0*rad;
