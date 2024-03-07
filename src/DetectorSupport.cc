@@ -5,6 +5,9 @@
 #include "DetectorSupport.hh"
 #include "G4SystemOfUnits.hh"
 
+#include "G4RotationMatrix.hh"
+#include "G4ThreeVector.hh"
+
 namespace CeBr3
 {
 

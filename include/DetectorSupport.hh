@@ -7,6 +7,7 @@
 
 #include "globals.hh"
 #include "G4NistManager.hh"
+#include "G4Transform3D.hh"
 
 namespace CeBr3
 {
