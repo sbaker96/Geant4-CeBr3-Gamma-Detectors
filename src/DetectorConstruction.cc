@@ -54,6 +54,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         G4Material* Al = man->FindOrBuildMaterial("G4_Al");
 	G4Material* Glass = man->FindOrBuildMaterial("G4_Pyrex_Glass");
 	G4Material* Plastic = man->FindOrBuildMaterial("G4_PLASTIC_SC_VINYLTOLUENE");
+	G4Material* Styrofoam = man->FindOrBuildMaterial("G4_POLYSTYRENE");
 
 	//Define CeBr3
 
