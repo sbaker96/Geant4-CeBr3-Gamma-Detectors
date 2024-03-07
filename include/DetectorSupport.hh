@@ -35,7 +35,7 @@ class DetectorSupport
 		G4double height;
 		
 		G4Material* mat;	
-}
+};
 
 }
 
