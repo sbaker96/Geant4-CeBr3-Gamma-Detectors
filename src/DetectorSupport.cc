@@ -30,6 +30,8 @@ namespace CeBr3
 		Ta.setX(s_x); Ta.setY(s_y); Ta.setZ(s_z);
 		Ma = G4Transform3D(Ra, Ta);
 
+		return Ma;
+
 	}
 
 }
