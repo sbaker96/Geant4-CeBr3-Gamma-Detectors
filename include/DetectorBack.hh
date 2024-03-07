@@ -57,7 +57,7 @@ class DetectorBack
 		G4Material* shieldMat;
 
 		DetectorPMT* pmt;
-		DetectorSupport* detSup;
+		DetectorSupport* detSup = NULL;
 
 		//Assembly
 
