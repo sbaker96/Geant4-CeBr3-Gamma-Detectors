@@ -10,6 +10,7 @@
 #include "G4AssemblyVolume.hh"
 
 #include "DetectorPMT.hh"
+#include "DetectorSupport.hh"
 
 namespace CeBr3
 {
@@ -27,6 +28,7 @@ class DetectorBack
 		void SetShieldMat(G4Material* m)	{shieldMat = m;};
 
 		void SetPMT(DetectorPMT* p)		{pmt = p;};
+		void SetDetSup(DetectorSupport* s)	{detSup = s;};
 
 		//Get Functions
 		G4double GetSideGap()			{return sideGap;};
@@ -35,6 +37,7 @@ class DetectorBack
 		G4Material* GetShieldMat()		{return shieldMat;};
 
 		DetectorPMT* GetPMT()			{return pmt;};
+		DetectorSupport* GetDetSup()		{return detSup;};
 
 		G4AssemblyVolume* GetAssembly()		{return detBack;};
 
@@ -54,6 +57,7 @@ class DetectorBack
 		G4Material* shieldMat;
 
 		DetectorPMT* pmt;
+		DetectorSupport* detSup;
 
 		//Assembly
 
