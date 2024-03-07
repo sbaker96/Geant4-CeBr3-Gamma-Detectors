@@ -4,6 +4,7 @@
 
 #include "DetectorBack.hh"
 #include "G4Tubs.hh"
+#include "G4Box.hh"
 #include "G4SubtractionSolid.hh"
 #include "G4SystemOfUnits.hh"
 
@@ -27,10 +28,10 @@ void DetectorBack::ConstructDetBack()
 	G4double s_y = 0*mm;
 	G4double s_z = s_hz;
 
-	//Sheilding Solid
+	//Shielding Solid
 	G4Tubs* sSolid = new G4Tubs("sSolid", sInRad, sOutRad, s_hz, 0*deg, 360*deg);
 
-	//Sheilding Logical Volume
+	//Shielding Logical Volume
 	G4LogicalVolume* sLog = new G4LogicalVolume(sSolid, shieldMat, "sLog");
 
 	//Construct DetectorBack Assembly
@@ -48,6 +49,35 @@ void DetectorBack::ConstructDetBack()
 
 	detBack->AddPlacedAssembly(pmt->GetPMT(), Ma);
 	detBack->AddPlacedVolume(sLog, Ma);
+
+	//Add Support
+	
+	if(!detSup)		//If no support, end construction
+		return;
+
+	//Parameters
+	G4double sup_hx = CalculateLength()*0.75;
+	G4double sup_hy = detSup->getHeight()/2;
+	G4double sup_hz = CalculateLength()*0.75;
+
+	G4double sup_rad = CalculateWidth()/2;
+
+	G4Material* supMat = detSup->getMat();
+
+	G4Transform3D supMa = detSup->GenerateShift();
+
+	//Support Base Solid
+	G4Box* supBaseSolid = new G4Box("supBaseSolid", sup_hx, sup_hy, sup_hz);
+	G4Tubs* supHoleSolid = new G4Tubs("supHoleSolid", 0*cm, sup_rad, sup_hz, 0*rad, 2*CLHEP::pi*rad);
+
+	G4SubtractionSolid* supSolid = new G4SubtractionSolid("supSolid", supBaseSolid, supHoleSolid);
+
+	//Support Logical Volume
+	G4LogicalVolume* supLog = new G4LogicalVolume(supSolid, supMat, "supLog");
+
+	//Place Support
+	detBack->AddPlacedVolume(supLog, supMa);
+
 
 }
 
