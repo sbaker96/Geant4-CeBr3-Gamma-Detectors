@@ -57,12 +57,12 @@ void DetectorBack::ConstructDetBack()
 
 	//Parameters
 	G4double sup_hx = CalculateLength()*0.75;
-	G4double sup_hy = detSup->getHeight()/2;
+	G4double sup_hy = detSup->GetHeight()/2;
 	G4double sup_hz = CalculateLength()*0.75;
 
 	G4double sup_rad = CalculateWidth()/2;
 
-	G4Material* supMat = detSup->getMat();
+	G4Material* supMat = detSup->GetMat();
 
 	G4Transform3D supMa = detSup->GenerateShift();
 

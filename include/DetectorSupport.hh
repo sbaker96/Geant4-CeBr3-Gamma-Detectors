@@ -19,14 +19,14 @@ class DetectorSupport
 		~DetectorSupport();
 
 		//Set Functions
-		void setHeight(G4double h)		{height = h;};
+		void SetHeight(G4double h)		{height = h;};
 
-		void setMat(G4Material* m)		{mat = m;};
+		void SetMat(G4Material* m)		{mat = m;};
 
 		//Get Functions
-		G4double getHeight()			{return height;};
+		G4double GetHeight()			{return height;};
 
-		G4Material* getMat()			{return mat;};
+		G4Material* GetMat()			{return mat;};
 
 		//Helper Functions
 		G4Transform3D GenerateShift();
