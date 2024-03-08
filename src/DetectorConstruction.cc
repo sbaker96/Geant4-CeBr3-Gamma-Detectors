@@ -7,6 +7,7 @@
 #include "DetectorCrystal.hh"
 #include "DetectorFront.hh"
 #include "DetectorPMT.hh"
+#include "DetectorSupport.hh"
 #include "DetectorBack.hh"
 #include "DetectorAssembly.hh"
 
@@ -203,9 +204,10 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	G4LogicalVolume* spLog = new G4LogicalVolume(spSolid, Plastic, "SourcePlastic");
 
 	//Physical Volume
+/*
 	G4VPhysicalVolume* spPhys = new G4PVPlacement(placeRot, nullVec, spLog, "SourcePlastic", worldLog,
 		false, 0);	
-
+*/
 
 //=============================================
 
@@ -229,7 +231,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 		 pmtThick,	//thickness of PMT glass
 		 cathodeThick,	//thickness of photocathode
 		 shieldSideGap,	//gap between magnetic shield and PMT
-		 shieldThick;	//thickness of magnetic shield
+		 shieldThick,	//thickness of magnetic shield
+		 detSupHeight;	//height of detector support
 
 
 	//2x2 Detector
@@ -288,6 +291,16 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 	pmt_2x2->ConstructPMT();
 
+	//Construct Detector Support
+	
+	detSupHeight = 3*in;
+	
+	DetectorSupport* detSup_2x2 = new DetectorSupport();
+
+	detSup_2x2->SetHeight(detSupHeight);
+
+	detSup_2x2->SetMat(Styrofoam);
+
 	//Construct Detector Back
 	shieldSideGap = 5*mm;
 	shieldThick = 0.64*mm;
@@ -300,6 +313,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	detBack_2x2->SetShieldMat(MuMetal);
 
 	detBack_2x2->SetPMT(pmt_2x2);
+
+	detBack_2x2->SetDetSup(detSup_2x2);
 
 	detBack_2x2->ConstructDetBack();
 
@@ -418,7 +433,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 	spin = 0*rad;
 	
-//	Detector_2x2->PlaceAssembly(worldLog, ss_outRad, gap, theta, phi, spin);
+	Detector_2x2->PlaceAssembly(worldLog, ss_outRad, gap, theta, phi, spin);
 
 	//Detector 1
 	
@@ -430,7 +445,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 	spin = 0*rad;
 
-	Detector_3x4->PlaceAssembly(worldLog, ss_outRad, gap, theta, phi, spin);
+//	Detector_3x4->PlaceAssembly(worldLog, ss_outRad, gap, theta, phi, spin);
 
 //===========================================
 
