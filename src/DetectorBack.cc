@@ -64,13 +64,14 @@ void DetectorBack::ConstructDetBack()
 
 	G4Material* supMat = detSup->GetMat();
 
+	G4Transform3D holeMa = detSup->GenerateHoleShift();
 	G4Transform3D supMa = detSup->GenerateShift();
 
 	//Support Base Solid
 	G4Box* supBaseSolid = new G4Box("supBaseSolid", sup_hx, sup_hy, sup_hz);
-	G4Tubs* supHoleSolid = new G4Tubs("supHoleSolid", 0*cm, sup_rad, sup_hz, 0*rad, 2*CLHEP::pi*rad);
+	G4Tubs* supHoleSolid = new G4Tubs("supHoleSolid", 0*cm, sup_rad, 2*sup_hz, 0*rad, 2*CLHEP::pi*rad);
 
-	G4SubtractionSolid* supSolid = new G4SubtractionSolid("supSolid", supBaseSolid, supHoleSolid);
+	G4SubtractionSolid* supSolid = new G4SubtractionSolid("supSolid", supBaseSolid, supHoleSolid, holeMa);
 
 	//Support Logical Volume
 	G4LogicalVolume* supLog = new G4LogicalVolume(supSolid, supMat, "supLog");

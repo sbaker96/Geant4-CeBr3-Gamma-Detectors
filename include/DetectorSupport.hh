@@ -29,6 +29,7 @@ class DetectorSupport
 		G4Material* GetMat()			{return mat;};
 
 		//Helper Functions
+		G4Transform3D GenerateHoleShift();
 		G4Transform3D GenerateShift();
 		
 	private:
