@@ -204,10 +204,10 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	G4LogicalVolume* spLog = new G4LogicalVolume(spSolid, Plastic, "SourcePlastic");
 
 	//Physical Volume
-/*
+
 	G4VPhysicalVolume* spPhys = new G4PVPlacement(placeRot, nullVec, spLog, "SourcePlastic", worldLog,
 		false, 0);	
-*/
+
 
 //=============================================
 
