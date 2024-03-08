@@ -383,6 +383,16 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 	pmt_3x4->ConstructPMT();
 
+	//Construct Detector Support
+	
+	detSupHeight = 3*in;
+	
+	DetectorSupport* detSup_3x4 = new DetectorSupport();
+
+	detSup_3x4->SetHeight(detSupHeight);
+
+	detSup_3x4->SetMat(Styrofoam);
+
 	//Construct Detector Back
 	shieldSideGap = 5*mm;
 	shieldThick = 0.64*mm;
@@ -395,6 +405,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	detBack_3x4->SetShieldMat(MuMetal);
 
 	detBack_3x4->SetPMT(pmt_3x4);
+
+	detBack_3x4->SetDetSup(detSup_3x4);
 
 	detBack_3x4->ConstructDetBack();
 
@@ -445,7 +457,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 	spin = 0*rad;
 
-//	Detector_3x4->PlaceAssembly(worldLog, ss_outRad, gap, theta, phi, spin);
+	Detector_3x4->PlaceAssembly(worldLog, ss_outRad, gap, theta, phi, spin);
 
 //===========================================
 
