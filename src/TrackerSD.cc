@@ -58,13 +58,13 @@ G4bool TrackerSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
 	G4int copyNumber = aStep->GetTrack()->GetTouchable()->GetCopyNumber();
 	
 	//print copyNumber
-	//std::cout << copyNumber << std::endl;
+//	std::cout << copyNumber << std::endl;
 
 	//Get detector number from copy number
 	
        	//Parameters
-	G4int n = 1;	//Number of physical volumes before detectors are placed (including world)
-	G4int p = 3;	//Number of components of each detector
+	G4int n = 2;	//Number of physical volumes before detectors are placed (including world)
+	G4int p = 8;	//Number of components of each detector
 
 	G4int dNum = (copyNumber - n)/p; //This turns the copy number to detector number.
 					 //For this equation to work.
