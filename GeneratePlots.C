@@ -37,7 +37,7 @@ string histName = "Edep_";
 string simDirName = "simOutputPhotopeaks";
 string simFileName = "detector_";
 
-const int nofDetectors = 1;
+const int nofDetectors = 2;
 const int maxEnergy = 4000; // in keV
 const int binWidth = 4;
 
@@ -114,6 +114,14 @@ void plotRaw(int num)
 
 	}
 
+        outHist->SetTitle("Raw Plot");
+        outHist->GetXaxis()->SetTitle("E_{#gamma} [keV]");
+        outHist->GetXaxis()->CenterTitle();
+        outHist->GetYaxis()->SetTitle("Counts/4 keV");
+        outHist->GetYaxis()->CenterTitle();
+
+
+
 	//Set Histogram Options
 	outHist->SetOption("HIST");
 
@@ -186,6 +194,14 @@ void plotFolded(int num)
   	double factor = 1.0;
 
 //	outHist->Scale(factor/outHist->GetMaximum());	//Sets the highest bin to one
+
+        outHist->SetTitle("Folded Plot");
+        outHist->GetXaxis()->SetTitle("E_{#gamma} [keV]");
+        outHist->GetXaxis()->CenterTitle();
+        outHist->GetYaxis()->SetTitle("Counts/4 keV");
+        outHist->GetYaxis()->CenterTitle();
+
+
 
 	//Set Histogram Option
 	outHist->SetOption("HIST");
