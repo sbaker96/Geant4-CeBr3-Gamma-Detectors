@@ -166,9 +166,9 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
                         worldLog,              	//Mother volume
                         false,          	//no bool
                         0);             	//copy number
-
-
 */
+
+
 
 
 //=============================================
@@ -437,7 +437,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 	//Detector 0
 
-//	gap = //14.0*mm;
+//	gap = 14.0*mm;
 	gap = 5.0*in - ss_outRad;
 
         theta = pi*rad;
